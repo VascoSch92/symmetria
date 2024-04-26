@@ -55,7 +55,7 @@ def test_call_error(permutation, call_on, error, msg) -> None:
 def test_equality(lhs, rhs, expected_output) -> None:
     """Tests for the method `__eq__()`."""
     if (lhs == rhs) != expected_output:
-        raise ValueError(f"The expression `{lhs}=={rhs}` should be {expected_output}, but got {expected_output}.")
+        raise ValueError(f"The expression `{lhs}=={rhs}` should be {expected_output}, but got {lhs == rhs}.")
 
 
 @pytest.mark.parametrize(
