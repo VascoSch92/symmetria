@@ -1,0 +1,357 @@
+from itertools import combinations
+from math import lcm
+from typing import Dict, List, Union, Tuple, Set, Iterable, Any
+
+from symmetria.interfaces import _Element
+
+__all__ = ["Permutation", "Cycle", "CycleDecomposition"]
+
+
+class Permutation(_Element):
+    __slots__ = ["_map", "_domain"]
+
+    def __init__(self, *image: int) -> None:
+        self._map: Dict[int, int] = self._validate_image(image)
+        self._domain: Iterable[int] = range(1, len(self._map) + 1)
+
+    @staticmethod
+    def _validate_image(image: Tuple[int]) -> Dict[int, int]:
+        """
+        Private method to check if a set of integers is eligible as image for a permutation.
+
+        Recall that, a tuple of integers represent the image of a permutation if the following conditions hold:
+            - all the integers are strictly positive;
+            - all the integers are bounded by the total number of integer;
+            - there are no repetitions.
+        """
+        _map = {}
+        for idx, img in enumerate(image):
+            if isinstance(img, int) is False:
+                raise ValueError(f"Expected `int` type, but got {type(img)}.")
+            if img < 1:
+                raise ValueError(f"Expected all strictly positive values, but got {img}")
+            elif img > len(image):
+                raise ValueError(f"The permutation is not injecting on its image. Indeed, {img} is not in the image.")
+            elif img in _map.values():
+                raise ValueError(
+                    f"It seems that the permutation is not bijective. Indeed, {img} has two, or more, pre-images."
+                )
+            else:
+                _map[idx + 1] = img
+        return _map
+
+    def __bool__(self) -> bool:
+        return self != Permutation(*self.domain())
+
+    def __call__(self, i: Union[int, Iterable]) -> Union[int, str, List, Tuple]:
+        if isinstance(i, int):
+            return self._call_on_integer(idx=i)
+
+        elif isinstance(i, (str, List, Tuple)):
+            assert len(self) <= len(i), f"Not enough object to permute {i} using the permutation {self}."
+            permuted = self._call_on_iterable(original=i)
+            if isinstance(i, str):
+                return "".join(permuted)
+            elif isinstance(i, Tuple):
+                return tuple(p for p in permuted)
+            return self._call_on_iterable(original=i)
+
+        raise TypeError(f"Expected type `int` or `Iterable`, but got {type(i)}")
+
+    def _call_on_integer(self, idx: int) -> int:
+        """Private method for calls on integer."""
+        return self[idx] if 1 <= idx <= len(self) else idx
+
+    def _call_on_iterable(self, original: Iterable) -> List:
+        """Private method for calls on iterable."""
+        permuted = [None for _ in original]
+        for idx, w in enumerate(original, 1):
+            permuted[self._call_on_integer(idx=idx) - 1] = w
+        return permuted
+
+    def __eq__(self, other: Any) -> bool:
+        if isinstance(other, Permutation):
+            return self._map == other._map
+        elif isinstance(other, Cycle):
+            return self == Permutation.from_cycle(other)
+        elif isinstance(other, CycleDecomposition):
+            raise self == Permutation.from_cycle_decomposition(other)
+        return False
+
+    def __getitem__(self, item: int) -> int:
+        return self._map[item]
+
+    def __int__(self) -> int:
+        permutation_length = len(self)
+        return sum([self[element] * 10 ** (permutation_length - element) for element in self.domain()])
+
+    def __len__(self) -> int:
+        return len(list(self.domain()))
+
+    def __mul__(self, other) -> "Permutation":
+        if isinstance(other, Permutation):
+            if self.domain() != other.domain():
+                raise ValueError(
+                    f"Cannot compose permutation {self} with permutation {other},"
+                    " because they don't live in the same symmetric group."
+                )
+            return Permutation.from_dict(p={idx: self._map[other._map[idx]] for idx in self._domain})
+        elif isinstance(other, Cycle):
+            if set(other.domain()).issubset(set(self.domain())) is False:
+                raise ValueError(
+                    f"Cannot compose permutation {self} with cycle {other},"
+                    " because they don't live in the same symmetric group."
+                )
+            permutation = []
+            for element in self.domain():
+                if element in other:
+                    idx = other.elements().index(element)
+                    permutation.append(self[other[(idx + 1) % len(other)]])
+                else:
+                    permutation.append(self[element])
+            return Permutation(*permutation)
+        elif isinstance(other, CycleDecomposition):
+            if self.domain() != other.domain():
+                raise ValueError(
+                    f"Cannot compose permutation {self} with cycle decomposition {other},"
+                    " because they don't live in the same symmetric group."
+                )
+            raise NotImplementedError
+        raise TypeError(f"Product between types `Permutation` and {type(other)} is not implemented.")
+
+    def __repr__(self) -> str:
+        image = ", ".join([str(self._map[idx]) for idx in self.domain()])
+        return f"Permutation({image})"
+
+    def __str__(self) -> str:
+        return "(" + ", ".join([str(self[idx]) for idx in self.domain()]) + ")"
+
+    @staticmethod
+    def from_dict(p: Dict[int, int]) -> "Permutation":
+        return Permutation(*[p[idx] for idx in range(1, len(p) + 1)])
+
+    @staticmethod
+    def from_list(p: List[int]) -> "Permutation":
+        return Permutation(*p)
+
+    @staticmethod
+    def from_tuple(p: Tuple[int, ...]) -> "Permutation":
+        return Permutation(*p)
+
+    @staticmethod
+    def from_cycle(cycle: "Cycle") -> "Permutation":
+        image = []
+        cycle_length = len(cycle)
+        for element in range(1, max(cycle.domain())+1):
+            if element in cycle:
+                idx = cycle.elements().index(element)
+                image.append(cycle[(idx + 1) % cycle_length])
+            else:
+                image.append(element)
+        return Permutation(*image)
+
+    @staticmethod
+    def from_cycle_decomposition(cycle_decomposition: "CycleDecomposition") -> "Permutation":
+        raise NotImplementedError
+
+    def order(self) -> int:
+        return self.cycle_decomposition().order()
+
+    def orbit(self, item: Union[int, Iterable]) -> List[Union[int, Iterable]]:
+        orbit = [item]
+        next_element = self(item)
+        while next_element != item:
+            orbit.append(next_element)
+            next_element = self(next_element)
+        return orbit
+
+    def cycle_decomposition(self) -> "CycleDecomposition":
+        visited = set()
+        cycles = []
+        for idx in self.domain():
+            if idx not in visited:
+                orbit = self.orbit(idx)
+                cycles.append(Cycle(*orbit))
+                visited.update(orbit)
+
+        return CycleDecomposition(*cycles)
+
+    def is_derangement(self) -> bool:
+        for idx in self._domain:
+            if self(idx) == idx:
+                return False
+        return True
+
+    def domain(self) -> Iterable[int]:
+        return self._domain
+
+    def support(self) -> Set[int]:
+        return {idx for idx in self.domain() if self(idx) != idx}
+
+    def one_line_notation(self) -> str:
+        return str(int(self))
+
+
+class Cycle(_Element):
+    __slots__ = ["_cycle"]
+
+    def __init__(self, *cycle: int) -> None:
+        self._cycle: Tuple[int] = self._validate_cycle(cycle)
+        self._domain: Iterable[int] = range(1, max(self._cycle) + 1)
+
+    @staticmethod
+    def _validate_cycle(cycle) -> Tuple[int]:
+        """The private method validate that a set of integer is eligible to be a cycle."""
+        if any(isinstance(c, int) is False for c in cycle):
+            raise ValueError
+        return tuple(cycle)
+
+    def __bool__(self) -> bool:
+        return len(self.elements()) != 1
+
+    def __call__(self, *args, **kwargs) -> int:
+        # TODO: what is happening for lists?
+        for arg in args:
+            if arg in self._cycle:
+                return self._cycle[(self._cycle.index(arg) + 1) % len(self)]
+            else:
+                return arg
+
+    def __eq__(self, other: Any) -> bool:
+        if isinstance(other, Cycle):
+            # in this case we have the identity
+            if self is False and other is False:
+                return True
+            if self.domain() == 1 and other.domain() == 1:
+                return True
+            return self._cycle == other._cycle
+        elif isinstance(other, CycleDecomposition):
+            if len(other) > 1:
+                return False
+            return self == other[0]
+        elif isinstance(other, Permutation):
+            raise NotImplementedError
+        return False
+
+    def __getitem__(self, item: int) -> int:
+        return self._cycle[item]
+
+    def __int__(self) -> int:
+        cycle_length = len(self)
+        return sum([element * 10 ** (cycle_length - idx) for idx, element in enumerate(self._cycle)])
+
+    def __len__(self) -> int:
+        return len(self._cycle)
+
+    def __repr__(self) -> str:
+        return f"Cycle({self._cycle})"
+
+    def __str__(self) -> str:
+        return "(" + " ".join([str(c) for c in self._cycle]) + ")"
+
+    def cycle_notation(self) -> str:
+        return str(self)
+
+    def is_derangement(self) -> bool:
+        # TODO: add description
+        return True
+
+    def domain(self) -> Iterable[int]:
+        return self._domain
+
+    def elements(self) -> Tuple[int]:
+        return self._cycle
+
+    def support(self) -> Set[int]:
+        return set(self._cycle)
+
+    def order(self) -> int:
+        return len(self) - 1
+
+
+class CycleDecomposition(_Element):
+    __slots__ = ["_cycles"]
+
+    def __init__(self, *cycles: Cycle) -> None:
+        self._cycles: Tuple[Cycle] = self._validate_cycles(cycles=cycles)
+        self._domain: Iterable[int] = range(1, max(max(cycle.elements()) for cycle in self._cycles) + 1)
+
+    @staticmethod
+    def _validate_cycles(cycles: Tuple[Cycle]) -> Tuple[Cycle]:
+        # checks that the cycles are disjoint
+        if any(cycle_a.support() & cycle_b.support() for cycle_a, cycle_b in combinations(cycles, 2)):
+            raise ValueError("Cycles must be disjoint")
+
+        # checks that there are no missing cycles
+        support = set().union(*(cycle.support() for cycle in cycles))
+        if set(range(1, len(support) + 1)).isdisjoint(support):
+            raise ValueError("Missing indexes")
+
+        return cycles
+
+    def __bool__(self) -> bool:
+        if len(self) == 1 and self[0] is True:
+            return False
+        return True
+
+    def __eq__(self, other: Any) -> bool:
+        if isinstance(other, CycleDecomposition):
+            return Permutation.from_cycle_decomposition(self) == Permutation.from_cycle_decomposition(other)
+        elif isinstance(other, Cycle):
+            return Permutation.from_cycle_decomposition(self) == Permutation.from_cycle(other)
+        elif isinstance(other, Permutation):
+            return Permutation.from_cycle_decomposition(self) == other
+        return False
+
+    def __getitem__(self, item: int) -> Cycle:
+        return self._cycles[item]
+
+    def __int__(self) -> int:
+        raise NotImplementedError(
+            "This method is not implemented for the class `CycleDecomposition`, because it is not possible "
+            "to clearly represent a cycle decomposition of a permutation using just an integer."
+        )
+
+    def __iter__(self) -> Iterable[Cycle]:
+        return iter(self._cycles)
+
+    def __len__(self) -> int:
+        return len(self._cycles)
+
+    def __repr__(self) -> str:
+        cycles = self.cycle_notation()
+        return f"CyclePermutation({cycles})"
+
+    def __str__(self) -> str:
+        return "".join([str(c) for c in self])
+
+    def cycle_notation(self) -> str:
+        return str(self)
+
+    def order(self) -> int:
+        # TODO: add description
+        return lcm(*[len(cycle) for cycle in self])
+
+    def domain(self) -> Iterable[int]:
+        return self._domain
+
+    def support(self) -> Set[int]:
+        support = set()
+        for cycle in self:
+            if len(cycle) == 1:
+                support.add(cycle[0])
+        return support
+
+    def is_derangement(self) -> bool:
+        raise NotImplementedError
+
+
+if __name__ == "__main__":
+    a = Cycle(1)
+    b = Cycle(1, 2)
+    c = Cycle(2, 1)
+    d = Permutation(1, 3, 2, 5, 4).cycle_decomposition()
+    e = Cycle(3)
+    print(bool(a), bool(e))
+
+    print(d)
