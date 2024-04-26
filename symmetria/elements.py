@@ -219,16 +219,35 @@ class Cycle(_Element):
 
     def __eq__(self, other: Any) -> bool:
         if isinstance(other, Cycle):
-            # in this case we have the identity
-            if self is False and other is False:
-                return True
-            if self.domain() == 1 and other.domain() == 1:
-                return True
-            return self._cycle == other._cycle
-        elif isinstance(other, CycleDecomposition):
-            if len(other) > 1:
+            lhs_length, rhs_length = len(self), len(other)
+            if lhs_length != rhs_length:
                 return False
-            return self == other[0]
+            else:
+                # in this case we have the identity
+                if lhs_length == 1:
+                    return True
+                # compare if the two cycles are equal
+                lhs_elements, rhs_elements = self.elements(), other.elements()
+                for idx, element in enumerate(lhs_elements):
+                    if element not in rhs_elements:
+                        return False
+                    if self[(idx + 1) % lhs_length] != other[(rhs_elements.index(element) + 1) % rhs_length]:
+                        return False
+                return True
+        elif isinstance(other, CycleDecomposition):
+            # case where both are the identity
+            if bool(self) is False and bool(other) is False:
+                return True
+
+            # cases where is the identity but the other no
+            elif bool(self) is False and bool(other) is True:
+                return False
+            elif bool(self) is True and bool(other) is False:
+                return False
+
+            # both not the identity
+            else:
+                return self == other[0]
         elif isinstance(other, Permutation):
             raise NotImplementedError
         return False
@@ -290,9 +309,7 @@ class CycleDecomposition(_Element):
         return cycles
 
     def __bool__(self) -> bool:
-        if len(self) == 1 and self[0] is True:
-            return False
-        return True
+        return any(bool(cycle) for cycle in self)
 
     def __eq__(self, other: Any) -> bool:
         if isinstance(other, CycleDecomposition):
