@@ -41,6 +41,12 @@ TEST_CONSTRUCTOR_FROM_CYCLE = [
     (Cycle(4, 3, 2, 1), Permutation(4, 1, 2, 3)),
     (Cycle(4, 5, 6, 3, 2, 1), Permutation(4, 1, 2, 5, 6, 3)),
 ]
+TEST_CONSTRUCTOR_FROM_CYCLE_DECOMPOSITION = [
+    (CycleDecomposition(Cycle(1)), Permutation(1)),
+    (CycleDecomposition(Cycle(1, 2)), Permutation(2, 1)),
+    (CycleDecomposition(Cycle(1), Cycle(2)), Permutation(1, 2)),
+    (CycleDecomposition(Cycle(4, 3), Cycle(1, 2)), Permutation(2, 1, 4, 3)),
+]
 
 ##############################
 # TEST CASES GENERIC METHODS #
@@ -49,10 +55,10 @@ TEST_CONSTRUCTOR_FROM_CYCLE = [
 TEST_CYCLE_DECOMPOSITION = [
     (Permutation(1), CycleDecomposition(Cycle(1))),
     (Permutation(2, 1), CycleDecomposition(Cycle(1, 2))),
-    (Permutation(1, 3, 2), CycleDecomposition(Cycle(2, 3))),
-    (Permutation(1, 4, 3, 2), CycleDecomposition(Cycle(2, 4))),
-    (Permutation(1, 4, 5, 7, 3, 2, 6), CycleDecomposition(Cycle(1))),
-    (Permutation(6, 4, 5, 7, 3, 2, 1), CycleDecomposition(Cycle(1))),
+    (Permutation(1, 3, 2), CycleDecomposition(Cycle(1), Cycle(2, 3))),
+    (Permutation(1, 4, 3, 2), CycleDecomposition(Cycle(1), Cycle(2, 4), Cycle(3))),
+    (Permutation(1, 4, 5, 7, 3, 2, 6), CycleDecomposition(Cycle(1), Cycle(2, 4, 7, 6), Cycle(3, 5))),
+    (Permutation(6, 4, 5, 7, 3, 2, 1), CycleDecomposition(Cycle(1, 6, 2, 4, 7), Cycle(3, 5))),
 ]
 TEST_DOMAIN = [
     (Permutation(1), range(1, 2)),
@@ -157,6 +163,7 @@ TEST_MULTIPLICATION = [
         (Permutation(1, 2, 3, 4), Cycle(1, 2, 3, 4), Permutation(2, 3, 4, 1)),
         (Permutation(1, 2), Cycle(1), Permutation(1, 2)),
         (Permutation(1, 2), Cycle(2), Permutation(1, 2)),
+        (Permutation(1, 2), CycleDecomposition(Cycle(1), Cycle(2)), Permutation(1, 2))
     ]
 TEST_MULTIPLICATION_ERROR = [
     (Permutation(1, 2, 3), Permutation(1, 2), ValueError, "Cannot compose permutation"),

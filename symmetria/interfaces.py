@@ -63,3 +63,8 @@ class _Element(ABC):
     def support(self) -> Set[int]:
         # TODO: add description
         raise NotImplementedError
+
+    @abstractmethod
+    def map(self) -> Dict[int, int]:
+        # TODO: add description
+        raise NotImplementedError

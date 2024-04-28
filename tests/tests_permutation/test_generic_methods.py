@@ -19,7 +19,7 @@ from tests.tests_permutation.test_cases import (
 def test_cycle_decomposition(permutation, expected_value) -> None:
     """Tests for the method `cycle_decomposition()`."""
     if permutation.cycle_decomposition() != expected_value:
-        raise ValueError(error_message(expected=expected_value, got=permutation.domain()))
+        raise ValueError(error_message(expected=expected_value, got=permutation.cycle_decomposition()))
 
 
 @pytest.mark.parametrize(

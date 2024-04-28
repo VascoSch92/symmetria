@@ -8,6 +8,7 @@ from tests.tests_permutation.test_cases import (
     TEST_CONSTRUCTOR_FROM_LIST,
     TEST_CONSTRUCTOR_FROM_TUPLE,
     TEST_CONSTRUCTOR_FROM_CYCLE,
+    TEST_CONSTRUCTOR_FROM_CYCLE_DECOMPOSITION,
 )
 from tests.utils import error_message
 
@@ -93,6 +94,22 @@ def test_constructor_from_cycle(cycle, expected_permutation) -> None:
             error_message(
                 expected=expected_permutation,
                 got=Permutation.from_cycle(cycle),
+            )
+        )
+
+
+@pytest.mark.parametrize(
+    argnames="cycle_decomposition, expected_permutation",
+    argvalues=TEST_CONSTRUCTOR_FROM_CYCLE_DECOMPOSITION,
+    ids=[f"{c}->{p}" for c, p in TEST_CONSTRUCTOR_FROM_CYCLE_DECOMPOSITION],
+)
+def test_constructor_from_cycle_decomposition(cycle_decomposition, expected_permutation) -> None:
+    """Tests for the constructor method `from_cycle_decomposition()`."""
+    if Permutation.from_cycle_decomposition(cycle_decomposition) != expected_permutation:
+        raise ValueError(
+            error_message(
+                expected=expected_permutation,
+                got=Permutation.from_cycle_decomposition(cycle_decomposition),
             )
         )
 

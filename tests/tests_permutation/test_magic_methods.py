@@ -88,7 +88,7 @@ def test_len(permutation, expected_output) -> None:
 def test_repr(permutation, expected_output) -> None:
     """Tests for the method `__repr__()`."""
     if permutation.__repr__() != expected_output:
-        raise ValueError(error_message(expected=expected_output, got=len(permutation)))
+        raise ValueError(error_message(expected=expected_output, got=permutation.__repr__()))
 
 
 @pytest.mark.parametrize(
@@ -107,7 +107,7 @@ def test_multiplication(lhs, rhs, expected_output) -> None:
     argvalues=TEST_MULTIPLICATION_ERROR,
     ids=[error for _, _, _, error in TEST_MULTIPLICATION_ERROR]
 )
-def test_multiplication(lhs, rhs, error, msg) -> None:
+def test_multiplication_error(lhs, rhs, error, msg) -> None:
     """Tests for exceptions to the method `__mul__()`."""
     with pytest.raises(error, match=msg):
         _ = lhs * rhs

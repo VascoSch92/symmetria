@@ -88,19 +88,19 @@ class Permutation(_Element):
     def __len__(self) -> int:
         return len(list(self.domain()))
 
-    def __mul__(self, other) -> "Permutation":
+    def __mul__(self, other: Union["Permutation", "Cycle", "CycleDecomposition"]) -> "Permutation":
         if isinstance(other, Permutation):
             if self.domain() != other.domain():
                 raise ValueError(
                     f"Cannot compose permutation {self} with permutation {other},"
-                    " because they don't live in the same symmetric group."
+                    " because they don't live in the same Symmetric group."
                 )
             return Permutation.from_dict(p={idx: self._map[other._map[idx]] for idx in self._domain})
         elif isinstance(other, Cycle):
             if set(other.domain()).issubset(set(self.domain())) is False:
                 raise ValueError(
                     f"Cannot compose permutation {self} with cycle {other},"
-                    " because they don't live in the same symmetric group."
+                    " because they don't live in the same Symmetric group."
                 )
             permutation = []
             for element in self.domain():
@@ -114,9 +114,9 @@ class Permutation(_Element):
             if self.domain() != other.domain():
                 raise ValueError(
                     f"Cannot compose permutation {self} with cycle decomposition {other},"
-                    " because they don't live in the same symmetric group."
+                    " because they don't live in the same Symmetric group."
                 )
-            raise NotImplementedError
+            return Permutation.from_dict(p={idx: self._map[other.map()[idx]] for idx in self.domain()})
         raise TypeError(f"Product between types `Permutation` and {type(other)} is not implemented.")
 
     def __repr__(self) -> str:
@@ -152,7 +152,7 @@ class Permutation(_Element):
 
     @staticmethod
     def from_cycle_decomposition(cycle_decomposition: "CycleDecomposition") -> "Permutation":
-        raise NotImplementedError
+        return Permutation.from_dict(p=cycle_decomposition.map())
 
     def order(self) -> int:
         return self.cycle_decomposition().order()
@@ -173,7 +173,6 @@ class Permutation(_Element):
                 orbit = self.orbit(idx)
                 cycles.append(Cycle(*orbit))
                 visited.update(orbit)
-
         return CycleDecomposition(*cycles)
 
     def is_derangement(self) -> bool:
@@ -191,20 +190,34 @@ class Permutation(_Element):
     def one_line_notation(self) -> str:
         return str(int(self))
 
+    def map(self) -> Dict[int, int]:
+        return self._map
+
 
 class Cycle(_Element):
     __slots__ = ["_cycle"]
 
     def __init__(self, *cycle: int) -> None:
-        self._cycle: Tuple[int] = self._validate_cycle(cycle)
+        self._cycle: Tuple[int] = self._validate_and_standardize_cycle(cycle)
         self._domain: Iterable[int] = range(1, max(self._cycle) + 1)
 
     @staticmethod
-    def _validate_cycle(cycle) -> Tuple[int]:
-        """The private method validate that a set of integer is eligible to be a cycle."""
-        if any(isinstance(c, int) is False for c in cycle):
-            raise ValueError
-        return tuple(cycle)
+    def _validate_and_standardize_cycle(cycle: Tuple[int]) -> Tuple[int, ...]:
+        """
+        The private method validates and standardizes a set of integers to form a cycle.
+        A tuple is eligible to be a cycle if it contains only strictly positive integers.
+        The standard form for a cycle is the (unique) one where the first element is the smallest.
+        """
+        for element in cycle:
+            if isinstance(element, int) is False:
+                raise ValueError(f"Expected `int` type, but got {type(element)}.")
+            if element < 1:
+                raise ValueError(f"Expected all strictly positive values, but got {element}.")
+
+        smallest_element_index = cycle.index(min(cycle))
+        if smallest_element_index == 0:
+            return tuple(cycle)
+        return cycle[smallest_element_index:] + cycle[:smallest_element_index]
 
     def __bool__(self) -> bool:
         return len(self.elements()) != 1
@@ -237,19 +250,18 @@ class Cycle(_Element):
         elif isinstance(other, CycleDecomposition):
             # case where both are the identity
             if bool(self) is False and bool(other) is False:
-                return True
-
+                return max(self.elements()) == max([max(cycle.elements()) for cycle in other])
             # cases where is the identity but the other no
-            elif bool(self) is False and bool(other) is True:
+            elif (bool(self) is False and bool(other) is True) or (bool(self) is True and bool(other) is False):
                 return False
-            elif bool(self) is True and bool(other) is False:
-                return False
-
             # both not the identity
             else:
-                return self == other[0]
+                for cycle in other:
+                    if len(cycle) > 1:
+                        return self == cycle
+                return False
         elif isinstance(other, Permutation):
-            raise NotImplementedError
+            return self == other.cycle_decomposition()
         return False
 
     def __getitem__(self, item: int) -> int:
@@ -257,16 +269,38 @@ class Cycle(_Element):
 
     def __int__(self) -> int:
         cycle_length = len(self)
-        return sum([element * 10 ** (cycle_length - idx) for idx, element in enumerate(self._cycle)])
+        return sum([element * 10 ** (cycle_length - idx) for idx, element in enumerate(self.elements(), 1)])
 
     def __len__(self) -> int:
         return len(self._cycle)
 
+    def __mul__(self, other: Union["Cycle", "CycleDecomposition", "Permutation"]) -> "CycleDecomposition":
+        if isinstance(other, Cycle):
+            if self.support().isdisjoint(other.support()):
+                return CycleDecomposition(self, other)
+            else:
+                return None
+        if isinstance(other, Permutation):
+            if self.domain() != other.domain():
+                raise ValueError(
+                    f"Cannot compose permutation {self} with permutation {other},"
+                    " because they don't live in the same symmetric group."
+                )
+            return Permutation.from_dict(p={idx: self._map[other._map[idx]] for idx in self._domain})
+        elif isinstance(other, CycleDecomposition):
+            if self.domain() != other.domain():
+                raise ValueError(
+                    f"Cannot compose permutation {self} with cycle decomposition {other},"
+                    " because they don't live in the same symmetric group."
+                )
+            raise NotImplementedError
+        raise TypeError(f"Product between types `Permutation` and {type(other)} is not implemented.")
+
     def __repr__(self) -> str:
-        return f"Cycle({self._cycle})"
+        return f"Cycle({', '.join(str(element) for element in self.elements())})"
 
     def __str__(self) -> str:
-        return "(" + " ".join([str(c) for c in self._cycle]) + ")"
+        return "(" + " ".join([str(element) for element in self.elements()]) + ")"
 
     def cycle_notation(self) -> str:
         return str(self)
@@ -282,40 +316,65 @@ class Cycle(_Element):
         return self._cycle
 
     def support(self) -> Set[int]:
-        return set(self._cycle)
+        return set(self._cycle) if len(self) > 1 else set()
 
     def order(self) -> int:
         return len(self) - 1
+
+    def map(self) -> Dict[int, int]:
+        return {element: self[(idx + 1) % len(self)] for idx, element in enumerate(self.elements())}
 
 
 class CycleDecomposition(_Element):
     __slots__ = ["_cycles"]
 
     def __init__(self, *cycles: Cycle) -> None:
-        self._cycles: Tuple[Cycle] = self._validate_cycles(cycles=cycles)
+        self._cycles: Tuple[Cycle] = self._validate_and_standardize_cycle_decomposition(cycles=cycles)
         self._domain: Iterable[int] = range(1, max(max(cycle.elements()) for cycle in self._cycles) + 1)
 
     @staticmethod
-    def _validate_cycles(cycles: Tuple[Cycle]) -> Tuple[Cycle]:
+    def _validate_and_standardize_cycle_decomposition(cycles: Tuple[Cycle]) -> Tuple[Cycle]:
+        """
+        The private method validates and standardizes a tuple oc cycle to be a cycle decomposition.
+        A tuple of cycles is eligible to be a cycle decomposition if and only if:
+            - every two cycles are disjoint, i.e., disjoint supports;
+            - every element from 1 to the biggest permuted element is included in some cycle.
+        Moreover, the cycle decomposition is standardized, i.e, the cycles are ordered by the first element of
+        every cycle in increasing order.
+        """
         # checks that the cycles are disjoint
-        if any(cycle_a.support() & cycle_b.support() for cycle_a, cycle_b in combinations(cycles, 2)):
-            raise ValueError("Cycles must be disjoint")
+        for cycle_a, cycle_b in combinations(cycles, 2):
+            if set(cycle_a.elements()) & set(cycle_b.elements()):
+                raise ValueError(f"The cycles {cycle_a} and {cycle_b} don't have disjoint support.")
 
-        # checks that there are no missing cycles
-        support = set().union(*(cycle.support() for cycle in cycles))
-        if set(range(1, len(support) + 1)).isdisjoint(support):
-            raise ValueError("Missing indexes")
+        # checks that every element is included in a cycle
+        elements = {element for cycle in cycles for element in cycle.elements()}
+        if set(range(1, len(elements) + 1)) != elements:
+            raise ValueError(
+                "Every element from 1 to the biggest permuted element must be included in some cycle,\n "
+                f"but this is not the case for the element(s): {set(range(1, len(elements) + 1)).difference(elements)}")
 
-        return cycles
+        # standardization
+        cycles = sorted(cycles, key=lambda cycle: cycle[0])
+        return tuple(cycles)
 
     def __bool__(self) -> bool:
         return any(bool(cycle) for cycle in self)
 
     def __eq__(self, other: Any) -> bool:
         if isinstance(other, CycleDecomposition):
-            return Permutation.from_cycle_decomposition(self) == Permutation.from_cycle_decomposition(other)
+            if len(self) != len(other):
+                return False
+            else:
+                for cycle_a, cycle_b in zip(self, other):
+                    if cycle_a != cycle_b:
+                        return False
+                return True
         elif isinstance(other, Cycle):
-            return Permutation.from_cycle_decomposition(self) == Permutation.from_cycle(other)
+            for cycle in self:
+                if cycle == other:
+                    return True
+            return False
         elif isinstance(other, Permutation):
             return Permutation.from_cycle_decomposition(self) == other
         return False
@@ -362,13 +421,17 @@ class CycleDecomposition(_Element):
     def is_derangement(self) -> bool:
         raise NotImplementedError
 
+    def map(self) -> Dict[int, int]:
+        _map = {}
+        for cycle in self:
+            _map.update(cycle.map())
+        return _map
+
 
 if __name__ == "__main__":
-    a = Cycle(1)
-    b = Cycle(1, 2)
-    c = Cycle(2, 1)
-    d = Permutation(1, 3, 2, 5, 4).cycle_decomposition()
-    e = Cycle(3)
-    print(bool(a), bool(e))
+    a = Cycle(3, 2).map()
+    b = CycleDecomposition(Cycle(1, 2), Cycle(4, 3)).map()
+    c = CycleDecomposition(Cycle(4, 3), Cycle(1, 2))
 
-    print(d)
+    print(Permutation.from_cycle_decomposition(cycle_decomposition=c))
+
