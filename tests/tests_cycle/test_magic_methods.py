@@ -9,31 +9,35 @@ from tests.tests_cycle.test_cases import (
     TEST_MUL,
     TEST_MUL_ERROR,
 )
-from tests.utils import error_message
+from tests.tests_factory import (
+    validate_bool,
+    validate_eq,
+    validate_int,
+    validate_len,
+    validate_mul,
+    validate_mul_error,
+    validate_repr,
+)
 
 
 @pytest.mark.parametrize(
-    argnames="cycle, expected_output",
+    argnames="cycle, expected_value",
     argvalues=TEST_BOOL,
     ids=[f"bool({c})={b}" for c, b in TEST_BOOL]
 )
-def test_bool(cycle, expected_output) -> None:
+def test_bool(cycle, expected_value) -> None:
     """Tests for the method `__bool__()`."""
-    if bool(cycle) != expected_output:
-        raise ValueError(error_message(expected=expected_output, got=bool(cycle)))
+    validate_bool(item=cycle, expected_value=expected_value)
 
 
 @pytest.mark.parametrize(
-    argnames="lhs, rhs, expected_output",
+    argnames="lhs, rhs, expected_value",
     argvalues=TEST_EQ,
     ids=[f"{lhs}={rhs}" for lhs, rhs, _ in TEST_EQ]
 )
-def test_eq(lhs, rhs, expected_output) -> None:
+def test_eq(lhs, rhs, expected_value) -> None:
     """Tests for the method `__eq__()`."""
-    if (lhs == rhs) != expected_output:
-        raise ValueError(
-            f"The expression `{lhs}=={rhs}` should be {expected_output}, but got {lhs == rhs}."
-        )
+    validate_eq(lhs=lhs, rhs=rhs, expected_value=expected_value)
 
 
 @pytest.mark.parametrize(
@@ -43,30 +47,27 @@ def test_eq(lhs, rhs, expected_output) -> None:
 )
 def test_int(cycle, expected_value) -> None:
     """Tests for the method `__int__()`."""
-    if int(cycle) != expected_value:
-        raise ValueError(error_message(expected=expected_value, got=int(cycle)))
+    validate_int(item=cycle, expected_value=expected_value)
 
 
 @pytest.mark.parametrize(
-    argnames="cycle, expected_output",
+    argnames="cycle, expected_value",
     argvalues=TEST_LEN,
     ids=[f"len({c})={l}" for c, l in TEST_LEN],
 )
-def test_len(cycle, expected_output) -> None:
+def test_len(cycle, expected_value) -> None:
     """Tests for the method `__len__()`."""
-    if len(cycle) != expected_output:
-        raise ValueError(error_message(expected=expected_output, got=len(cycle)))
+    validate_len(item=cycle, expected_value=expected_value)
 
 
 @pytest.mark.parametrize(
-    argnames="lhs, rhs, expected_output",
+    argnames="lhs, rhs, expected_value",
     argvalues=TEST_MUL,
     ids=[f"{p}*{q}" for p, q, _ in TEST_MUL]
 )
-def test_multiplication(lhs, rhs, expected_output) -> None:
+def test_multiplication(lhs, rhs, expected_value) -> None:
     """Tests for the method `__mul__()`."""
-    if lhs * rhs != expected_output:
-        raise ValueError(error_message(expected=expected_output, got=lhs * rhs))
+    validate_mul(lhs=lhs, rhs=rhs, expected_value=expected_value)
 
 
 @pytest.mark.parametrize(
@@ -76,18 +77,14 @@ def test_multiplication(lhs, rhs, expected_output) -> None:
 )
 def test_multiplication_error(lhs, rhs, error, msg) -> None:
     """Tests for exceptions to the method `__mul__()`."""
-    with pytest.raises(error, match=msg):
-        _ = lhs * rhs
+    validate_mul_error(lhs=lhs, rhs=rhs, error=error, msg=msg)
 
 
 @pytest.mark.parametrize(
-    argnames="cycle, expected_output",
+    argnames="cycle, expected_value",
     argvalues=TEST_REPR,
     ids=[f"{c}={r}" for c, r in TEST_REPR],
 )
-def test_repr(cycle, expected_output) -> None:
+def test_repr(cycle, expected_value) -> None:
     """Tests for the method `__repr__()`."""
-    if cycle.__repr__() != expected_output:
-        raise ValueError(error_message(expected=expected_output, got=cycle.__repr__()))
-
-
+    validate_repr(item=cycle, expected_value=expected_value)

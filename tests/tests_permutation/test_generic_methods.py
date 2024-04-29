@@ -1,5 +1,5 @@
 import pytest
-from tests.utils import error_message
+from tests.tests_factory import error_message
 
 from tests.tests_permutation.test_cases import (
     TEST_SUPPORT,
@@ -11,6 +11,10 @@ from tests.tests_permutation.test_cases import (
     TEST_MAP,
 )
 
+from tests.tests_factory import (
+    validate_is_derangement,
+    validate_order,
+)
 
 @pytest.mark.parametrize(
     argnames="permutation, expected_value",
@@ -41,8 +45,7 @@ def test_domain(permutation, expected_value) -> None:
 )
 def test_is_derangement(permutation, expected_value) -> None:
     """Tests for the method `is_derangement()`."""
-    if permutation.is_derangement() is not expected_value:
-        raise ValueError(error_message(expected=expected_value, got=permutation.is_derangement()))
+    validate_is_derangement(item=permutation, expected_value=expected_value)
 
 
 @pytest.mark.parametrize(
@@ -85,5 +88,4 @@ def test_one_line_notation(permutation, expected_value) -> None:
 )
 def test_order(permutation, expected_value) -> None:
     """Tests for the method `order()`."""
-    if permutation.order() != expected_value:
-        raise ValueError(error_message(expected=expected_value, got=permutation.order()))
+    validate_order(item=permutation, expected_value=expected_value)

@@ -15,6 +15,23 @@ TEST_CONSTRUCTOR_ERROR = [
     ([1, -1], ValueError, f"Expected all strictly positive values, but got {-1}.")
 ]
 
+##############################
+# TEST CASES GENERIC METHODS #
+##############################
+
+TEST_IS_DERANGEMENT = [
+    (Cycle(1), False),
+    (Cycle(13), False),
+    (Cycle(1, 2), True),
+    (Cycle(1, 2, 3), True),
+]
+TEST_ORDER = [
+    (Cycle(1), 1),
+    (Cycle(13), 1),
+    (Cycle(1, 2), 2),
+    (Cycle(1, 2, 3), 3),
+]
+
 ############################
 # TEST CASES MAGIC METHODS #
 ############################

@@ -15,14 +15,13 @@ class Permutation(_Element):
         self._domain: Iterable[int] = range(1, len(self._map) + 1)
 
     @staticmethod
-    def _validate_image(image: Tuple[int]) -> Dict[int, int]:
+    def _validate_image(image: Tuple[int, ...]) -> Dict[int, int]:
         """
         Private method to check if a set of integers is eligible as image for a permutation.
-
         Recall that, a tuple of integers represent the image of a permutation if the following conditions hold:
             - all the integers are strictly positive;
             - all the integers are bounded by the total number of integer;
-            - there are no repetitions.
+            - there are no integer repeated.
         """
         _map = {}
         for idx, img in enumerate(image):
@@ -198,13 +197,13 @@ class Cycle(_Element):
     __slots__ = ["_cycle"]
 
     def __init__(self, *cycle: int) -> None:
-        self._cycle: Tuple[int] = self._validate_and_standardize_cycle(cycle)
+        self._cycle: Tuple[int, ...] = self._validate_and_standardize(cycle)
         self._domain: Iterable[int] = range(1, max(self._cycle) + 1)
 
     @staticmethod
-    def _validate_and_standardize_cycle(cycle: Tuple[int]) -> Tuple[int, ...]:
+    def _validate_and_standardize(cycle: Tuple[int, ...]) -> Tuple[int, ...]:
         """
-        The private method validates and standardizes a set of integers to form a cycle.
+        Private method to validate and standardize a set of integers to form a cycle.
         A tuple is eligible to be a cycle if it contains only strictly positive integers.
         The standard form for a cycle is the (unique) one where the first element is the smallest.
         """
@@ -327,7 +326,7 @@ class Cycle(_Element):
 
     def is_derangement(self) -> bool:
         # TODO: add description
-        return True
+        return len(self) > 1
 
     def domain(self) -> Iterable[int]:
         # TODO: add description
@@ -341,7 +340,7 @@ class Cycle(_Element):
         return set(self._cycle) if len(self) > 1 else set()
 
     def order(self) -> int:
-        return len(self) - 1
+        return len(self)
 
     def map(self) -> Dict[int, int]:
         return {element: self[(idx + 1) % len(self)] for idx, element in enumerate(self.elements())}
@@ -351,13 +350,13 @@ class CycleDecomposition(_Element):
     __slots__ = ["_cycles"]
 
     def __init__(self, *cycles: Cycle) -> None:
-        self._cycles: Tuple[Cycle] = self._validate_and_standardize_cycle_decomposition(cycles=cycles)
+        self._cycles: Tuple[Cycle, ...] = self._validate_and_standardize(cycles=cycles)
         self._domain: Iterable[int] = range(1, max(max(cycle.elements()) for cycle in self._cycles) + 1)
 
     @staticmethod
-    def _validate_and_standardize_cycle_decomposition(cycles: Tuple[Cycle]) -> Tuple[Cycle]:
+    def _validate_and_standardize(cycles: Tuple[Cycle, ...]) -> Tuple[Cycle, ...]:
         """
-        The private method validates and standardizes a tuple of cycles to become a cycle decomposition.
+        Private method to validate and standardize a tuple of cycles to become a cycle decomposition.
         A tuple of cycles is eligible to be a cycle decomposition if and only if:
             - every pair of cycles is disjoint, meaning their supports are disjoint;
             - every element from 1 to the largest permuted element is included in at least one cycle.
@@ -441,7 +440,10 @@ class CycleDecomposition(_Element):
         return support
 
     def is_derangement(self) -> bool:
-        raise NotImplementedError
+        for cycle in self:
+            if len(cycle) == 1:
+                return False
+        return True
 
     def map(self) -> Dict[int, int]:
         _map = {}
