@@ -357,12 +357,12 @@ class CycleDecomposition(_Element):
     @staticmethod
     def _validate_and_standardize_cycle_decomposition(cycles: Tuple[Cycle]) -> Tuple[Cycle]:
         """
-        The private method validates and standardizes a tuple oc cycle to be a cycle decomposition.
+        The private method validates and standardizes a tuple of cycles to become a cycle decomposition.
         A tuple of cycles is eligible to be a cycle decomposition if and only if:
-            - every two cycles are disjoint, i.e., disjoint supports;
-            - every element from 1 to the biggest permuted element is included in some cycle.
-        Moreover, the cycle decomposition is standardized, i.e, the cycles are ordered by the first element of
-        every cycle in increasing order.
+            - every pair of cycles is disjoint, meaning their supports are disjoint;
+            - every element from 1 to the largest permuted element is included in at least one cycle.
+        Furthermore, the cycle decomposition is standardized, meaning the cycles are ordered by the first
+        element of each cycle in increasing order.
         """
         # checks that the cycles are disjoint
         for cycle_a, cycle_b in combinations(cycles, 2):
