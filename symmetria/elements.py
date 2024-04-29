@@ -75,7 +75,7 @@ class Permutation(_Element):
         elif isinstance(other, Cycle):
             return self == Permutation.from_cycle(other)
         elif isinstance(other, CycleDecomposition):
-            raise self == Permutation.from_cycle_decomposition(other)
+            return self == Permutation.from_cycle_decomposition(other)
         return False
 
     def __getitem__(self, item: int) -> int:
@@ -142,7 +142,7 @@ class Permutation(_Element):
     def from_cycle(cycle: "Cycle") -> "Permutation":
         image = []
         cycle_length = len(cycle)
-        for element in range(1, max(cycle.domain())+1):
+        for element in range(1, max(cycle.domain()) + 1):
             if element in cycle:
                 idx = cycle.elements().index(element)
                 image.append(cycle[(idx + 1) % cycle_length])
@@ -259,7 +259,6 @@ class Cycle(_Element):
                 for cycle in other:
                     if len(cycle) > 1:
                         return self == cycle
-                return False
         elif isinstance(other, Permutation):
             return self == other.cycle_decomposition()
         return False
@@ -274,27 +273,47 @@ class Cycle(_Element):
     def __len__(self) -> int:
         return len(self._cycle)
 
-    def __mul__(self, other: Union["Cycle", "CycleDecomposition", "Permutation"]) -> "CycleDecomposition":
+    def __mul__(
+            self,
+            other: Union["Cycle", "CycleDecomposition", "Permutation"],
+    ) -> Union["Cycle", "CycleDecomposition", "Permutation"]:
         if isinstance(other, Cycle):
-            if self.support().isdisjoint(other.support()):
-                return CycleDecomposition(self, other)
+            # case where the two cycles are disjoint
+            if set(self.elements()).isdisjoint(set(other.elements())):
+                single_cycle = []
+                _range = set(self.elements()).union(set(other.elements()))
+                for idx in range(1, max(_range) + 1):
+                    if idx not in _range:
+                        single_cycle.append(Cycle(idx))
+                return CycleDecomposition(self, *[other, *single_cycle])
+            elif self.domain() == other.domain():
+                cycle = []
+                for idx in self.domain():
+                    _other = other[(idx+1) % len(other)]
+                    cycle.append(self[(self.elements().index(_other) + 1) % len(self)])
+                return Cycle(*cycle)
             else:
-                return None
+                return CycleDecomposition(self) * CycleDecomposition(other)
         if isinstance(other, Permutation):
-            if self.domain() != other.domain():
+            if set(self.domain()).issubset(set(other.domain())) is False:
                 raise ValueError(
                     f"Cannot compose permutation {self} with permutation {other},"
-                    " because they don't live in the same symmetric group."
+                    " because they don't live in the same Symmetric group."
                 )
-            return Permutation.from_dict(p={idx: self._map[other._map[idx]] for idx in self._domain})
+            return Permutation.from_dict(
+                p={
+                    idx: self.map()[other[idx]] if other[idx] in self.map() else other[idx]
+                    for idx in other.domain()
+                }
+            )
         elif isinstance(other, CycleDecomposition):
-            if self.domain() != other.domain():
+            if set(self.domain()).issubset(set(other.domain())) is False:
                 raise ValueError(
                     f"Cannot compose permutation {self} with cycle decomposition {other},"
                     " because they don't live in the same symmetric group."
                 )
-            raise NotImplementedError
-        raise TypeError(f"Product between types `Permutation` and {type(other)} is not implemented.")
+            return (self * Permutation.from_cycle_decomposition(other)).cycle_decomposition()
+        raise TypeError(f"Product between types `Cycle` and {type(other)} is not implemented.")
 
     def __repr__(self) -> str:
         return f"Cycle({', '.join(str(element) for element in self.elements())})"
@@ -303,6 +322,7 @@ class Cycle(_Element):
         return "(" + " ".join([str(element) for element in self.elements()]) + ")"
 
     def cycle_notation(self) -> str:
+        # TODO: add description
         return str(self)
 
     def is_derangement(self) -> bool:
@@ -310,9 +330,11 @@ class Cycle(_Element):
         return True
 
     def domain(self) -> Iterable[int]:
+        # TODO: add description
         return self._domain
 
     def elements(self) -> Tuple[int]:
+        # TODO: add description
         return self._cycle
 
     def support(self) -> Set[int]:
@@ -434,4 +456,3 @@ if __name__ == "__main__":
     c = CycleDecomposition(Cycle(4, 3), Cycle(1, 2))
 
     print(Permutation.from_cycle_decomposition(cycle_decomposition=c))
-

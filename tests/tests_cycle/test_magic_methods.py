@@ -3,7 +3,11 @@ import pytest
 from tests.tests_cycle.test_cases import (
     TEST_BOOL,
     TEST_EQ,
-    TEST_INT, TEST_LEN, TEST_REPR,
+    TEST_INT,
+    TEST_LEN,
+    TEST_REPR,
+    TEST_MUL,
+    TEST_MUL_ERROR,
 )
 from tests.utils import error_message
 
@@ -52,6 +56,28 @@ def test_len(cycle, expected_output) -> None:
     """Tests for the method `__len__()`."""
     if len(cycle) != expected_output:
         raise ValueError(error_message(expected=expected_output, got=len(cycle)))
+
+
+@pytest.mark.parametrize(
+    argnames="lhs, rhs, expected_output",
+    argvalues=TEST_MUL,
+    ids=[f"{p}*{q}" for p, q, _ in TEST_MUL]
+)
+def test_multiplication(lhs, rhs, expected_output) -> None:
+    """Tests for the method `__mul__()`."""
+    if lhs * rhs != expected_output:
+        raise ValueError(error_message(expected=expected_output, got=lhs * rhs))
+
+
+@pytest.mark.parametrize(
+    argnames="lhs, rhs, error, msg",
+    argvalues=TEST_MUL_ERROR,
+    ids=[error for _, _, _, error in TEST_MUL_ERROR]
+)
+def test_multiplication_error(lhs, rhs, error, msg) -> None:
+    """Tests for exceptions to the method `__mul__()`."""
+    with pytest.raises(error, match=msg):
+        _ = lhs * rhs
 
 
 @pytest.mark.parametrize(

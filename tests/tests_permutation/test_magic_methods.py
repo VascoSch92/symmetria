@@ -4,12 +4,13 @@ from tests.tests_permutation.test_cases import (
     TEST_BOOL,
     TEST_CALL,
     TEST_CALL_ERROR,
-    TEST_EQUALITY,
+    TEST_EQ,
     TEST_LEN,
     TEST_REPR,
-    TEST_MULTIPLICATION,
+    TEST_MUL,
     TEST_INT,
-    TEST_MULTIPLICATION_ERROR,
+    TEST_MUL_ERROR,
+    TEST_STR,
 )
 from tests.utils import error_message
 
@@ -49,8 +50,8 @@ def test_call_error(permutation, call_on, error, msg) -> None:
 
 @pytest.mark.parametrize(
     argnames="lhs, rhs, expected_output",
-    argvalues=TEST_EQUALITY,
-    ids=[f"{p}={q}" for p, q, _ in TEST_EQUALITY],
+    argvalues=TEST_EQ,
+    ids=[f"{p}={q}" for p, q, _ in TEST_EQ],
 )
 def test_equality(lhs, rhs, expected_output) -> None:
     """Tests for the method `__eq__()`."""
@@ -81,20 +82,9 @@ def test_len(permutation, expected_output) -> None:
 
 
 @pytest.mark.parametrize(
-    argnames="permutation, expected_output",
-    argvalues=TEST_REPR,
-    ids=[f"{p}={r}" for p, r in TEST_REPR],
-)
-def test_repr(permutation, expected_output) -> None:
-    """Tests for the method `__repr__()`."""
-    if permutation.__repr__() != expected_output:
-        raise ValueError(error_message(expected=expected_output, got=permutation.__repr__()))
-
-
-@pytest.mark.parametrize(
     argnames="lhs, rhs, expected_output",
-    argvalues=TEST_MULTIPLICATION,
-    ids=[f"{p}*{q}" for p, q, _ in TEST_MULTIPLICATION]
+    argvalues=TEST_MUL,
+    ids=[f"{p}*{q}" for p, q, _ in TEST_MUL]
 )
 def test_multiplication(lhs, rhs, expected_output) -> None:
     """Tests for the method `__mul__()`."""
@@ -104,10 +94,32 @@ def test_multiplication(lhs, rhs, expected_output) -> None:
 
 @pytest.mark.parametrize(
     argnames="lhs, rhs, error, msg",
-    argvalues=TEST_MULTIPLICATION_ERROR,
-    ids=[error for _, _, _, error in TEST_MULTIPLICATION_ERROR]
+    argvalues=TEST_MUL_ERROR,
+    ids=[error for _, _, _, error in TEST_MUL_ERROR]
 )
 def test_multiplication_error(lhs, rhs, error, msg) -> None:
     """Tests for exceptions to the method `__mul__()`."""
     with pytest.raises(error, match=msg):
         _ = lhs * rhs
+
+
+@pytest.mark.parametrize(
+    argnames="permutation, expected_output",
+    argvalues=TEST_REPR,
+    ids=[f"{p}->{r}" for p, r in TEST_REPR],
+)
+def test_repr(permutation, expected_output) -> None:
+    """Tests for the method `__repr__()`."""
+    if permutation.__repr__() != expected_output:
+        raise ValueError(error_message(expected=expected_output, got=permutation.__repr__()))
+
+
+@pytest.mark.parametrize(
+    argnames="permutation, expected_output",
+    argvalues=TEST_STR,
+    ids=[f"str({p})={s}" for p, s in TEST_STR],
+)
+def test_str(permutation, expected_output) -> None:
+    """Tests for the method `__str__()`."""
+    if permutation.__str__() != expected_output:
+        raise ValueError(error_message(expected=expected_output, got=permutation.__str__()))

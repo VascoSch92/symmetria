@@ -74,6 +74,12 @@ TEST_IS_DERANGEMENT = [
     (Permutation(1, 4, 5, 7, 3, 2, 6), False),
     (Permutation(6, 4, 5, 7, 3, 2, 1), True),
 ]
+TEST_MAP = [
+    (Permutation(1), {1: 1}),
+    (Permutation(2, 1), {1: 2, 2: 1}),
+    (Permutation(1, 3, 2), {1: 1, 2: 3, 3: 2}),
+    (Permutation(1, 4, 3, 2), {1: 1, 2: 4, 3: 3, 4: 2}),
+]
 TEST_SUPPORT = [
     (Permutation(1), set()),
     (Permutation(2, 1), {1, 2}),
@@ -127,17 +133,18 @@ TEST_CALL_ERROR = [
             Permutation(2, 1),
             [1],
             AssertionError,
-            f"Not enough object ",
+            "Not enough object ",
     ),
 ]
-TEST_EQUALITY = [
+TEST_EQ = [
     (Permutation(1), Permutation(1), True),
     (Permutation(1), Permutation(1, 2), False),
     (Permutation(1), Cycle(1), True),
     (Permutation(1), Cycle(1, 2), False),
     (Permutation(1, 2, 3), 123, False),
     (Permutation(1, 3, 2, 4), "hello-world", False),
-    # (Permutation(1, 3, 2), CycleDecomposition(Cycle(3, 2), Cycle(1)), True)
+    (Permutation(1), CycleDecomposition(Cycle(1)), True),
+    (Permutation(1, 3, 2), CycleDecomposition(Cycle(3, 2), Cycle(1)), True),
 ]
 TEST_INT = [
     (Permutation(1), 1),
@@ -150,12 +157,7 @@ TEST_LEN = [
     (Permutation(1, 2), 2),
     (Permutation(1, 3, 2), 3),
 ]
-TEST_REPR = [
-    (Permutation(1), "Permutation(1)"),
-    (Permutation(1, 2), "Permutation(1, 2)"),
-    (Permutation(1, 3, 2), "Permutation(1, 3, 2)"),
-]
-TEST_MULTIPLICATION = [
+TEST_MUL = [
         (Permutation(1), Permutation(1), Permutation(1)),
         (Permutation(1, 2, 3), Permutation(3, 2, 1), Permutation(3, 2, 1)),
         (Permutation(3, 4, 5, 1, 2), Permutation(3, 5, 1, 2, 4), Permutation(5, 2, 3, 4, 1)),
@@ -165,9 +167,19 @@ TEST_MULTIPLICATION = [
         (Permutation(1, 2), Cycle(2), Permutation(1, 2)),
         (Permutation(1, 2), CycleDecomposition(Cycle(1), Cycle(2)), Permutation(1, 2))
     ]
-TEST_MULTIPLICATION_ERROR = [
+TEST_MUL_ERROR = [
     (Permutation(1, 2, 3), Permutation(1, 2), ValueError, "Cannot compose permutation"),
     (Permutation(1, 2), Cycle(1, 2, 3), ValueError, "Cannot compose permutation"),
     (Permutation(1, 2), 123, TypeError, "Product between types `Permutation` and"),
     (Permutation(1, 2), CycleDecomposition(Cycle(3, 2), Cycle(1)), ValueError, "Cannot compose permutation"),
+]
+TEST_REPR = [
+    (Permutation(1), "Permutation(1)"),
+    (Permutation(1, 2), "Permutation(1, 2)"),
+    (Permutation(1, 3, 2), "Permutation(1, 3, 2)"),
+]
+TEST_STR = [
+    (Permutation(1), "(1)"),
+    (Permutation(1, 2), "(1, 2)"),
+    (Permutation(1, 3, 2), "(1, 3, 2)"),
 ]

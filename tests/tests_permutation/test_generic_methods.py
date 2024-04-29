@@ -8,6 +8,7 @@ from tests.tests_permutation.test_cases import (
     TEST_ONE_LINE_NOTATION,
     TEST_IS_DERANGEMENT,
     TEST_CYCLE_DECOMPOSITION,
+    TEST_MAP,
 )
 
 
@@ -42,6 +43,17 @@ def test_is_derangement(permutation, expected_value) -> None:
     """Tests for the method `is_derangement()`."""
     if permutation.is_derangement() is not expected_value:
         raise ValueError(error_message(expected=expected_value, got=permutation.is_derangement()))
+
+
+@pytest.mark.parametrize(
+    argnames="permutation, expected_value",
+    argvalues=TEST_MAP,
+    ids=[f"{p}->{m}" for p, m in TEST_MAP]
+)
+def test_map(permutation, expected_value) -> None:
+    """Tests for the method `map()`."""
+    if permutation.map() != expected_value:
+        raise ValueError(error_message(expected=expected_value, got=permutation.map()))
 
 
 @pytest.mark.parametrize(

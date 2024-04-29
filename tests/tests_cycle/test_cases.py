@@ -41,6 +41,7 @@ TEST_EQ = [
     (Cycle(1, 2), CycleDecomposition(Cycle(1, 2), Cycle(3)), True),
     (Cycle(1), Permutation(1), True),
     (Cycle(2), Permutation(1), False),
+    (Cycle(1, 3), "ab", False),
 ]
 TEST_INT = [
     (Cycle(1), 1),
@@ -63,5 +64,17 @@ TEST_REPR = [
     (Cycle(1, 3, 2), "Cycle(1, 3, 2)"),
 ]
 TEST_MUL = [
-
+    (Cycle(1), Cycle(1), Cycle(1)),
+    (Cycle(1), Cycle(2), CycleDecomposition(Cycle(1), Cycle(2))),
+    (Cycle(1, 2), Cycle(4), CycleDecomposition(Cycle(1, 2), Cycle(3), Cycle(4))),
+    (Cycle(1), Cycle(4), CycleDecomposition(Cycle(1), Cycle(2), Cycle(3), Cycle(4))),
+    (Cycle(1, 2), Permutation(1, 2), Permutation(2, 1)),
+    (Cycle(1, 2), Permutation(1, 2, 3), Permutation(2, 1, 3)),
+    (Cycle(1), CycleDecomposition(Cycle(1), Cycle(2)), CycleDecomposition(Cycle(1), Cycle(2))),
+    # (Cycle(1, 2), Cycle(2, 3), CycleDecomposition(Cycle(1, 2, 3))),
+]
+TEST_MUL_ERROR = [
+    (Cycle(1, 2, 3), Permutation(1, 2), ValueError, "Cannot compose permutation"),
+    (Cycle(1, 2, 3, 4, 5), CycleDecomposition(Cycle(1), Cycle(2)), ValueError, "Cannot compose permutation"),
+    (Cycle(1, 2), "asd", TypeError, "Product"),
 ]
