@@ -1,12 +1,17 @@
 import pytest
 
+from symmetria.elements.cycles import Cycle, CycleDecomposition
 from tests.tests_cycle_decomposition.test_cases import (
     TEST_BOOL,
     TEST_EQ,
+    TEST_GETITEM,
+    TEST_REPR,
 )
 from tests.tests_factory import (
     validate_bool,
-    validate_mul,
+    validate_eq,
+    validate_getitem,
+    validate_repr,
 )
 
 
@@ -27,4 +32,30 @@ def test_bool(cycle_decomposition, expected_value) -> None:
 )
 def test_eq(lhs, rhs, expected_value) -> None:
     """Tests for the method `__eq__()`."""
-    validate_mul(lhs=lhs, rhs=rhs, expected_value=expected_value)
+    validate_eq(lhs=lhs, rhs=rhs, expected_value=expected_value)
+
+
+@pytest.mark.parametrize(
+    argnames="cycle_decomposition, idx, expected_value",
+    argvalues=TEST_GETITEM,
+    ids=[f"{c}[{i}]={e}" for c, i, e in TEST_GETITEM]
+)
+def test_getitem(cycle_decomposition, idx, expected_value) -> None:
+    """Tests for the method `__getitem__()`."""
+    validate_getitem(item=cycle_decomposition, idx=idx, expected_value=expected_value)
+
+
+def test_int() -> None:
+    """Tests for the method `__int__()`."""
+    with pytest.raises(NotImplementedError, match="This method is not implemented"):
+        _ = int(CycleDecomposition(Cycle(1)))
+
+
+@pytest.mark.parametrize(
+    argnames="cycle_decomposition, expected_value",
+    argvalues=TEST_REPR,
+    ids=[f"{c}.__repr__()={r}" for c, r in TEST_REPR],
+)
+def test_repr(cycle_decomposition, expected_value) -> None:
+    """Tests for the method `__repr__()`."""
+    validate_repr(item=cycle_decomposition, expected_value=expected_value)

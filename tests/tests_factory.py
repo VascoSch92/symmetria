@@ -1,4 +1,4 @@
-from typing import Any, Type, Dict
+from typing import Any, Type, Dict, Set
 import pytest
 
 
@@ -67,6 +67,14 @@ def validate_from_cycle_decomposition(class_: Any, constructor: Dict, expected_v
 # GENERIC METHODS VALIDATORS #
 ##############################
 
+def validate_cycle_notation(item: Any, expected_value: str) -> None:
+    if item.cycle_notation() != expected_value:
+        raise ValueError(
+            f"The expression `{item.__repr__()}.cycle_notation()` must evaluate {expected_value}, "
+            f"but got {item.cycle_notation()}."
+        )
+
+
 def validate_is_derangement(item: Any, expected_value: bool) -> None:
     if item.is_derangement() is not expected_value:
         raise ValueError(
@@ -75,11 +83,35 @@ def validate_is_derangement(item: Any, expected_value: bool) -> None:
         )
 
 
+def validate_domain(item: Any, expected_value: bool) -> None:
+    if item.domain() != expected_value:
+        raise ValueError(
+            f"The expression `{item.__repr__()}.domain()` must evaluate {expected_value}, "
+            f"but got {item.domain()}."
+        )
+
+
+def validate_map(item:Any, expected_value: Dict[int, int]) -> None:
+    if item.map() != expected_value:
+        raise ValueError(
+            f"The expression `{item.__repr__()}.map()` must evaluate {expected_value}, "
+            f"but got {item.map()}."
+        )
+
+
 def validate_order(item: Any, expected_value: int) -> None:
     if item.order() != expected_value:
         raise ValueError(
             f"The expression `{item.__repr__()}.order()` must evaluate {expected_value}, "
             f"but got {item.order()}."
+        )
+
+
+def validate_support(item: Any, expected_value: Set[int]) -> None:
+    if item.support() != expected_value:
+        raise ValueError(
+            f"The expression `{item.__repr__()}.support()` must evaluate {expected_value}, "
+            f"but got {item.support()}."
         )
 
 ############################
@@ -110,6 +142,13 @@ def validate_eq(lhs: Any, rhs: Any, expected_value: bool) -> None:
     if (lhs == rhs) != expected_value:
         raise ValueError(
             f"The expression `{lhs}=={rhs}` must evaluate {expected_value}, but got {lhs == rhs}."
+        )
+
+
+def validate_getitem(item: Any, idx: int, expected_value: int) -> None:
+    if item[idx] != expected_value:
+        raise ValueError(
+            f"The expression {item.__repr__()}[{idx}] must evaluate {expected_value}, but got {item[idx]}."
         )
 
 

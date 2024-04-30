@@ -1,6 +1,13 @@
 import pytest
-from tests.tests_factory import error_message
 
+from tests.tests_factory import (
+    error_message,
+    validate_is_derangement,
+    validate_order,
+    validate_support,
+    validate_domain,
+    validate_map,
+)
 from tests.tests_permutation.test_cases import (
     TEST_SUPPORT,
     TEST_DOMAIN,
@@ -11,10 +18,6 @@ from tests.tests_permutation.test_cases import (
     TEST_MAP,
 )
 
-from tests.tests_factory import (
-    validate_is_derangement,
-    validate_order,
-)
 
 @pytest.mark.parametrize(
     argnames="permutation, expected_value",
@@ -30,18 +33,17 @@ def test_cycle_decomposition(permutation, expected_value) -> None:
 @pytest.mark.parametrize(
     argnames="permutation, expected_value",
     argvalues=TEST_DOMAIN,
-    ids=[f"Domain{p}={s}" for p, s in TEST_DOMAIN]
+    ids=[f"{p}.domain()={s}" for p, s in TEST_DOMAIN]
 )
 def test_domain(permutation, expected_value) -> None:
     """Tests for the method `domain()`."""
-    if permutation.domain() != expected_value:
-        raise ValueError(error_message(expected=expected_value, got=permutation.domain()))
+    validate_domain(item=permutation, expected_value=expected_value)
 
 
 @pytest.mark.parametrize(
     argnames="permutation, expected_value",
     argvalues=TEST_IS_DERANGEMENT,
-    ids=[f"{p}" for p, s in TEST_IS_DERANGEMENT]
+    ids=[f"{p}.is_derangement()={e}" for p, e in TEST_IS_DERANGEMENT]
 )
 def test_is_derangement(permutation, expected_value) -> None:
     """Tests for the method `is_derangement()`."""
@@ -51,23 +53,21 @@ def test_is_derangement(permutation, expected_value) -> None:
 @pytest.mark.parametrize(
     argnames="permutation, expected_value",
     argvalues=TEST_MAP,
-    ids=[f"{p}->{m}" for p, m in TEST_MAP]
+    ids=[f"{p}.map()={m}" for p, m in TEST_MAP]
 )
 def test_map(permutation, expected_value) -> None:
     """Tests for the method `map()`."""
-    if permutation.map() != expected_value:
-        raise ValueError(error_message(expected=expected_value, got=permutation.map()))
+    validate_map(item=permutation, expected_value=expected_value)
 
 
 @pytest.mark.parametrize(
     argnames="permutation, expected_value",
     argvalues=TEST_SUPPORT,
-    ids=[f"Support{p}={s}" for p, s in TEST_SUPPORT]
+    ids=[f"{p}.support()={s}" for p, s in TEST_SUPPORT]
 )
 def test_support(permutation, expected_value) -> None:
     """Tests for the method `support()`."""
-    if permutation.support() != expected_value:
-        raise ValueError(error_message(expected=expected_value, got=permutation.support()))
+    validate_support(item=permutation, expected_value=expected_value)
 
 
 @pytest.mark.parametrize(
@@ -84,7 +84,7 @@ def test_one_line_notation(permutation, expected_value) -> None:
 @pytest.mark.parametrize(
     argnames="permutation, expected_value",
     argvalues=TEST_ORDER,
-    ids=[f"Order of {p} is {o}" for p, o in TEST_ORDER]
+    ids=[f"{p}.order()={o}" for p, o in TEST_ORDER]
 )
 def test_order(permutation, expected_value) -> None:
     """Tests for the method `order()`."""

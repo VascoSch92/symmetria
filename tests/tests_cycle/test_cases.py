@@ -1,4 +1,5 @@
-from symmetria.elements import Cycle, CycleDecomposition, Permutation
+from symmetria.elements.permutations import Permutation
+from symmetria.elements.cycles import Cycle, CycleDecomposition
 
 
 ############################
@@ -19,6 +20,24 @@ TEST_CONSTRUCTOR_ERROR = [
 # TEST CASES GENERIC METHODS #
 ##############################
 
+TEST_CYCLE_NOTATION = [
+    (Cycle(1), "(1)"),
+    (Cycle(13), "(13)"),
+    (Cycle(1, 2), "(1 2)"),
+    (Cycle(1, 2, 3), "(1 2 3)"),
+]
+TEST_DOMAIN = [
+    (Cycle(1), range(1, 2)),
+    (Cycle(13), range(1, 14)),
+    (Cycle(1, 2), range(1, 3)),
+    (Cycle(1, 2, 3), range(1, 4)),
+]
+TEST_ELEMENTS = [
+    (Cycle(1), (1, )),
+    (Cycle(13), (13, )),
+    (Cycle(1, 2), tuple((1, 2))),
+    (Cycle(1, 2, 3), tuple((1, 2, 3))),
+]
 TEST_IS_DERANGEMENT = [
     (Cycle(1), False),
     (Cycle(13), False),
@@ -31,6 +50,18 @@ TEST_ORDER = [
     (Cycle(1, 2), 2),
     (Cycle(1, 2, 3), 3),
 ]
+TEST_SUPPORT = [
+    (Cycle(1), set()),
+    (Cycle(13), set()),
+    (Cycle(1, 2), {1, 2}),
+    (Cycle(1, 2, 3), {1, 2, 3}),
+]
+TEST_MAP = [
+    (Cycle(1), {1: 1}),
+    (Cycle(13), {13: 13}),
+    (Cycle(1, 2), {1: 2, 2: 1}),
+    (Cycle(1, 2, 3), {1: 2, 2: 3, 3: 1}),
+]
 
 ############################
 # TEST CASES MAGIC METHODS #
@@ -42,6 +73,30 @@ TEST_BOOL = [
     (Cycle(130692), False),
     (Cycle(1, 2), True),
     (Cycle(2, 5, 23, 54), True),
+]
+TEST_CALL = [
+    (Cycle(1), 1, 1),
+    (Cycle(2, 1), 2, 1),
+    (Cycle(1, 3, 2), 17, 17),
+    (Cycle(2, 1), [1, 2], [2, 1]),
+    (Cycle(2, 1), [1, 17, 2], [17, 1, 2]),
+    (Cycle(2, 1), (1, 2), (2, 1)),
+    (Cycle(2, 1), (1, 17, 2), (17, 1, 2)),
+    (Cycle(2, 1), "ab", "ba"),
+]
+TEST_CALL_ERROR = [
+    (
+            Cycle(1),
+            0.99,
+            TypeError,
+            f"Expected type `int` or `Iterable`, but got {type(0.99)}",
+    ),
+    (
+            Cycle(2, 1),
+            [1],
+            AssertionError,
+            "Not enough object ",
+    ),
 ]
 TEST_EQ = [
     (Cycle(1), Cycle(1), True),
@@ -59,6 +114,12 @@ TEST_EQ = [
     (Cycle(1), Permutation(1), True),
     (Cycle(2), Permutation(1), False),
     (Cycle(1, 3), "ab", False),
+]
+TEST_GETITEM = [
+    (Cycle(1), 0, 1),
+    (Cycle(2, 1), 1, 2),
+    (Cycle(3, 1, 2), 2, 3),
+    (Cycle(4, 3, 2, 1), 0, 1),
 ]
 TEST_INT = [
     (Cycle(1), 1),
