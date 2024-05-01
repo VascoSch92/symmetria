@@ -40,25 +40,67 @@ class Cycle(_Element):
         return cycle[smallest_element_index:] + cycle[:smallest_element_index]
 
     def __bool__(self) -> bool:
-        return len(self.elements()) != 1
+        r"""
+        Check if the cycle is different from the identity cycle.
 
-    def __call__(self, i: Union[int, Iterable]) -> Union[int, Iterable]:
-        if isinstance(i, int):
-            return self._call_on_integer(idx=i)
-        elif isinstance(i, (str, List, Tuple)):
-            assert max(self.elements()) <= len(i), f"Not enough object to permute {i} using the cycle {self}."
-            permuted = self._call_on_iterable(original=i)
-            if isinstance(i, str):
+        :return: True if the cycle is different from the identity cycle, False otherwise.
+        :rtype: bool
+
+        :example:
+            >>> cycle = Cycle(1)
+            >>> bool(cycle)
+            False
+            >>> cycle = Cycle(2, 1, 3)
+            >>> bool(cycle)
+            True
+
+        :note: Every cycle of the form ``Cycle(n)`` is considered empty for every :math:`n \in \mathbb{N}`, i.e.,
+            ``bool(Cycle(n)) = False``.
+        """
+        return len(self.elements) != 1
+
+    def __call__(self, item: Union[int, Iterable]) -> Union[int, Iterable]:
+        """
+        Call the cycle on the `item` object, i.e., mimic a cycle action on a set.
+        If `item` is an integer, it applies the cycle to the integer.
+        If `item` is an iterable, e.g., a str, list or tuple, it applies the cycle permuting
+        the values using the indeces.
+
+        :param item: The object on which the permutation acts.
+        :type item: Union[int, Iterable]
+
+        :return: The permuted object.
+        :rtype: Union[int, Iterable]
+
+        :raises AssertionError: If the length of the cycle is greater than the length of `item`, i.e.,
+            the cycle cannot permute the `item`.
+        :raises TypeError: If `item` is not an integer or an iterable.
+
+        :example:
+            >>> cycle = Cycle(3, 1, 2)
+            >>> cycle(2)
+            3
+            >>> cycle("abc")
+            "cab"
+            >>> cycle([1, 2, 3])
+            [3, 1, 2]
+        """
+        if isinstance(item, int):
+            return self._call_on_integer(idx=item)
+        elif isinstance(item, (str, List, Tuple)):
+            assert max(self.elements) <= len(item), f"Not enough object to permute {item} using the cycle {self}."
+            permuted = self._call_on_iterable(original=item)
+            if isinstance(item, str):
                 return "".join(permuted)
-            elif isinstance(i, Tuple):
+            elif isinstance(item, Tuple):
                 return tuple(p for p in permuted)
-            return self._call_on_iterable(original=i)
-        raise TypeError(f"Expected type `int` or `Iterable`, but got {type(i)}")
+            return self._call_on_iterable(original=item)
+        raise TypeError(f"Expected type `int` or `Iterable`, but got {type(item)}")
 
     def _call_on_integer(self, idx: int) -> int:
         """Private method for calls on integer."""
-        if idx in self.elements():
-            return self[(self.elements().index(idx) + 1) % len(self)]
+        if idx in self.elements:
+            return self[(self.elements.index(idx) + 1) % len(self)]
         return idx
 
     def _call_on_iterable(self, original: Iterable) -> List:
@@ -78,7 +120,7 @@ class Cycle(_Element):
                 if lhs_length == 1:
                     return True
                 # compare if the two cycles are equal
-                lhs_elements, rhs_elements = self.elements(), other.elements()
+                lhs_elements, rhs_elements = self.elements, other.elements
                 for idx, element in enumerate(lhs_elements):
                     if element not in rhs_elements:
                         return False
@@ -88,7 +130,7 @@ class Cycle(_Element):
         elif isinstance(other, CycleDecomposition):
             # case where both are the identity
             if bool(self) is False and bool(other) is False:
-                return max(self.elements()) == max([max(cycle.elements()) for cycle in other])
+                return max(self.elements) == max([max(cycle.elements) for cycle in other])
             # cases where is the identity but the other no
             elif (bool(self) is False and bool(other) is True) or (bool(self) is True and bool(other) is False):
                 return False
@@ -102,13 +144,58 @@ class Cycle(_Element):
         return False
 
     def __getitem__(self, item: int) -> int:
+        """
+        Returns the value of the cycle at the given index `item`.
+        The index corresponds to the position in the cycle, starting from 0
+
+        :param item: The index of the cycle.
+        :type item: int
+
+        :return: The value of the cycle at the specified index.
+        :rtype: int
+
+        :raises IndexError: If the index is out of range.
+        """
         return self._cycle[item]
 
     def __int__(self) -> int:
-        cycle_length = len(self)
-        return sum([element * 10 ** (cycle_length - idx) for idx, element in enumerate(self.elements(), 1)])
+        """
+        Convert the cycle to its integer representation.
+
+        :return: The integer representation of the cycle.
+        :rtype: int
+
+        :example:
+            >>> cycle = Cycle(1)
+            >>> int(cycle)
+            1
+            >>> cycle = Cycle(13)
+            >>> int(cycle)
+            13
+            >>> cycle = Cycle(3, 1, 2)
+            >>> int(cycle)
+            312
+            >>> cycle = Cycle(1, 3, 4, 5, 2, 6)
+            >>> int(cycle)
+            134526
+        """
+        return sum([element * 10 ** (len(self) - idx) for idx, element in enumerate(self.elements, 1)])
 
     def __len__(self) -> int:
+        """
+        Returns the length of the cycle, which is the number of elements in its domain.
+
+        :return: The length of the cycle.
+        :rtype: int
+
+        :example:
+            >>> cycle = Cycle(3, 1, 2)
+            >>> len(cycle)
+            3
+            >>> Cycle = Cycle(1, 3, 4, 5, 2, 6)
+            >>> len(cycle)
+            6
+        """
         return len(self._cycle)
 
     def __mul__(
@@ -117,35 +204,35 @@ class Cycle(_Element):
     ) -> Union["Cycle", "CycleDecomposition", "Permutation"]:
         if isinstance(other, Cycle):
             # case where the two cycles are disjoint
-            if set(self.elements()).isdisjoint(set(other.elements())):
+            if set(self.elements).isdisjoint(set(other.elements)):
                 single_cycle = []
-                _range = set(self.elements()).union(set(other.elements()))
+                _range = set(self.elements).union(set(other.elements))
                 for idx in range(1, max(_range) + 1):
                     if idx not in _range:
                         single_cycle.append(Cycle(idx))
                 return CycleDecomposition(self, *[other, *single_cycle])
-            elif self.domain() == other.domain():
+            elif self.domain == other.domain:
                 cycle = []
-                for idx in self.domain():
+                for idx in self.domain:
                     _other = other[(idx+1) % len(other)]
-                    cycle.append(self[(self.elements().index(_other) + 1) % len(self)])
+                    cycle.append(self[(self.elements.index(_other) + 1) % len(self)])
                 return Cycle(*cycle)
             else:
                 return CycleDecomposition(self) * CycleDecomposition(other)
         if isinstance(other, symmetria.elements.permutations.Permutation):
-            if set(self.domain()).issubset(set(other.domain())) is False:
+            if set(self.domain).issubset(set(other.domain)) is False:
                 raise ValueError(
                     f"Cannot compose permutation {self} with permutation {other},"
                     " because they don't live in the same Symmetric group."
                 )
             return symmetria.elements.permutations.Permutation.from_dict(
                 p={
-                    idx: self.map()[other[idx]] if other[idx] in self.map() else other[idx]
-                    for idx in other.domain()
+                    idx: self.map[other[idx]] if other[idx] in self.map else other[idx]
+                    for idx in other.domain
                 }
             )
         elif isinstance(other, CycleDecomposition):
-            if set(self.domain()).issubset(set(other.domain())) is False:
+            if set(self.domain).issubset(set(other.domain)) is False:
                 raise ValueError(
                     f"Cannot compose permutation {self} with cycle decomposition {other},"
                     " because they don't live in the same symmetric group."
@@ -154,31 +241,84 @@ class Cycle(_Element):
         raise TypeError(f"Product between types `Cycle` and {type(other)} is not implemented.")
 
     def __repr__(self) -> str:
-        return f"Cycle({', '.join(str(element) for element in self.elements())})"
+        r"""
+        Returns a string representation of the cycle in the format "Cycle(x, y, z, ...)",
+        where :math:`x, y, z, ... \in \mathbb{N}` are the elements of the cycle.
+
+        :return: A string representation of the cycle.
+        :rtype: str
+
+        :example:
+            >>> cycle = Cycle(3, 1, 2)
+            >>> cycle.__repr__()
+            Cycle(3, 1, 2)
+            >>> cycle = Cycle(1, 3, 4, 5, 2, 6)
+            >>> cycle.__repr__()
+            Cycle(1, 3, 4, 5, 2, 6)
+        """
+        return f"Cycle({', '.join(str(element) for element in self.elements)})"
 
     def __str__(self) -> str:
-        return "(" + " ".join([str(element) for element in self.elements()]) + ")"
+        """
+        Returns a string representation of the cycle in the form of cycle notation.
+
+        :return: A string representation of the cycle.
+        :rtype: str
+
+        :example:
+            >>> cycle = Cycle(3, 1, 2)
+            >>> print(cycle)
+            (3 1 2)
+            >>> cycle = Cycle(1, 3, 4, 5, 2, 6)
+            >>> print(cycle)
+            (1 3 4 5 2 6)
+        """
+        return "(" + " ".join([str(element) for element in self.elements]) + ")"
+
+    @property
+    def domain(self) -> Iterable[int]:
+        # TODO: add description
+        return self._domain
+
+    @property
+    def map(self) -> Dict[int, int]:
+        return {element: self[(idx + 1) % len(self)] for idx, element in enumerate(self.elements)}
+
+    @property
+    def elements(self) -> Tuple[int]:
+        # TODO: add description
+        return self._cycle
 
     def cycle_notation(self) -> str:
         # TODO: add description
         return str(self)
 
-    def domain(self) -> Iterable[int]:
-        # TODO: add description
-        return self._domain
-
-    def elements(self) -> Tuple[int]:
-        # TODO: add description
-        return self._cycle
-
     def is_derangement(self) -> bool:
         # TODO: add description
         return len(self) > 1
 
-    def map(self) -> Dict[int, int]:
-        return {element: self[(idx + 1) % len(self)] for idx, element in enumerate(self.elements())}
-
     def order(self) -> int:
+        r"""
+        Return the order of the cycle.
+
+        Recall that the order of a permutation :math:`\sigma` is the smallest positive integer :math:`n \in \mathbb{N}`
+        such that :math:`\sigma^n = id`, where :math:`id` is the identity permutation. Therefore, the order of a cycle
+        is nothing but just its length.
+
+        :return: The order of the cycle.
+        :rtype: int
+
+        :example:
+            >>> cycle = Cycle(3, 1, 2)
+            >>> cycle.order()
+            1
+            >>> cycle = Cycle(3, 1, 2)
+            >>> cycle.order()
+            3
+            >>> cycle = Cycle(1, 3, 4, 5, 2, 6)
+            >>> cycle.order()
+            4
+        """
         return len(self)
 
     def support(self) -> Set[int]:
@@ -190,7 +330,7 @@ class CycleDecomposition(_Element):
 
     def __init__(self, *cycles: Cycle) -> None:
         self._cycles: Tuple[Cycle, ...] = self._validate_and_standardize(cycles=cycles)
-        self._domain: Iterable[int] = range(1, max(max(cycle.elements()) for cycle in self._cycles) + 1)
+        self._domain: Iterable[int] = range(1, max(max(cycle.elements) for cycle in self._cycles) + 1)
 
     @staticmethod
     def _validate_and_standardize(cycles: Tuple[Cycle, ...]) -> Tuple[Cycle, ...]:
@@ -204,11 +344,11 @@ class CycleDecomposition(_Element):
         """
         # checks that the cycles are disjoint
         for cycle_a, cycle_b in combinations(cycles, 2):
-            if set(cycle_a.elements()) & set(cycle_b.elements()):
+            if set(cycle_a.elements) & set(cycle_b.elements):
                 raise ValueError(f"The cycles {cycle_a} and {cycle_b} don't have disjoint support.")
 
         # checks that every element is included in a cycle
-        elements = {element for cycle in cycles for element in cycle.elements()}
+        elements = {element for cycle in cycles for element in cycle.elements}
         if set(range(1, len(elements) + 1)) != elements:
             raise ValueError(
                 "Every element from 1 to the biggest permuted element must be included in some cycle,\n "
@@ -219,6 +359,25 @@ class CycleDecomposition(_Element):
         return tuple(cycles)
 
     def __bool__(self) -> bool:
+        r"""
+        Check if the ``CycleDecomposition`` object is non-empty, i.e., it is different from the identity
+        cycle decomposition.
+
+        :return: True if the cycle decomposition is different from the identity cycle decomposition, False otherwise.
+        :rtype: bool
+
+        :example:
+            >>> cycle_decomposition = CycleDecomposition(Cycle(1))
+            >>> bool(cycle_decomposition)
+            False
+            >>> cycle_decomposition = CycleDecomposition(Cycle(2, 1, 3))
+            >>> bool(cycle_decomposition)
+            True
+
+        :note: Every cycle of the form ``CycleDecomposition(Cycle(n))`` is considered empty for every
+            :math:`n \in \mathbb{N}`, i.e., ``bool(CycleDecomposition(Cycle(n))) = False``. Same for cycle decomposition
+            of identity cycle, e.g., ``CycleDecomposition(Cycle(1), Cycle(2), Cycle(3)).``
+        """
         return any(bool(cycle) for cycle in self)
 
     def __eq__(self, other: Any) -> bool:
@@ -263,6 +422,17 @@ class CycleDecomposition(_Element):
     def __str__(self) -> str:
         return "".join([str(c) for c in self])
 
+    @property
+    def domain(self) -> Iterable[int]:
+        return self._domain
+
+    @property
+    def map(self) -> Dict[int, int]:
+        _map = {}
+        for cycle in self:
+            _map.update(cycle.map)
+        return _map
+
     def cycle_notation(self) -> str:
         return str(self)
 
@@ -270,14 +440,11 @@ class CycleDecomposition(_Element):
         # TODO: add description
         return lcm(*[len(cycle) for cycle in self])
 
-    def domain(self) -> Iterable[int]:
-        return self._domain
-
     def support(self) -> Set[int]:
         support = set()
         for cycle in self:
             if len(cycle) != 1:
-                support.update(cycle.elements())
+                support.update(cycle.elements)
         return support
 
     def is_derangement(self) -> bool:
@@ -285,9 +452,3 @@ class CycleDecomposition(_Element):
             if len(cycle) == 1:
                 return False
         return True
-
-    def map(self) -> Dict[int, int]:
-        _map = {}
-        for cycle in self:
-            _map.update(cycle.map())
-        return _map

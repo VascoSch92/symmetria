@@ -1,0 +1,17 @@
+{% extends "!layout.html" %}
+  {% block menu %}
+  <p class="link caption"><span class="link caption-text">Documentation</span></p>
+    {{ super() }}
+  <br />
+    <p class="link caption"><span class="link caption-text">sequentium Links</span></p>
+      <ul>
+        <Li><a href="https://github.com/VascoSch92/sequentium">sequentium GitHub</a></Li>
+        <Li><a href="https://pypi.org/project/sequentium/">sequentium PyPI</a></Li>
+        <Li><a href="https://www.pepy.tech/projects/sequentium">sequentium PePy</a></Li>
+      </ul>
+  <br />
+  <ul>
+    <Li><a href="{{ pathto('genindex') }}">Index</a></Li>
+    <Li><a href="{{ pathto(master_doc) }}">Sitemap</a></Li>
+  </ul>
+  {% endblock %}

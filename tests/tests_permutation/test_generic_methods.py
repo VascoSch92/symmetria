@@ -1,7 +1,6 @@
 import pytest
 
 from tests.tests_factory import (
-    error_message,
     validate_is_derangement,
     validate_order,
     validate_support,
@@ -22,12 +21,15 @@ from tests.tests_permutation.test_cases import (
 @pytest.mark.parametrize(
     argnames="permutation, expected_value",
     argvalues=TEST_CYCLE_DECOMPOSITION,
-    ids=[f"{p}={c}" for p, c in TEST_CYCLE_DECOMPOSITION]
+    ids=[f"{p.__repr__()}.cycle_notation()={c}" for p, c in TEST_CYCLE_DECOMPOSITION]
 )
 def test_cycle_decomposition(permutation, expected_value) -> None:
     """Tests for the method `cycle_decomposition()`."""
     if permutation.cycle_decomposition() != expected_value:
-        raise ValueError(error_message(expected=expected_value, got=permutation.cycle_decomposition()))
+        raise ValueError(
+            f"The expression `{permutation.__repr__()}.cycle_notation()` must evaluate {expected_value}, "
+            f"but got {permutation.cycle_decomposition()}."
+        )
 
 
 @pytest.mark.parametrize(
@@ -73,12 +75,15 @@ def test_support(permutation, expected_value) -> None:
 @pytest.mark.parametrize(
     argnames="permutation, expected_value",
     argvalues=TEST_ONE_LINE_NOTATION,
-    ids=[f"{p}->{o}" for p, o in TEST_ONE_LINE_NOTATION]
+    ids=[f"{p}.one_line_notation()={o}" for p, o in TEST_ONE_LINE_NOTATION]
 )
 def test_one_line_notation(permutation, expected_value) -> None:
     """Tests for the method `one_line_notation()`."""
     if permutation.one_line_notation() != expected_value:
-        raise ValueError(error_message(expected=expected_value, got=permutation.one_line_notation()))
+        ValueError(
+            f"The expression `{permutation.__repr__()}.one_line_notation()` must evaluate {expected_value}, "
+            f"but got {permutation.one_line_notation()}."
+        )
 
 
 @pytest.mark.parametrize(

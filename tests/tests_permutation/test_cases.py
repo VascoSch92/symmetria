@@ -20,20 +20,6 @@ TEST_CONSTRUCTOR_FROM_DICT = [
     ({1: 4, 2: 3, 3: 2, 4: 1}, Permutation(4, 3, 2, 1)),
     ({1: 4, 2: 5, 3: 6, 4: 3, 5: 2, 6: 1}, Permutation(4, 5, 6, 3, 2, 1)),
 ]
-TEST_CONSTRUCTOR_FROM_LIST = [
-    ([1], Permutation(1)),
-    ([1, 2], Permutation(1, 2)),
-    ([3, 2, 1], Permutation(3, 2, 1)),
-    ([4, 3, 2, 1], Permutation(4, 3, 2, 1)),
-    ([4, 5, 6, 3, 2, 1], Permutation(4, 5, 6, 3, 2, 1)),
-]
-TEST_CONSTRUCTOR_FROM_TUPLE = [
-    ((1, ), Permutation(1)),
-    ((1, 2), Permutation(1, 2)),
-    ((3, 2, 1), Permutation(3, 2, 1)),
-    ((4, 3, 2, 1), Permutation(4, 3, 2, 1)),
-    ((4, 5, 6, 3, 2, 1), Permutation(4, 5, 6, 3, 2, 1)),
-]
 TEST_CONSTRUCTOR_FROM_CYCLE = [
     (Cycle(1), Permutation(1)),
     (Cycle(1, 2), Permutation(2, 1)),

@@ -35,11 +35,11 @@ def test_cycle_notation(cycle, expected_value) -> None:
     ids=[f"{cycle}.elements={e}" for cycle, e in TEST_ELEMENTS]
 )
 def test_elements(cycle, expected_value) -> None:
-    """Tests for the method `elements()`."""
-    if cycle.elements() != expected_value:
+    """Tests for the property `elements`."""
+    if cycle.elements != expected_value:
         raise ValueError(
             f"The expression `{cycle.__repr__()}.elements()` must evaluate {expected_value}, "
-            f"but got {cycle.elements()}."
+            f"but got {cycle.elements}."
         )
 
 
@@ -49,7 +49,7 @@ def test_elements(cycle, expected_value) -> None:
     ids=[f"{p}.domain()={s}" for p, s in TEST_DOMAIN]
 )
 def test_domain(cycle, expected_value) -> None:
-    """Tests for the method `domain()`."""
+    """Tests for the property `domain`."""
     validate_domain(item=cycle, expected_value=expected_value)
 
 
@@ -69,7 +69,7 @@ def test_is_derangement(cycle, expected_value) -> None:
     ids=[f"{p}.map()={m}" for p, m in TEST_MAP]
 )
 def test_map(cycle, expected_value) -> None:
-    """Tests for the method `map()`."""
+    """Tests for the property `map`."""
     validate_map(item=cycle, expected_value=expected_value)
 
 

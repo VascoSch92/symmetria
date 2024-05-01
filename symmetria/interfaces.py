@@ -28,21 +28,23 @@ class _Element(ABC):
         # TODO: add description
         raise NotImplementedError
 
-    """# TODO: do we want this methods?
-    @staticmethod
+    @property
+    @abstractmethod
+    def domain(self) -> Iterable[int]:
+        # TODO: add description
+        raise NotImplementedError
+
+    @property
+    @abstractmethod
+    def map(self) -> Dict[int, int]:
+        # TODO: add description
+        raise NotImplementedError
+
+    """@staticmethod
     @abstractmethod
     def from_dict(permutation: Dict) -> "Element":
         raise NotImplementedError
-
-    @staticmethod
-    @abstractmethod
-    def from_tuple(permutation: Dict) -> "Element":
-        raise NotImplementedError
-
-    @staticmethod
-    @abstractmethod
-    def from_list(permutation: Dict) -> "Element":
-        raise NotImplementedError"""
+"""
 
     @abstractmethod
     def order(self) -> int:
@@ -54,17 +56,8 @@ class _Element(ABC):
         # TODO: add description
         raise NotImplementedError
 
-    @abstractmethod
-    def domain(self) -> Iterable[int]:
-        # TODO: add description
-        raise NotImplementedError
 
     @abstractmethod
     def support(self) -> Set[int]:
-        # TODO: add description
-        raise NotImplementedError
-
-    @abstractmethod
-    def map(self) -> Dict[int, int]:
         # TODO: add description
         raise NotImplementedError

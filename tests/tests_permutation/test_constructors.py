@@ -3,8 +3,6 @@ import pytest
 from symmetria import Permutation
 from tests.tests_factory import (
     validate_from_dict,
-    validate_from_list,
-    validate_from_tuple,
     validate_from_cycle,
     validate_from_cycle_decomposition,
 )
@@ -12,8 +10,6 @@ from tests.tests_permutation.test_cases import (
     TEST_CONSTRUCTOR,
     TEST_CONSTRUCTOR_ERROR,
     TEST_CONSTRUCTOR_FROM_DICT,
-    TEST_CONSTRUCTOR_FROM_LIST,
-    TEST_CONSTRUCTOR_FROM_TUPLE,
     TEST_CONSTRUCTOR_FROM_CYCLE,
     TEST_CONSTRUCTOR_FROM_CYCLE_DECOMPOSITION,
 )
@@ -48,26 +44,6 @@ def test_constructor_error(permutation, error, msg) -> None:
 def test_constructor_from_dict(dict_permutation, expected_value) -> None:
     """Tests for the constructor method `from_dict()`."""
     validate_from_dict(class_=Permutation, constructor=dict_permutation, expected_value=expected_value)
-
-
-@pytest.mark.parametrize(
-    argnames="list_permutation, expected_value",
-    argvalues=TEST_CONSTRUCTOR_FROM_LIST,
-    ids=[f"{list_permutation}->{p}" for list_permutation, p in TEST_CONSTRUCTOR_FROM_LIST],
-)
-def test_constructor_from_list(list_permutation, expected_value) -> None:
-    """Tests for the constructor method `from_list()`."""
-    validate_from_list(class_=Permutation, constructor=list_permutation, expected_value=expected_value)
-
-
-@pytest.mark.parametrize(
-    argnames="tuple_permutation, expected_value",
-    argvalues=TEST_CONSTRUCTOR_FROM_TUPLE,
-    ids=[f"{t}->{p}" for t, p in TEST_CONSTRUCTOR_FROM_TUPLE],
-)
-def test_constructor_from_tuple(tuple_permutation, expected_value) -> None:
-    """Tests for the constructor method `from_tuple()`."""
-    validate_from_tuple(class_=Permutation, constructor=tuple_permutation, expected_value=expected_value)
 
 
 @pytest.mark.parametrize(
