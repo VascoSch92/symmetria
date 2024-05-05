@@ -1,7 +1,8 @@
 from typing import Dict, List, Union, Tuple, Set, Iterable, Any
 
+import symmetria.elements.cycle_decomposition
+import symmetria.elements.cycle
 from symmetria.interfaces import _Element
-import symmetria.elements.cycles
 
 __all__ = ["Permutation"]
 
@@ -97,14 +98,14 @@ class Permutation(_Element):
             return self._call_on_str_list_tuple(original=item)
         elif isinstance(item, Permutation):
             return self * item
-        elif isinstance(item, symmetria.elements.cycles.Cycle):
+        elif isinstance(item, symmetria.elements.cycle.Cycle):
             if set(item.domain).issubset(set(self.domain)) is False:
                 raise ValueError(
                     f"Cannot compose permutation {self} with cycle {item},"
                     " because they don't live in the same Symmetric group."
                 )
             return self._call_on_cycle(cycle=item)
-        elif isinstance(item, symmetria.elements.cycles.CycleDecomposition):
+        elif isinstance(item, symmetria.elements.cycle_decomposition.CycleDecomposition):
             if self.domain != item.domain:
                 raise ValueError(
                     f"Cannot compose permutation {self} with cycle decomposition {item},"
@@ -420,9 +421,9 @@ class Permutation(_Element):
         """
         if isinstance(other, Permutation):
             return self == other
-        elif isinstance(other, symmetria.elements.cycles.Cycle):
+        elif isinstance(other, symmetria.elements.cycle.Cycle):
             return self == Permutation.from_cycle(other)
-        elif isinstance(other, symmetria.elements.cycles.CycleDecomposition):
+        elif isinstance(other, symmetria.elements.cycle_decomposition.CycleDecomposition):
             return self == Permutation.from_cycle_decomposition(other)
         return False
 
@@ -455,7 +456,7 @@ class Permutation(_Element):
                 CycleDecomposition(Cycle(1, 3, 2)),
             ]
         """
-        if isinstance(item, symmetria.elements.cycles.Cycle):
+        if isinstance(item, symmetria.elements.cycle.Cycle):
             item = item.cycle_decomposition()
         orbit = [item]
         next_element = self(item)
@@ -509,9 +510,9 @@ class Permutation(_Element):
         for idx in self.domain:
             if idx not in visited:
                 orbit = self.orbit(idx)
-                cycles.append(symmetria.elements.cycles.Cycle(*orbit))
+                cycles.append(symmetria.elements.cycle.Cycle(*orbit))
                 visited.update(orbit)
-        return symmetria.elements.cycles.CycleDecomposition(*cycles)
+        return symmetria.elements.cycle_decomposition.CycleDecomposition(*cycles)
 
     def cycle_notation(self) -> str:
         """
@@ -603,5 +604,5 @@ if __name__ == '__main__':
     a = Permutation(1)
     b = Permutation(3, 1, 2)
     c = Permutation(3, 1, 2, 4, 5, 6)
-    from symmetria.elements.cycles import CycleDecomposition, Cycle
+    from symmetria.elements.cycle import Cycle
     print(a.cycle_notation(), b.cycle_notation(), c.cycle_notation())

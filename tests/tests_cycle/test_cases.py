@@ -1,5 +1,6 @@
-from symmetria.elements.permutations import Permutation
-from symmetria.elements.cycles import Cycle, CycleDecomposition
+from symmetria.elements.permutation import Permutation
+from symmetria.elements.cycle import Cycle
+from symmetria.elements.cycle_decomposition import CycleDecomposition
 
 
 ############################
