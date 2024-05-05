@@ -13,9 +13,33 @@ import symmetria.elements.permutation
 import symmetria.elements.cycle_decomposition
 from symmetria.interfaces import _Element
 
+__all__ = ["Cycle"]
+
 
 class Cycle(_Element):
-    __slots__ = ["_cycle"]
+    r"""
+    The ``Cycle`` class represents the cycles element of a symmetric group.
+
+    Recall that a cycle is a permutation that rearranges the elements of a finite set in a circular fashion, i.e.,
+    moves each element to the position of the next element in a cycle manner, with the last element being moved to the
+    position of the first element.
+
+    To define a cycle, you need to provide its cycle notation.
+
+    For example, to define the cycle :math:`\sigma \in S_3` given by :math:`\sigma(1)=3, \sigma(2)=1`, and
+    :math:`\sigma (3)=2`, you should write ``Cycle(1, 3, 2)``.
+
+    :param cycle: Set of integers representing the cycle notation of the cycle.
+    :type cycle: int
+
+    :raises ValueError: If there is an integer in the provided cycle which is not strictly positive.
+
+    :example:
+        >>> cycle = Cycle(1, 3, 2)
+        >>> cycle = Cycle(*[1, 3, 2])
+        >>> cycle = Cycle(*(1, 3, 2))
+    """
+    __slots__ = ["_cycle", "_domain"]
 
     def __init__(self, *cycle: int) -> None:
         self._cycle: Tuple[int, ...] = self._validate_and_standardize(cycle)
@@ -32,7 +56,9 @@ class Cycle(_Element):
             if isinstance(element, int) is False:
                 raise ValueError(f"Expected `int` type, but got {type(element)}.")
             if element < 1:
-                raise ValueError(f"Expected all strictly positive values, but got {element}.")
+                raise ValueError(
+                    f"Expected all strictly positive values, but got {element}."
+                )
 
         smallest_element_index = cycle.index(min(cycle))
         if smallest_element_index == 0:
@@ -94,7 +120,9 @@ class Cycle(_Element):
             return self._call_on_integer(original=item)
         elif isinstance(item, (str, List, Tuple)):
             if max(self.elements) > len(item):
-                raise ValueError(f"Not enough object to permute {item} using the cycle {self}.")
+                raise ValueError(
+                    f"Not enough object to permute {item} using the cycle {self}."
+                )
             return self._call_on_str_list_tuple(original=item)
         elif isinstance(item, symmetria.elements.permutation.Permutation):
             if max(self.elements) > len(item):
@@ -109,8 +137,12 @@ class Cycle(_Element):
                     f"Cannot compose cycle {self} with cycle {item},"
                     " because they don't live in the same Symmetric group."
                 )
-            return self._call_on_cycle_decomposition(original=item.cycle_decomposition())
-        elif isinstance(item, symmetria.elements.cycle_decomposition.CycleDecomposition):
+            return self._call_on_cycle_decomposition(
+                original=item.cycle_decomposition()
+            )
+        elif isinstance(
+            item, symmetria.elements.cycle_decomposition.CycleDecomposition
+        ):
             if max(self.elements) > max(item.domain):
                 raise ValueError(
                     f"Cannot compose cycle {self} with cycle decomposition {item},"
@@ -125,7 +157,9 @@ class Cycle(_Element):
             return self[(self.elements.index(original) + 1) % len(self)]
         return original
 
-    def _call_on_str_list_tuple(self, original: Union[str, Tuple, List]) -> Union[str, Tuple, List]:
+    def _call_on_str_list_tuple(
+        self, original: Union[str, Tuple, List]
+    ) -> Union[str, Tuple, List]:
         """Private method for calls on string, list and tuple."""
         permuted = [_ for _ in original]
         for idx, w in enumerate(original, 1):
@@ -143,16 +177,27 @@ class Cycle(_Element):
         for idx in original.domain:
             if idx not in self:
                 cycles.append(Cycle(idx))
-        cycle_decomposition = symmetria.elements.cycle_decomposition.CycleDecomposition(*cycles)
-        return symmetria.elements.permutation.Permutation.from_cycle_decomposition(cycle_decomposition) * original
+        cycle_decomposition = symmetria.elements.cycle_decomposition.CycleDecomposition(
+            *cycles
+        )
+        return (
+            symmetria.elements.permutation.Permutation.from_cycle_decomposition(
+                cycle_decomposition
+            )
+            * original
+        )
 
-    def _call_on_cycle_decomposition(self, original: "CycleDecomposition") -> "CycleDecomposition":
+    def _call_on_cycle_decomposition(
+        self, original: "CycleDecomposition"
+    ) -> "CycleDecomposition":
         """Private method for calls on cycle decomposition."""
         cycles = [self]
         for idx in original.domain:
             if idx not in self:
                 cycles.append(Cycle(idx))
-        cycle_decomposition = symmetria.elements.cycle_decomposition.CycleDecomposition(*cycles)
+        cycle_decomposition = symmetria.elements.cycle_decomposition.CycleDecomposition(
+            *cycles
+        )
         return cycle_decomposition * original
 
     def __eq__(self, other: Any) -> bool:
@@ -212,7 +257,12 @@ class Cycle(_Element):
             >>> int(cycle)
             134526
         """
-        return sum([element * 10 ** (len(self) - idx) for idx, element in enumerate(self.elements, 1)])
+        return sum(
+            [
+                element * 10 ** (len(self) - idx)
+                for idx, element in enumerate(self.elements, 1)
+            ]
+        )
 
     def __len__(self) -> int:
         """
@@ -317,7 +367,10 @@ class Cycle(_Element):
             >>> cycle.map
             {1: 2, 2: 3, 3: 1}
         """
-        return {element: self[(idx + 1) % len(self)] for idx, element in enumerate(self.elements)}
+        return {
+            element: self[(idx + 1) % len(self)]
+            for idx, element in enumerate(self.elements)
+        }
 
     @property
     def elements(self) -> Tuple[int]:
@@ -382,9 +435,13 @@ class Cycle(_Element):
         if isinstance(other, symmetria.elements.cycle_decomposition.CycleDecomposition):
             # case where both are the identity
             if bool(self) is False and bool(other) is False:
-                return max(self.elements) == max([max(cycle.elements) for cycle in other])
+                return max(self.elements) == max(
+                    [max(cycle.elements) for cycle in other]
+                )
             # cases where is the identity but the other no
-            elif (bool(self) is False and bool(other) is True) or (bool(self) is True and bool(other) is False):
+            elif (bool(self) is False and bool(other) is True) or (
+                bool(self) is True and bool(other) is False
+            ):
                 return False
             # both not the identity
             else:
@@ -392,7 +449,10 @@ class Cycle(_Element):
                     if len(cycle) > 1:
                         return self == cycle
         elif isinstance(other, symmetria.elements.permutation.Permutation):
-            return symmetria.elements.permutation.Permutation.from_cycle(cycle=self) == other
+            return (
+                symmetria.elements.permutation.Permutation.from_cycle(cycle=self)
+                == other
+            )
         return False
 
     def is_derangement(self) -> bool:
@@ -421,7 +481,42 @@ class Cycle(_Element):
         return len(self) > 1
 
     def orbit(self, item: Any) -> List[Any]:
-        raise NotImplementedError
+        """
+        Calculates the orbit of the specified element under the permutation,
+        which is the set of all elements obtained by repeatedly applying the permutation
+        to the initial element until it returns to itself.
+
+        :param item: The initial element or iterable to compute the orbit for.
+        :type item: Any
+
+        :return: The orbit of the specified element under the permutation.
+        :rtype: List[Any]
+
+        :example:
+            >>> permutation = Permutation(3, 1, 2)
+            >>> permutation.orbit(1)
+            [1, 3, 2]
+            >>> permutation.orbit([1, 2, 3])
+            [[1, 2, 3], [2, 3, 1], [3, 1, 2]]
+            >>> permutation.orbit("abc")
+            ['abc', 'bca', 'cab']
+            >>> permutation.orbit(Permutation(3, 1, 2))
+            [Permutation(3, 1, 2), Permutation(2, 3, 1), Permutation(1, 2, 3)]
+            >>> permutation.orbit(Cycle(1, 2, 3))
+            [
+                CycleDecomposition(Cycle(1, 2, 3)),
+                CycleDecomposition(Cycle(1), Cycle(2), Cycle(3)),
+                CycleDecomposition(Cycle(1, 3, 2)),
+            ]
+        """
+        if isinstance(item, Cycle):
+            item = item.cycle_decomposition()
+        orbit = [item]
+        next_element = self(item)
+        while next_element != item:
+            orbit.append(next_element)
+            next_element = self(next_element)
+        return orbit
 
     def order(self) -> int:
         r"""
@@ -474,9 +569,3 @@ class Cycle(_Element):
             {2, 3, 4, 5}
         """
         return set(self._cycle) if len(self) > 1 else set()
-
-
-if __name__ == '__main__':
-    cycle = Cycle(3, 1, 2)
-    from symmetria import Permutation
-    print(cycle(-1), cycle("abc"), cycle([1, 2, 3]), cycle(Permutation(3, 1, 2)))

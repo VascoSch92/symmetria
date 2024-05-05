@@ -4,7 +4,7 @@ Elements
 Here we describe what are elements
 
 .. toctree::
-    :maxdepth: 2
+    :maxdepth: 1
 
     permutation
     cycle

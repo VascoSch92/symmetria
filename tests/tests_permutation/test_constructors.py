@@ -39,11 +39,13 @@ def test_constructor_error(permutation, error, msg) -> None:
 @pytest.mark.parametrize(
     argnames="dict_permutation, expected_value",
     argvalues=TEST_CONSTRUCTOR_FROM_DICT,
-    ids=[f"{d}->{p}" for d, p, in TEST_CONSTRUCTOR_FROM_DICT],
+    ids=[f"{d}->{p}" for d, p in TEST_CONSTRUCTOR_FROM_DICT],
 )
 def test_constructor_from_dict(dict_permutation, expected_value) -> None:
     """Tests for the constructor method `from_dict()`."""
-    validate_from_dict(class_=Permutation, constructor=dict_permutation, expected_value=expected_value)
+    validate_from_dict(
+        class_=Permutation, constructor=dict_permutation, expected_value=expected_value
+    )
 
 
 @pytest.mark.parametrize(
@@ -53,7 +55,9 @@ def test_constructor_from_dict(dict_permutation, expected_value) -> None:
 )
 def test_constructor_from_cycle(cycle, expected_value) -> None:
     """Tests for the constructor method `from_cycle()`."""
-    validate_from_cycle(class_=Permutation, constructor=cycle, expected_value=expected_value)
+    validate_from_cycle(
+        class_=Permutation, constructor=cycle, expected_value=expected_value
+    )
 
 
 @pytest.mark.parametrize(
@@ -61,7 +65,9 @@ def test_constructor_from_cycle(cycle, expected_value) -> None:
     argvalues=TEST_CONSTRUCTOR_FROM_CYCLE_DECOMPOSITION,
     ids=[f"{c}->{p}" for c, p in TEST_CONSTRUCTOR_FROM_CYCLE_DECOMPOSITION],
 )
-def test_constructor_from_cycle_decomposition(cycle_decomposition, expected_value) -> None:
+def test_constructor_from_cycle_decomposition(
+    cycle_decomposition, expected_value
+) -> None:
     """Tests for the constructor method `from_cycle_decomposition()`."""
     validate_from_cycle_decomposition(
         class_=Permutation,

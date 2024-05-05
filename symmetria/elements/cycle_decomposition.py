@@ -1,18 +1,47 @@
 from itertools import combinations
 from math import lcm
-from typing import Tuple, List, Any, Dict, Iterable, Set
+from typing import Tuple, List, Any, Dict, Iterable, Set, Union
 
 import symmetria.elements.cycle
 import symmetria.elements.permutation
 from symmetria.interfaces import _Element
 
+__all__ = ["CycleDecomposition"]
+
 
 class CycleDecomposition(_Element):
-    __slots__ = ["_cycles"]
+    r"""
+    The ``CycleDecomposition`` class represents the cycle decomposition of a permutation of the symmetric group.
+
+    Recall that every permutation of the symmetric group can be represented uniquely as the composition of a finite
+    number of cycles thanks to the `Cycle Decomposition Theorem for Permutations`.
+
+    To define a permutation as a cycle decomposition, you need to provide its cycles.
+
+    For example, to define the permutation given by the cycles: ``Cycle(2, 1)`` and ``Cycle(4, 3)``, you should write
+    ``CycleDecomposition(Cycle(2, 1), Cycle(4, 3))``.
+
+    :param cycle: Cycle factors of the permutation.
+    :type cycle: Cycle
+
+    :raises ValueError: If there are two or more cycles with non-disjoint support.
+    :raises ValueError: If there are missing cycles in the decomposition.
+
+    :example:
+        >>> cycle = CycleDecomposition(Cycle(2, 1), Cycle(4, 3))
+        >>> cycle = CycleDecomposition(*[Cycle(2, 1), Cycle(4, 3)])
+        >>> cycle = CycleDecomposition(*(Cycle(2, 1), Cycle(4, 3)))
+    """
+    __slots__ = ["_cycles", "_domain"]
 
     def __init__(self, *cycles: "Cycle") -> None:
-        self._cycles: Tuple["Cycle", ...] = self._validate_and_standardize(cycles=cycles)
-        self._domain: Iterable[int] = range(1, max(max(cycle.elements) for cycle in self._cycles) + 1)
+        self._cycles: Tuple["Cycle", ...] = self._validate_and_standardize(
+            cycles=cycles,
+        )
+        self._domain: Iterable[int] = range(
+            1,
+            max(max(cycle.elements) for cycle in self._cycles) + 1,
+        )
 
     @staticmethod
     def _validate_and_standardize(cycles: Tuple["Cycle", ...]) -> Tuple["Cycle", ...]:
@@ -27,14 +56,17 @@ class CycleDecomposition(_Element):
         # checks that the cycles are disjoint
         for cycle_a, cycle_b in combinations(cycles, 2):
             if set(cycle_a.elements) & set(cycle_b.elements):
-                raise ValueError(f"The cycles {cycle_a} and {cycle_b} don't have disjoint support.")
+                raise ValueError(
+                    f"The cycles {cycle_a} and {cycle_b} don't have disjoint support."
+                )
 
         # checks that every element is included in a cycle
         elements = {element for cycle in cycles for element in cycle.elements}
         if set(range(1, len(elements) + 1)) != elements:
             raise ValueError(
                 "Every element from 1 to the biggest permuted element must be included in some cycle,\n "
-                f"but this is not the case for the element(s): {set(range(1, len(elements) + 1)).difference(elements)}")
+                f"but this is not the case for the element(s): {set(range(1, len(elements) + 1)).difference(elements)}"
+            )
 
         # standardization
         cycles = sorted(cycles, key=lambda cycle: cycle[0])
@@ -65,6 +97,86 @@ class CycleDecomposition(_Element):
         """
         return any(bool(cycle) for cycle in self)
 
+    def __call__(self, item: Any) -> Any:
+        """
+        Call the cycle decomposition on the `item` object, i.e., mimic a cycle decomposition action on the
+        element `item`.
+
+        - If `item` is an integer, it applies the cycle decomposition to the integer.
+        - If `item` is a string, a list or a tuple, it applies the cycle decomposition permuting the values by indexes.
+        - If `item` is a permutation, it returns the composition of the cycle decomposition with the permutation.
+        - If `item` is a cycle or a cycle decomposition, it returns the composition in cycle decomposition.
+
+        :param item: The object on which the cycle acts.
+        :type item: Any
+
+        :return: The permuted object.
+        :rtype: Any
+
+        :raises ValueError: If there are not enough elements in the item to perform the permutation.
+        :raises ValueError: If attempting to compose the cycle decomposition with a permutation, cycle, or cycle
+            decomposition from a different symmetric group.
+        :raises TypeError: If the item type is not supported.
+        """
+        if isinstance(item, int):
+            return self._call_on_integer(original=item)
+        elif isinstance(item, (str, List, Tuple)):
+            if max(self.domain) > len(item):
+                raise ValueError(
+                    f"Not enough object to permute {item} using the cycle {self}."
+                )
+            return self._call_on_str_list_tuple(original=item)
+        elif isinstance(item, symmetria.elements.permutation.Permutation):
+            if self.domain != item.domain:
+                raise ValueError(
+                    f"Cannot compose cycle decomposition {self} with permutation {item},"
+                    " because they don't live in the same Symmetric group."
+                )
+            return self._call_on_permutation(original=item)
+        elif isinstance(item, symmetria.elements.cycle.Cycle):
+            if self.domain != item.domain:
+                raise ValueError(
+                    f"Cannot compose cycle decomposition {self} with cycle {item},"
+                    " because they don't live in the same Symmetric group."
+                )
+            return self * CycleDecomposition(item)
+        elif isinstance(
+            item, symmetria.elements.cycle_decomposition.CycleDecomposition
+        ):
+            if self.domain != item.domain:
+                raise ValueError(
+                    f"Cannot compose cycle decomposition {self} with cycle decomposition {item},"
+                    " because they don't live in the same Symmetric group."
+                )
+            return self * item
+        raise TypeError(f"Calling a cycle on {type(item)} is not supported.")
+
+    def _call_on_integer(self, original: int) -> int:
+        """Private method for calls on integer."""
+        if original in self.domain:
+            return self.map[original]
+        return original
+
+    def _call_on_str_list_tuple(
+        self, original: Union[str, Tuple, List]
+    ) -> Union[str, Tuple, List]:
+        """Private method for calls on string, list and tuple."""
+        permuted = [_ for _ in original]
+        for idx, w in enumerate(original, 1):
+            permuted[self._call_on_integer(original=idx) - 1] = w
+        if isinstance(original, str):
+            return "".join(permuted)
+        elif isinstance(original, Tuple):
+            return tuple(p for p in permuted)
+        else:
+            return permuted
+
+    def _call_on_permutation(self, original: "Permutation") -> "Permutation":
+        return (
+            symmetria.elements.permutation.Permutation.from_cycle_decomposition(self)
+            * original
+        )
+
     def __eq__(self, other: Any) -> bool:
         """
         Check if the cycle decomposition is equal to another object.
@@ -80,25 +192,30 @@ class CycleDecomposition(_Element):
                 return False
             else:
                 for cycle_a, cycle_b in zip(self, other):
-                    if cycle_a != cycle_b:
+                    if cycle_a.elements != cycle_b.elements:
                         return False
                 return True
         return False
 
-    def __getitem__(self, item: int) -> "Cycle":
+    def __getitem__(self, idx: int) -> "Cycle":
         """
         Returns the cycle of the cycle decomposition at the given index `item`.
         The index corresponds to the position in the cycle decomposition, starting from 0.
 
-        :param item: The index of the cycle.
-        :type item: int
+        :param idx: The index of the cycle.
+        :type idx: int
 
         :return: The cycle of the cycle decomposition at the specified index.
         :rtype: int
 
         :raises IndexError: If the index is out of range.
+
+        :example:
+            >>> cycle_decomposition = CycleDecomposition(Cycle(1, 2), Cycle(3, 4))
+            >>> cycle_decomposition[0]
+            Cycle(1, 2)
         """
-        return self._cycles[item]
+        return self._cycles[idx]
 
     def __int__(self) -> int:
         """
@@ -113,13 +230,26 @@ class CycleDecomposition(_Element):
         )
 
     def __iter__(self) -> Iterable["Cycle"]:
+        """
+        Return an iterator over the cycles in the cycle decomposition.
+
+        :return: An iterator over the cycles in the cycle decomposition.
+        :rtype: Iterable[Cycle]
+
+        :example:
+            >>> cycle_decomposition = CycleDecomposition(Cycle(1, 2), Cycle(3, 4))
+            >>> for cycle in cycle_decomposition:
+            >>>     print(cycle)
+            Cycle(1, 2)
+            Cycle(3, 4)
+        """
         return iter(self._cycles)
 
     def __len__(self) -> int:
         """
-        Returns the length of the cycle permutation, which is the number of cycles present in the decomposition.
+        Returns the length of the cycle decomposition, which is the number of cycles present in the decomposition.
 
-        :return: The length of the permutation.
+        :return: The length of the cycle decomposition.
         :rtype: int
 
         :example:
@@ -149,7 +279,7 @@ class CycleDecomposition(_Element):
         :raises ValueError: If the cycle decompositions don't live in the same Symmetric group.
         :raises TypeError: If the other object is not a `CycleDecomposition`.
         """
-        if isinstance(other, CycleDecomposition):
+        if isinstance(other, symmetria.elements.cycle_decomposition.CycleDecomposition):
             if self.domain != other.domain:
                 raise ValueError(
                     f"Cannot compose cycle decomposition {self} with cycle decomposition {other},"
@@ -158,12 +288,14 @@ class CycleDecomposition(_Element):
             return symmetria.elements.permutation.Permutation.from_dict(
                 p={idx: self.map[other.map[idx]] for idx in self.domain}
             ).cycle_decomposition()
-        raise TypeError(f"Product between types `CycleDecomposition` and {type(other)} is not implemented.")
+        raise TypeError(
+            f"Product between types `CycleDecomposition` and {type(other)} is not implemented."
+        )
 
     def __repr__(self) -> str:
         r"""
         Returns a string representation of the cycle decomposition in the format
-        "CycleDecompposition(Cycle(x, y), Cycle(z, ...), ...)", where :math:`x, y, z, ... \in \mathbb{N}` are
+        'CycleDecomposition(Cycle(x, ...), Cycle(y, ...), ...)', where :math:`x, y, ... \in \mathbb{N}` are
         the elements of the cycles.
 
         :return: A string representation of the cycle decomposition.
@@ -315,7 +447,9 @@ class CycleDecomposition(_Element):
             >>> cycle_decomposition.support()
             {2, 3}
         """
-        return {element for cycle in self if len(cycle) != 1 for element in cycle.elements}
+        return {
+            element for cycle in self if len(cycle) != 1 for element in cycle.elements
+        }
 
     def is_derangement(self) -> bool:
         r"""
@@ -328,7 +462,7 @@ class CycleDecomposition(_Element):
         :rtype: bool
 
         :example:
-            >>> cycle_permutation = CycleDecomposition(Cycle((1)))
+            >>> cycle_permutation = CycleDecomposition(Cycle(1))
             >>> cycle_permutation.is_derangement()
             False
             >>> cycle_decomposition = CycleDecomposition(Cycle(1, 2, 3))
@@ -344,6 +478,27 @@ class CycleDecomposition(_Element):
         return True
 
     def equivalent(self, other: Any) -> bool:
+        """
+        Checks if the cycle decomposition is equivalent to another object. This method is introduced because we can have
+        different representation of the same cycle decomposition, e.g., as a cycle, or as permutation.
+
+        :param other: The object to compare with.
+        :type other: Any
+
+        :return: True if the cycle decomposition is equivalent to the other object, False otherwise.
+        :rtype: bool
+
+        :example:
+            >>> cycle_decomposition = CycleDecomposition(Cycle(1, 2, 3)))
+            >>> cycle_decomposition.equivalent(cycle_decomposition)
+            True
+            >>> cycle = Cycle(1, 2, 3)
+            >>> cycle_decomposition.equivalent(cycle)
+            True
+            >>> permutation = Permutation(2, 3, 1)
+            >>> cycle_decomposition.equivalent(permutation)
+            True
+        """
         if isinstance(other, CycleDecomposition):
             return self == other
         elif isinstance(other, symmetria.elements.cycle.Cycle):
@@ -355,8 +510,20 @@ class CycleDecomposition(_Element):
                         return False
             return True
         elif isinstance(other, symmetria.elements.permutation.Permutation):
-            return symmetria.elements.permutation.Permutation.from_cycle_decomposition(self) == other
+            return (
+                symmetria.elements.permutation.Permutation.from_cycle_decomposition(
+                    self
+                )
+                == other
+            )
         return False
 
     def orbit(self, item: Any) -> List[Any]:
-        raise NotImplementedError
+        if isinstance(item, symmetria.elements.cycle.Cycle):
+            item = item.cycle_decomposition()
+        orbit = [item]
+        next_element = self(item)
+        while next_element != item:
+            orbit.append(next_element)
+            next_element = self(next_element)
+        return orbit

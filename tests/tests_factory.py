@@ -1,5 +1,6 @@
 from typing import Any, Type, Dict, Set
 import pytest
+from symmetria.elements.cycle_decomposition import CycleDecomposition
 
 
 ##########################
@@ -23,7 +24,9 @@ def validate_from_cycle(class_: Any, constructor: Dict, expected_value: Any) -> 
         )
 
 
-def validate_from_cycle_decomposition(class_: Any, constructor: Dict, expected_value: Any) -> None:
+def validate_from_cycle_decomposition(
+    class_: Any, constructor: Dict, expected_value: Any
+) -> None:
     if class_.from_cycle_decomposition(constructor) != expected_value:
         raise ValueError(
             f"The expression `{class_.name()}.from_cycle_decomposition({constructor}))` must evaluate {expected_value}, "
@@ -34,6 +37,15 @@ def validate_from_cycle_decomposition(class_: Any, constructor: Dict, expected_v
 ##############################
 # GENERIC METHODS VALIDATORS #
 ##############################
+
+
+def validate_cycle_decomposition(item: Any, expected_value: CycleDecomposition) -> None:
+    if item.cycle_decomposition() != expected_value:
+        raise ValueError(
+            f"The expression `{item.rep()}.cycle_notation()` must evaluate {expected_value}, "
+            f"but got {item.cycle_decomposition()}."
+        )
+
 
 def validate_cycle_notation(item: Any, expected_value: str) -> None:
     if item.cycle_notation() != expected_value:
@@ -67,11 +79,19 @@ def validate_domain(item: Any, expected_value: bool) -> None:
         )
 
 
-def validate_map(item:Any, expected_value: Dict[int, int]) -> None:
+def validate_map(item: Any, expected_value: Dict[int, int]) -> None:
     if item.map != expected_value:
         raise ValueError(
             f"The expression `{item.rep()}.map()` must evaluate {expected_value}, "
             f"but got {item.map}."
+        )
+
+
+def validate_orbit(element: Any, item: Any, expected_value: int) -> None:
+    if element.orbit(item=item) != expected_value:
+        raise ValueError(
+            f"The expression `{element.rep()}.orbit({item})` must evaluate {expected_value}, "
+            f"but got {element.orbit(item=item)}."
         )
 
 
@@ -90,6 +110,7 @@ def validate_support(item: Any, expected_value: Set[int]) -> None:
             f"but got {item.support()}."
         )
 
+
 ############################
 # MAGIC METHODS VALIDATORS #
 ############################
@@ -105,12 +126,14 @@ def validate_bool(item: Any, expected_value: bool) -> None:
 def validate_call(item: Any, call_on: Any, expected_value: Any) -> None:
     if item(call_on) != expected_value:
         raise ValueError(
-            f"The expression `{item.rep()}({call_on})` must evaluate {expected_value.rep()}, but got "
+            f"The expression `{item.rep()}({call_on})` must evaluate {expected_value}, but got "
             f"{item(call_on).__repr__()}."
         )
 
 
-def validate_call_error(item: Any, call_on: Any, error: Type[Exception], msg: str) -> None:
+def validate_call_error(
+    item: Any, call_on: Any, error: Type[Exception], msg: str
+) -> None:
     with pytest.raises(error, match=msg):
         _ = item(call_on)
 
@@ -152,7 +175,7 @@ def validate_mul(lhs: Any, rhs: Any, expected_value: Any) -> None:
 
 def validate_mul_error(lhs: Any, rhs: Any, error: Type[Exception], msg: str) -> None:
     with pytest.raises(error, match=msg):
-        _ = lhs*rhs
+        _ = lhs * rhs
 
 
 def validate_repr(item: Any, expected_value: str) -> None:

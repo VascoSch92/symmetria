@@ -8,8 +8,26 @@ __all__ = ["Permutation"]
 
 
 class Permutation(_Element):
-    """
-    BLa bla per la classe
+    r"""
+    The ``Permutation`` class represents an element of the symmetric group as a map, i.e., a bijective function from a
+    finite set of integer :math:`\{1, ..., n\}`, for some :math:`n \in \mathbb{N}_{>0}`, to itself.
+
+    To define a permutation, you need to provide a sequence of integers defining the image of the permutation.
+
+    For example, to define the permutation :math:`\sigma \in S_3` given by :math:`\sigma(1)=3, \sigma(2)=1`, and
+    :math:`\sigma (3)=2`, you should write ``Permutation(3, 1, 2)``.
+
+    :param image: Set of integers defining the image of the permutation.
+    :type image: int
+
+    :raises ValueError: If there is an integer in the provided image which is not strictly positive.
+    :raises ValueError: If there is an integer which is strictly greater than the total number of integers.
+    :raises ValueError: If there are repeated integers.
+
+    :example:
+        >>> permutation = Permutation(3, 1, 2)
+        >>> permutation = Permutation(*[3, 1, 2])
+        >>> permutation = Permutation(*(3, 1, 2))
     """
     __slots__ = ["_map", "_domain"]
 
@@ -23,7 +41,7 @@ class Permutation(_Element):
         Private method to check if a set of integers is eligible as image for a permutation.
         Recall that, a tuple of integers represent the image of a permutation if the following conditions hold:
             - all the integers are strictly positive;
-            - all the integers are bounded by the total number of integer;
+            - all the integers are bounded by the total number of integers;
             - there are no integer repeated.
         """
         _map = {}
@@ -31,9 +49,13 @@ class Permutation(_Element):
             if isinstance(img, int) is False:
                 raise ValueError(f"Expected `int` type, but got {type(img)}.")
             if img < 1:
-                raise ValueError(f"Expected all strictly positive values, but got {img}")
+                raise ValueError(
+                    f"Expected all strictly positive values, but got {img}"
+                )
             elif img > len(image):
-                raise ValueError(f"The permutation is not injecting on its image. Indeed, {img} is not in the image.")
+                raise ValueError(
+                    f"The permutation is not injecting on its image. Indeed, {img} is not in the image."
+                )
             elif img in _map.values():
                 raise ValueError(
                     f"It seems that the permutation is not bijective. Indeed, {img} has two, or more, pre-images."
@@ -94,7 +116,9 @@ class Permutation(_Element):
             return self._call_on_integer(idx=item)
         elif isinstance(item, (str, List, Tuple)):
             if len(self) > len(item):
-                raise ValueError(f"Not enough object to permute {item} using the permutation {self}.")
+                raise ValueError(
+                    f"Not enough object to permute {item} using the permutation {self}."
+                )
             return self._call_on_str_list_tuple(original=item)
         elif isinstance(item, Permutation):
             return self * item
@@ -105,7 +129,9 @@ class Permutation(_Element):
                     " because they don't live in the same Symmetric group."
                 )
             return self._call_on_cycle(cycle=item)
-        elif isinstance(item, symmetria.elements.cycle_decomposition.CycleDecomposition):
+        elif isinstance(
+            item, symmetria.elements.cycle_decomposition.CycleDecomposition
+        ):
             if self.domain != item.domain:
                 raise ValueError(
                     f"Cannot compose permutation {self} with cycle decomposition {item},"
@@ -118,7 +144,9 @@ class Permutation(_Element):
         """Private method for calls on integer."""
         return self[idx] if 1 <= idx <= len(self) else idx
 
-    def _call_on_str_list_tuple(self, original: Union[str, Tuple, List]) -> Union[str, Tuple, List]:
+    def _call_on_str_list_tuple(
+        self, original: Union[str, Tuple, List]
+    ) -> Union[str, Tuple, List]:
         """Private method for calls on strings, tuples and lists."""
         permuted = [_ for _ in original]
         for idx, w in enumerate(original, 1):
@@ -142,7 +170,9 @@ class Permutation(_Element):
         cycle_decomposition = Permutation(*permutation).cycle_decomposition()
         return cycle_decomposition
 
-    def _call_on_cycle_decomposition(self, cycle_decomposition: "CycleDecomposition") -> "CycleDecomposition":
+    def _call_on_cycle_decomposition(
+        self, cycle_decomposition: "CycleDecomposition"
+    ) -> "CycleDecomposition":
         """Private method for calls on cycle decomposition."""
         return Permutation.from_dict(
             p={idx: self._map[cycle_decomposition.map[idx]] for idx in self.domain}
@@ -192,7 +222,9 @@ class Permutation(_Element):
             >>> int(permutation)
             134526
         """
-        return sum([self[element] * 10 ** (len(self) - element) for element in self.domain])
+        return sum(
+            [self[element] * 10 ** (len(self) - element) for element in self.domain]
+        )
 
     def __len__(self) -> int:
         """
@@ -242,8 +274,12 @@ class Permutation(_Element):
                     f"Cannot compose permutation {self} with permutation {other},"
                     " because they don't live in the same Symmetric group."
                 )
-            return Permutation.from_dict(p={idx: self._map[other._map[idx]] for idx in self.domain})
-        raise TypeError(f"Product between types `Permutation` and {type(other)} is not implemented.")
+            return Permutation.from_dict(
+                p={idx: self._map[other._map[idx]] for idx in self.domain}
+            )
+        raise TypeError(
+            f"Product between types `Permutation` and {type(other)} is not implemented."
+        )
 
     def __repr__(self) -> str:
         r"""
@@ -332,7 +368,9 @@ class Permutation(_Element):
         return Permutation(*image)
 
     @classmethod
-    def from_cycle_decomposition(cls, cycle_decomposition: "CycleDecomposition") -> "Permutation":
+    def from_cycle_decomposition(
+        cls, cycle_decomposition: "CycleDecomposition"
+    ) -> "Permutation":
         """
         Return a permutation from a cycle decomposition. In other word, it converts a cycle decomposition into a
         permutation.
@@ -423,7 +461,9 @@ class Permutation(_Element):
             return self == other
         elif isinstance(other, symmetria.elements.cycle.Cycle):
             return self == Permutation.from_cycle(other)
-        elif isinstance(other, symmetria.elements.cycle_decomposition.CycleDecomposition):
+        elif isinstance(
+            other, symmetria.elements.cycle_decomposition.CycleDecomposition
+        ):
             return self == Permutation.from_cycle_decomposition(other)
         return False
 
@@ -598,11 +638,3 @@ class Permutation(_Element):
             '134524'
         """
         return str(int(self))
-
-
-if __name__ == '__main__':
-    a = Permutation(1)
-    b = Permutation(3, 1, 2)
-    c = Permutation(3, 1, 2, 4, 5, 6)
-    from symmetria.elements.cycle import Cycle
-    print(a.cycle_notation(), b.cycle_notation(), c.cycle_notation())

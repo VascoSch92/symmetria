@@ -29,7 +29,7 @@ from tests.tests_permutation.test_cases import (
 @pytest.mark.parametrize(
     argnames="permutation, expected_value",
     argvalues=TEST_BOOL,
-    ids=[f"bool({p})={b}" for p, b in TEST_BOOL]
+    ids=[f"bool({p.rep()})={b}" for p, b in TEST_BOOL],
 )
 def test_bool(permutation, expected_value) -> None:
     """Tests for the method `__bool__()`."""
@@ -39,7 +39,7 @@ def test_bool(permutation, expected_value) -> None:
 @pytest.mark.parametrize(
     argnames="permutation, call_on, expected_value",
     argvalues=TEST_CALL,
-    ids=[f"{p} on {ens}" for p, ens, _ in TEST_CALL]
+    ids=[f"{p.rep()}({e})" for p, e, _ in TEST_CALL],
 )
 def test_call(permutation, call_on, expected_value) -> None:
     """Tests for the method `__call__()`."""
@@ -49,7 +49,7 @@ def test_call(permutation, call_on, expected_value) -> None:
 @pytest.mark.parametrize(
     argnames="permutation, call_on, error, msg",
     argvalues=TEST_CALL_ERROR,
-    ids=[msg for _, _, _, msg in TEST_CALL_ERROR]
+    ids=[msg for _, _, _, msg in TEST_CALL_ERROR],
 )
 def test_call_error(permutation, call_on, error, msg) -> None:
     """Tests for exceptions to the method `__call__()`."""
@@ -59,7 +59,7 @@ def test_call_error(permutation, call_on, error, msg) -> None:
 @pytest.mark.parametrize(
     argnames="lhs, rhs, expected_value",
     argvalues=TEST_EQ,
-    ids=[f"{p}={q}" for p, q, _ in TEST_EQ],
+    ids=[f"{p.rep()}={q}" for p, q, _ in TEST_EQ],
 )
 def test_equality(lhs, rhs, expected_value) -> None:
     """Tests for the method `__eq__()`."""
@@ -69,7 +69,7 @@ def test_equality(lhs, rhs, expected_value) -> None:
 @pytest.mark.parametrize(
     argnames="permutation, expected_value",
     argvalues=TEST_INT,
-    ids=[f"int({p})={i}" for p, i in TEST_INT]
+    ids=[f"int({p.rep()})={i}" for p, i in TEST_INT],
 )
 def test_int(permutation, expected_value) -> None:
     """Tests for the method `__int__()`."""
@@ -79,7 +79,7 @@ def test_int(permutation, expected_value) -> None:
 @pytest.mark.parametrize(
     argnames="permutation, expected_value",
     argvalues=TEST_LEN,
-    ids=[f"len({p})={l}" for p, l in TEST_LEN],
+    ids=[f"len({p.rep()})={l}" for p, l in TEST_LEN],
 )
 def test_len(permutation, expected_value) -> None:
     """Tests for the method `__len__()`."""
@@ -89,7 +89,7 @@ def test_len(permutation, expected_value) -> None:
 @pytest.mark.parametrize(
     argnames="lhs, rhs, expected_value",
     argvalues=TEST_MUL,
-    ids=[f"{p}*{q}" for p, q, _ in TEST_MUL]
+    ids=[f"{p.rep()}*{q.rep()}" for p, q, _ in TEST_MUL],
 )
 def test_multiplication(lhs, rhs, expected_value) -> None:
     """Tests for the method `__mul__()`."""
@@ -99,7 +99,7 @@ def test_multiplication(lhs, rhs, expected_value) -> None:
 @pytest.mark.parametrize(
     argnames="lhs, rhs, error, msg",
     argvalues=TEST_MUL_ERROR,
-    ids=[error for _, _, _, error in TEST_MUL_ERROR]
+    ids=[error for _, _, _, error in TEST_MUL_ERROR],
 )
 def test_multiplication_error(lhs, rhs, error, msg) -> None:
     """Tests for exceptions to the method `__mul__()`."""
@@ -109,7 +109,7 @@ def test_multiplication_error(lhs, rhs, error, msg) -> None:
 @pytest.mark.parametrize(
     argnames="permutation, expected_value",
     argvalues=TEST_REPR,
-    ids=[f"{p}.__repr__()={r.__repr__()}" for p, r in TEST_REPR],
+    ids=[f"{p}.__repr__()={r}" for p, r in TEST_REPR],
 )
 def test_repr(permutation, expected_value) -> None:
     """Tests for the method `__repr__()`."""
@@ -119,7 +119,7 @@ def test_repr(permutation, expected_value) -> None:
 @pytest.mark.parametrize(
     argnames="permutation, expected_value",
     argvalues=TEST_STR,
-    ids=[f"str({p.__repr__()})={s}" for p, s in TEST_STR],
+    ids=[f"str({p.rep()})={s}" for p, s in TEST_STR],
 )
 def test_str(permutation, expected_value) -> None:
     """Tests for the method `__str__()`."""

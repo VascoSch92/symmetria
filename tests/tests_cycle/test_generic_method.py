@@ -8,6 +8,7 @@ from tests.tests_cycle.test_cases import (
     TEST_ORDER,
     TEST_DOMAIN,
     TEST_SUPPORT,
+    TEST_ORBIT,
     TEST_MAP,
 )
 from tests.tests_factory import (
@@ -18,13 +19,14 @@ from tests.tests_factory import (
     validate_domain,
     validate_map,
     validate_equivalent,
+    validate_orbit,
 )
 
 
 @pytest.mark.parametrize(
     argnames="cycle, expected_value",
     argvalues=TEST_CYCLE_NOTATION,
-    ids=[f"{cycle}.cycle_notation()={s}" for cycle, s in TEST_CYCLE_NOTATION]
+    ids=[f"{cycle}.cycle_notation()={s}" for cycle, s in TEST_CYCLE_NOTATION],
 )
 def test_cycle_notation(cycle, expected_value) -> None:
     """Tests for the method `cycle_notation()`."""
@@ -34,7 +36,7 @@ def test_cycle_notation(cycle, expected_value) -> None:
 @pytest.mark.parametrize(
     argnames="cycle, expected_value",
     argvalues=TEST_ELEMENTS,
-    ids=[f"{cycle}.elements={e}" for cycle, e in TEST_ELEMENTS]
+    ids=[f"{cycle}.elements={e}" for cycle, e in TEST_ELEMENTS],
 )
 def test_elements(cycle, expected_value) -> None:
     """Tests for the property `elements`."""
@@ -48,7 +50,7 @@ def test_elements(cycle, expected_value) -> None:
 @pytest.mark.parametrize(
     argnames="lhs, rhs, expected_value",
     argvalues=TEST_EQUIVALENT,
-    ids=[f"{lhs}.equivalent({rhs})" for lhs, rhs, _ in TEST_EQUIVALENT]
+    ids=[f"{lhs}.equivalent({rhs})" for lhs, rhs, _ in TEST_EQUIVALENT],
 )
 def test_equivalent(lhs, rhs, expected_value) -> None:
     """Tests for the method `equivalent()`."""
@@ -58,7 +60,7 @@ def test_equivalent(lhs, rhs, expected_value) -> None:
 @pytest.mark.parametrize(
     argnames="cycle, expected_value",
     argvalues=TEST_DOMAIN,
-    ids=[f"{p}.domain()={s}" for p, s in TEST_DOMAIN]
+    ids=[f"{p}.domain()={s}" for p, s in TEST_DOMAIN],
 )
 def test_domain(cycle, expected_value) -> None:
     """Tests for the property `domain`."""
@@ -68,7 +70,7 @@ def test_domain(cycle, expected_value) -> None:
 @pytest.mark.parametrize(
     argnames="cycle, expected_value",
     argvalues=TEST_IS_DERANGEMENT,
-    ids=[f"{cycle}.is_derangement()={s}" for cycle, s in TEST_IS_DERANGEMENT]
+    ids=[f"{cycle}.is_derangement()={s}" for cycle, s in TEST_IS_DERANGEMENT],
 )
 def test_is_derangement(cycle, expected_value) -> None:
     """Tests for the method `is_derangement()`."""
@@ -78,7 +80,7 @@ def test_is_derangement(cycle, expected_value) -> None:
 @pytest.mark.parametrize(
     argnames="cycle, expected_value",
     argvalues=TEST_MAP,
-    ids=[f"{p}.map()={m}" for p, m in TEST_MAP]
+    ids=[f"{p}.map()={m}" for p, m in TEST_MAP],
 )
 def test_map(cycle, expected_value) -> None:
     """Tests for the property `map`."""
@@ -86,9 +88,19 @@ def test_map(cycle, expected_value) -> None:
 
 
 @pytest.mark.parametrize(
+    argnames="cycle, item, expected_value",
+    argvalues=TEST_ORBIT,
+    ids=[f"{p.rep()}.orbit({i})" for p, i, _ in TEST_ORBIT],
+)
+def test_orbit(cycle, item, expected_value) -> None:
+    """Tests for the method `orbit()`."""
+    validate_orbit(element=cycle, item=item, expected_value=expected_value)
+
+
+@pytest.mark.parametrize(
     argnames="cycle, expected_value",
     argvalues=TEST_ORDER,
-    ids=[f"{p}.order()={o}" for p, o in TEST_ORDER]
+    ids=[f"{p}.order()={o}" for p, o in TEST_ORDER],
 )
 def test_order(cycle, expected_value) -> None:
     """Tests for the method `order()`."""
@@ -98,7 +110,7 @@ def test_order(cycle, expected_value) -> None:
 @pytest.mark.parametrize(
     argnames="cycle, expected_value",
     argvalues=TEST_SUPPORT,
-    ids=[f"{p}.support()={o}" for p, o in TEST_SUPPORT]
+    ids=[f"{p}.support()={o}" for p, o in TEST_SUPPORT],
 )
 def test_support(cycle, expected_value) -> None:
     """Tests for the method `support()`."""

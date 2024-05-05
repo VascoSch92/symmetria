@@ -27,7 +27,7 @@ from tests.tests_factory import (
 @pytest.mark.parametrize(
     argnames="cycle, expected_value",
     argvalues=TEST_BOOL,
-    ids=[f"bool({c.rep()})={b}" for c, b in TEST_BOOL]
+    ids=[f"bool({c.rep()})={b}" for c, b in TEST_BOOL],
 )
 def test_bool(cycle, expected_value) -> None:
     """Tests for the method `__bool__()`."""
@@ -37,7 +37,7 @@ def test_bool(cycle, expected_value) -> None:
 @pytest.mark.parametrize(
     argnames="cycle, call_on, expected_value",
     argvalues=TEST_CALL,
-    ids=[f"{p.rep()}({ens})" for p, ens, _ in TEST_CALL]
+    ids=[f"{p.rep()}({ens})" for p, ens, _ in TEST_CALL],
 )
 def test_call(cycle, call_on, expected_value) -> None:
     """Tests for the method `__call__()`."""
@@ -47,7 +47,7 @@ def test_call(cycle, call_on, expected_value) -> None:
 @pytest.mark.parametrize(
     argnames="cycle, call_on, error, msg",
     argvalues=TEST_CALL_ERROR,
-    ids=[msg for _, _, _, msg in TEST_CALL_ERROR]
+    ids=[msg for _, _, _, msg in TEST_CALL_ERROR],
 )
 def test_call_error(cycle, call_on, error, msg) -> None:
     """Tests for exceptions to the method `__call__()`."""
@@ -57,7 +57,7 @@ def test_call_error(cycle, call_on, error, msg) -> None:
 @pytest.mark.parametrize(
     argnames="lhs, rhs, expected_value",
     argvalues=TEST_EQ,
-    ids=[f"{lhs}={rhs}" for lhs, rhs, _ in TEST_EQ]
+    ids=[f"{lhs}={rhs}" for lhs, rhs, _ in TEST_EQ],
 )
 def test_eq(lhs, rhs, expected_value) -> None:
     """Tests for the method `__eq__()`."""
@@ -67,7 +67,7 @@ def test_eq(lhs, rhs, expected_value) -> None:
 @pytest.mark.parametrize(
     argnames="cycle, idx, expected_value",
     argvalues=TEST_GETITEM,
-    ids=[f"{c}[{i}]={e}" for c, i, e in TEST_GETITEM]
+    ids=[f"{c}[{i}]={e}" for c, i, e in TEST_GETITEM],
 )
 def test_getitem(cycle, idx, expected_value) -> None:
     """Tests for the method `__getitem__()`."""
@@ -77,7 +77,7 @@ def test_getitem(cycle, idx, expected_value) -> None:
 @pytest.mark.parametrize(
     argnames="cycle, expected_value",
     argvalues=TEST_INT,
-    ids=[f"int({c})={i}" for c, i in TEST_INT]
+    ids=[f"int({c})={i}" for c, i in TEST_INT],
 )
 def test_int(cycle, expected_value) -> None:
     """Tests for the method `__int__()`."""
@@ -97,7 +97,7 @@ def test_len(cycle, expected_value) -> None:
 @pytest.mark.parametrize(
     argnames="lhs, rhs, error, msg",
     argvalues=TEST_MUL_ERROR,
-    ids=[error for _, _, _, error in TEST_MUL_ERROR]
+    ids=[error for _, _, _, error in TEST_MUL_ERROR],
 )
 def test_multiplication_error(lhs, rhs, error, msg) -> None:
     """Tests for exceptions to the method `__mul__()`."""

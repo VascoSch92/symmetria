@@ -15,42 +15,49 @@ class _Element(ABC):
 
     @abstractmethod
     def __bool__(self) -> bool:
-        # TODO: add description
+        """Implement method `bool( )`."""
+        raise NotImplementedError
+
+    @abstractmethod
+    def __call__(self, item: Any) -> Any:
+        """Implement method `self( )`."""
         raise NotImplementedError
 
     @abstractmethod
     def __eq__(self, other) -> bool:
-        # TODO: add description
+        """Implement equality between two objects."""
         raise NotImplementedError
 
     @abstractmethod
     def __int__(self) -> int:
+        """Implement method `int( )`."""
         raise NotImplementedError
 
     @abstractmethod
     def __mul__(self, other):
+        """Implement multiplication between two object."""
         raise NotImplementedError
 
     @abstractmethod
     def __repr__(self) -> str:
-        # TODO: add description
+        """Implement method `__repr__( )`"""
         raise NotImplementedError
 
     @abstractmethod
     def __str__(self) -> str:
-        # TODO: add description
+        """Implement method `__str__( )`"""
         raise NotImplementedError
 
     @property
     @abstractmethod
     def domain(self) -> Iterable[int]:
-        # TODO: add description
+        """Return the domain on which the element is defined."""
         raise NotImplementedError
 
     @property
     @abstractmethod
     def map(self) -> Dict[int, int]:
-        # TODO: add description
+        """Return a dictionary representing the map defining the element."""
         raise NotImplementedError
 
     """@staticmethod
@@ -60,28 +67,36 @@ class _Element(ABC):
     """
 
     @abstractmethod
+    def cycle_decomposition(self) -> "CycleDecomposition":
+        """Return the cycle decomposition of the element."""
+        raise NotImplementedError
+
+    @abstractmethod
     def cycle_notation(self) -> str:
+        """Return the cycle notation of the object"""
         raise NotImplementedError
 
     @abstractmethod
     def equivalent(self, other: Any) -> bool:
-        raise NotImplementedError
-
-    @abstractmethod
-    def orbit(self, item: Any) -> List[Any]:
-        raise NotImplementedError
-
-    @abstractmethod
-    def order(self) -> int:
-        # TODO: add description
+        """Check if two object coming from two different classes represent the same permutation."""
         raise NotImplementedError
 
     @abstractmethod
     def is_derangement(self) -> bool:
-        # TODO: add description
+        """Return if the element is a derangement or not."""
+        raise NotImplementedError
+
+    @abstractmethod
+    def orbit(self, item: Any) -> List[Any]:
+        """Return the orbit created from the action of the element on the item."""
+        raise NotImplementedError
+
+    @abstractmethod
+    def order(self) -> int:
+        """Return the order of the element."""
         raise NotImplementedError
 
     @abstractmethod
     def support(self) -> Set[int]:
-        # TODO: add description
+        """Return the support of the element."""
         raise NotImplementedError
