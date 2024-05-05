@@ -4,6 +4,7 @@ from tests.tests_cycle.test_cases import (
     TEST_CYCLE_NOTATION,
     TEST_ELEMENTS,
     TEST_IS_DERANGEMENT,
+    TEST_EQUIVALENT,
     TEST_ORDER,
     TEST_DOMAIN,
     TEST_SUPPORT,
@@ -16,6 +17,7 @@ from tests.tests_factory import (
     validate_support,
     validate_domain,
     validate_map,
+    validate_equivalent,
 )
 
 
@@ -41,6 +43,16 @@ def test_elements(cycle, expected_value) -> None:
             f"The expression `{cycle.__repr__()}.elements()` must evaluate {expected_value}, "
             f"but got {cycle.elements}."
         )
+
+
+@pytest.mark.parametrize(
+    argnames="lhs, rhs, expected_value",
+    argvalues=TEST_EQUIVALENT,
+    ids=[f"{lhs}.equivalent({rhs})" for lhs, rhs, _ in TEST_EQUIVALENT]
+)
+def test_equivalent(lhs, rhs, expected_value) -> None:
+    """Tests for the method `equivalent()`."""
+    validate_equivalent(lhs=lhs, rhs=rhs, expected_value=expected_value)
 
 
 @pytest.mark.parametrize(

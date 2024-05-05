@@ -6,6 +6,7 @@ from tests.tests_cycle_decomposition.test_cases import (
     TEST_MAP,
     TEST_ORDER,
     TEST_SUPPORT,
+    TEST_EQUIVALENT,
 )
 from tests.tests_factory import (
     validate_cycle_notation,
@@ -13,6 +14,7 @@ from tests.tests_factory import (
     validate_order,
     validate_map,
     validate_support,
+    validate_equivalent,
 )
 
 
@@ -34,6 +36,16 @@ def test_cycle_notation(cycle_decomposition, expected_value) -> None:
 def test_is_derangement(cycle_decomposition, expected_value) -> None:
     """Tests for the method `is_derangement()`."""
     validate_is_derangement(item=cycle_decomposition, expected_value=expected_value)
+
+
+@pytest.mark.parametrize(
+    argnames="lhs, rhs, expected_value",
+    argvalues=TEST_EQUIVALENT,
+    ids=[f"{lhs}.equivalent({rhs})" for lhs, rhs, _ in TEST_EQUIVALENT]
+)
+def test_equivalent(lhs, rhs, expected_value) -> None:
+    """Tests for the method `equivalent()`."""
+    validate_equivalent(lhs=lhs, rhs=rhs, expected_value=expected_value)
 
 
 @pytest.mark.parametrize(

@@ -6,7 +6,6 @@ from tests.tests_cycle.test_cases import (
     TEST_INT,
     TEST_LEN,
     TEST_REPR,
-    TEST_MUL,
     TEST_MUL_ERROR,
     TEST_CALL,
     TEST_CALL_ERROR,
@@ -17,7 +16,6 @@ from tests.tests_factory import (
     validate_eq,
     validate_int,
     validate_len,
-    validate_mul,
     validate_mul_error,
     validate_repr,
     validate_call,
@@ -29,7 +27,7 @@ from tests.tests_factory import (
 @pytest.mark.parametrize(
     argnames="cycle, expected_value",
     argvalues=TEST_BOOL,
-    ids=[f"bool({c})={b}" for c, b in TEST_BOOL]
+    ids=[f"bool({c.rep()})={b}" for c, b in TEST_BOOL]
 )
 def test_bool(cycle, expected_value) -> None:
     """Tests for the method `__bool__()`."""
@@ -39,7 +37,7 @@ def test_bool(cycle, expected_value) -> None:
 @pytest.mark.parametrize(
     argnames="cycle, call_on, expected_value",
     argvalues=TEST_CALL,
-    ids=[f"{p} on {ens}" for p, ens, _ in TEST_CALL]
+    ids=[f"{p.rep()}({ens})" for p, ens, _ in TEST_CALL]
 )
 def test_call(cycle, call_on, expected_value) -> None:
     """Tests for the method `__call__()`."""
@@ -94,16 +92,6 @@ def test_int(cycle, expected_value) -> None:
 def test_len(cycle, expected_value) -> None:
     """Tests for the method `__len__()`."""
     validate_len(item=cycle, expected_value=expected_value)
-
-
-@pytest.mark.parametrize(
-    argnames="lhs, rhs, expected_value",
-    argvalues=TEST_MUL,
-    ids=[f"{p}*{q}" for p, q, _ in TEST_MUL]
-)
-def test_multiplication(lhs, rhs, expected_value) -> None:
-    """Tests for the method `__mul__()`."""
-    validate_mul(lhs=lhs, rhs=rhs, expected_value=expected_value)
 
 
 @pytest.mark.parametrize(

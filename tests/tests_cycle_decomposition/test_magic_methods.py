@@ -47,7 +47,7 @@ def test_getitem(cycle_decomposition, idx, expected_value) -> None:
 
 def test_int() -> None:
     """Tests for the method `__int__()`."""
-    with pytest.raises(NotImplementedError, match="This method is not implemented"):
+    with pytest.raises(NotImplementedError, match="The method is not implemented"):
         _ = int(CycleDecomposition(Cycle(1)))
 
 

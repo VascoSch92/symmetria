@@ -109,7 +109,7 @@ def test_multiplication_error(lhs, rhs, error, msg) -> None:
 @pytest.mark.parametrize(
     argnames="permutation, expected_value",
     argvalues=TEST_REPR,
-    ids=[f"{p}->{r}" for p, r in TEST_REPR],
+    ids=[f"{p}.__repr__()={r.__repr__()}" for p, r in TEST_REPR],
 )
 def test_repr(permutation, expected_value) -> None:
     """Tests for the method `__repr__()`."""
@@ -119,7 +119,7 @@ def test_repr(permutation, expected_value) -> None:
 @pytest.mark.parametrize(
     argnames="permutation, expected_value",
     argvalues=TEST_STR,
-    ids=[f"str({p})={s}" for p, s in TEST_STR],
+    ids=[f"str({p.__repr__()})={s}" for p, s in TEST_STR],
 )
 def test_str(permutation, expected_value) -> None:
     """Tests for the method `__str__()`."""

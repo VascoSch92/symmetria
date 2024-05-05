@@ -5,10 +5,12 @@ from tests.tests_factory import (
     validate_order,
     validate_support,
     validate_domain,
+    validate_equivalent,
     validate_map,
 )
 from tests.tests_permutation.test_cases import (
     TEST_SUPPORT,
+    TEST_EQUIVALENT,
     TEST_DOMAIN,
     TEST_ORDER,
     TEST_ONE_LINE_NOTATION,
@@ -40,6 +42,16 @@ def test_cycle_decomposition(permutation, expected_value) -> None:
 def test_domain(permutation, expected_value) -> None:
     """Tests for the method `domain()`."""
     validate_domain(item=permutation, expected_value=expected_value)
+
+
+@pytest.mark.parametrize(
+    argnames="lhs, rhs, expected_value",
+    argvalues=TEST_EQUIVALENT,
+    ids=[f"{lhs}.equivalent({rhs})" for lhs, rhs, _ in TEST_EQUIVALENT]
+)
+def test_equivalent(lhs, rhs, expected_value) -> None:
+    """Tests for the method `equivalent()`."""
+    validate_equivalent(lhs=lhs, rhs=rhs, expected_value=expected_value)
 
 
 @pytest.mark.parametrize(

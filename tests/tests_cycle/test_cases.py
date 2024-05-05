@@ -38,6 +38,16 @@ TEST_ELEMENTS = [
     (Cycle(1, 2), tuple((1, 2))),
     (Cycle(1, 2, 3), tuple((1, 2, 3))),
 ]
+TEST_EQUIVALENT = [
+    (Cycle(3), CycleDecomposition(Cycle(1), Cycle(2), Cycle(3)), True),
+    (Cycle(4), CycleDecomposition(Cycle(1), Cycle(2), Cycle(3)), False),
+    (Cycle(1, 2), CycleDecomposition(Cycle(1), Cycle(2)), False),
+    (Cycle(1, 2), CycleDecomposition(Cycle(1, 2)), True),
+    (Cycle(1, 2, 4), CycleDecomposition(Cycle(1, 2)), False),
+    (Cycle(1, 2), CycleDecomposition(Cycle(1, 2), Cycle(3)), True),
+    (Cycle(1), Permutation(1), True),
+    (Cycle(2), Permutation(1), False),
+]
 TEST_IS_DERANGEMENT = [
     (Cycle(1), False),
     (Cycle(13), False),
@@ -83,18 +93,24 @@ TEST_CALL = [
     (Cycle(2, 1), (1, 2), (2, 1)),
     (Cycle(2, 1), (1, 17, 2), (17, 1, 2)),
     (Cycle(2, 1), "ab", "ba"),
+    (Cycle(1), Cycle(2), CycleDecomposition(Cycle(1), Cycle(2))),
+    (Cycle(1, 2), Cycle(4), CycleDecomposition(Cycle(1, 2), Cycle(3), Cycle(4))),
+    (Cycle(1), Cycle(4), CycleDecomposition(Cycle(1), Cycle(2), Cycle(3), Cycle(4))),
+    (Cycle(1, 2), Permutation(1, 2), Permutation(2, 1)),
+    (Cycle(1, 2), Permutation(1, 2, 3), Permutation(2, 1, 3)),
+    (Cycle(1), CycleDecomposition(Cycle(1), Cycle(2)), CycleDecomposition(Cycle(1), Cycle(2))),
 ]
 TEST_CALL_ERROR = [
     (
             Cycle(1),
             0.99,
             TypeError,
-            f"Expected type `int` or `Iterable`, but got {type(0.99)}",
+            f"Calling a cycle",
     ),
     (
             Cycle(2, 1),
             [1],
-            AssertionError,
+            ValueError,
             "Not enough object ",
     ),
 ]
@@ -105,14 +121,6 @@ TEST_EQ = [
     (Cycle(1, 2, 3), Cycle(2, 3, 1), True),
     (Cycle(1, 2, 3), Cycle(2, 3, 4), False),
     (Cycle(1, 2, 3, 4), Cycle(4, 1, 2, 3), True),
-    (Cycle(3), CycleDecomposition(Cycle(1), Cycle(2), Cycle(3)), True),
-    (Cycle(4), CycleDecomposition(Cycle(1), Cycle(2), Cycle(3)), False),
-    (Cycle(1, 2), CycleDecomposition(Cycle(1), Cycle(2)), False),
-    (Cycle(1, 2), CycleDecomposition(Cycle(1, 2)), True),
-    (Cycle(1, 2, 4), CycleDecomposition(Cycle(1, 2)), False),
-    (Cycle(1, 2), CycleDecomposition(Cycle(1, 2), Cycle(3)), True),
-    (Cycle(1), Permutation(1), True),
-    (Cycle(2), Permutation(1), False),
     (Cycle(1, 3), "ab", False),
 ]
 TEST_GETITEM = [
@@ -141,18 +149,6 @@ TEST_REPR = [
     (Cycle(1, 2), "Cycle(1, 2)"),
     (Cycle(1, 3, 2), "Cycle(1, 3, 2)"),
 ]
-TEST_MUL = [
-    (Cycle(1), Cycle(1), Cycle(1)),
-    (Cycle(1), Cycle(2), CycleDecomposition(Cycle(1), Cycle(2))),
-    (Cycle(1, 2), Cycle(4), CycleDecomposition(Cycle(1, 2), Cycle(3), Cycle(4))),
-    (Cycle(1), Cycle(4), CycleDecomposition(Cycle(1), Cycle(2), Cycle(3), Cycle(4))),
-    (Cycle(1, 2), Permutation(1, 2), Permutation(2, 1)),
-    (Cycle(1, 2), Permutation(1, 2, 3), Permutation(2, 1, 3)),
-    (Cycle(1), CycleDecomposition(Cycle(1), Cycle(2)), CycleDecomposition(Cycle(1), Cycle(2))),
-    # (Cycle(1, 2), Cycle(2, 3), CycleDecomposition(Cycle(1, 2, 3))),
-]
 TEST_MUL_ERROR = [
-    (Cycle(1, 2, 3), Permutation(1, 2), ValueError, "Cannot compose permutation"),
-    (Cycle(1, 2, 3, 4, 5), CycleDecomposition(Cycle(1), Cycle(2)), ValueError, "Cannot compose permutation"),
-    (Cycle(1, 2), "asd", TypeError, "Product"),
+    (Cycle(1, 2, 3), Permutation(1, 2), NotImplementedError, "Multiplication between cycles is not supported."),
 ]

@@ -4,14 +4,20 @@ from symmetria import Permutation, Cycle, CycleDecomposition
 # TEST CASES CONSTRUCTORS  #
 ############################
 
-TEST_CONSTRUCTOR = [
-    [1], [1, 2], [3, 2, 1], [4, 5, 6, 3, 2, 1], [4, 3, 2, 1]
-]
+TEST_CONSTRUCTOR = [[1], [1, 2], [3, 2, 1], [4, 5, 6, 3, 2, 1], [4, 3, 2, 1]]
 TEST_CONSTRUCTOR_ERROR = [
-    (['1'], ValueError, f"Expected `int` type, but got {type('1')}"),
+    (["1"], ValueError, f"Expected `int` type, but got {type('1')}"),
     ([-1], ValueError, "Expected all strictly positive values, but got -1"),
-    ([1, 3], ValueError, "The permutation is not injecting on its image. Indeed, 3 is not in the image."),
-    ([1, 1], ValueError, "It seems that the permutation is not bijective. Indeed, 1 has two, or more, pre-images.")
+    (
+        [1, 3],
+        ValueError,
+        "The permutation is not injecting on its image. Indeed, 3 is not in the image.",
+    ),
+    (
+        [1, 1],
+        ValueError,
+        "It seems that the permutation is not bijective. Indeed, 1 has two, or more, pre-images.",
+    ),
 ]
 TEST_CONSTRUCTOR_FROM_DICT = [
     ({1: 1}, Permutation(1)),
@@ -43,14 +49,31 @@ TEST_CYCLE_DECOMPOSITION = [
     (Permutation(2, 1), CycleDecomposition(Cycle(1, 2))),
     (Permutation(1, 3, 2), CycleDecomposition(Cycle(1), Cycle(2, 3))),
     (Permutation(1, 4, 3, 2), CycleDecomposition(Cycle(1), Cycle(2, 4), Cycle(3))),
-    (Permutation(1, 4, 5, 7, 3, 2, 6), CycleDecomposition(Cycle(1), Cycle(2, 4, 7, 6), Cycle(3, 5))),
-    (Permutation(6, 4, 5, 7, 3, 2, 1), CycleDecomposition(Cycle(1, 6, 2, 4, 7), Cycle(3, 5))),
+    (
+        Permutation(1, 4, 5, 7, 3, 2, 6),
+        CycleDecomposition(Cycle(1), Cycle(2, 4, 7, 6), Cycle(3, 5)),
+    ),
+    (
+        Permutation(6, 4, 5, 7, 3, 2, 1),
+        CycleDecomposition(Cycle(1, 6, 2, 4, 7), Cycle(3, 5)),
+    ),
 ]
 TEST_DOMAIN = [
     (Permutation(1), range(1, 2)),
     (Permutation(2, 1), range(1, 3)),
     (Permutation(1, 3, 2), range(1, 4)),
     (Permutation(1, 4, 3, 2), range(1, 5)),
+]
+TEST_EQUIVALENT = [
+    (Permutation(1), Permutation(1), True),
+    (Permutation(1, 2, 3), Permutation(1, 2, 3), True),
+    (Permutation(1, 2, 3), Permutation(3, 2, 1), False),
+    (Permutation(1), Cycle(1), True),
+    (Permutation(1), Cycle(1, 2), False),
+    (Permutation(1), CycleDecomposition(Cycle(1)), True),
+    (Permutation(1, 3, 2), CycleDecomposition(Cycle(3, 2), Cycle(1)), True),
+    (Permutation(1, 2, 3), 123, False),
+    (Permutation(1, 3, 2, 4), "hello-world", False),
 ]
 TEST_IS_DERANGEMENT = [
     (Permutation(1), False),
@@ -107,30 +130,37 @@ TEST_CALL = [
     (Permutation(2, 1), (1, 2), (2, 1)),
     (Permutation(2, 1), (1, 17, 2), (17, 1, 2)),
     (Permutation(2, 1), "ab", "ba"),
+    (Permutation(1, 2, 3), Permutation(3, 2, 1), Permutation(3, 2, 1)),
+    (
+        Permutation(3, 4, 5, 1, 2),
+        Permutation(3, 5, 1, 2, 4),
+        Permutation(5, 2, 3, 4, 1),
+    ),
+    (
+        Permutation(1, 2, 4, 3),
+        Cycle(2, 1),
+        CycleDecomposition(Cycle(1, 2), Cycle(3, 4)),
+    ),
+    (Permutation(1, 2, 3, 4), Cycle(1, 2, 3, 4), CycleDecomposition(Cycle(2, 3, 4, 1))),
+    (Permutation(1, 2), Cycle(1), CycleDecomposition(Cycle(1), Cycle(2))),
+    (Permutation(1, 2), Cycle(2), CycleDecomposition(Cycle(1), Cycle(2))),
+    (
+        Permutation(1, 2),
+        CycleDecomposition(Cycle(1), Cycle(2)),
+        CycleDecomposition(Cycle(1), Cycle(2)),
+    ),
 ]
 TEST_CALL_ERROR = [
-    (
-            Permutation(1),
-            0.99,
-            TypeError,
-            f"Expected type `int` or `Iterable`, but got {type(0.99)}",
-    ),
-    (
-            Permutation(2, 1),
-            [1],
-            AssertionError,
-            "Not enough object ",
-    ),
+    (Permutation(1), 0.99, TypeError, "Calling a permutation"),
+    (Permutation(2, 1), [1], ValueError, "Not enough object"),
+    (Permutation(2, 1), Cycle(3), ValueError, "Cannot compose permutation"),
+    (Permutation(2, 1), CycleDecomposition(Cycle(1, 3), Cycle(2)), ValueError, "Cannot compose permutation"),
 ]
 TEST_EQ = [
     (Permutation(1), Permutation(1), True),
     (Permutation(1), Permutation(1, 2), False),
-    (Permutation(1), Cycle(1), True),
-    (Permutation(1), Cycle(1, 2), False),
     (Permutation(1, 2, 3), 123, False),
     (Permutation(1, 3, 2, 4), "hello-world", False),
-    (Permutation(1), CycleDecomposition(Cycle(1)), True),
-    (Permutation(1, 3, 2), CycleDecomposition(Cycle(3, 2), Cycle(1)), True),
 ]
 TEST_INT = [
     (Permutation(1), 1),
@@ -144,20 +174,24 @@ TEST_LEN = [
     (Permutation(1, 3, 2), 3),
 ]
 TEST_MUL = [
-        (Permutation(1), Permutation(1), Permutation(1)),
-        (Permutation(1, 2, 3), Permutation(3, 2, 1), Permutation(3, 2, 1)),
-        (Permutation(3, 4, 5, 1, 2), Permutation(3, 5, 1, 2, 4), Permutation(5, 2, 3, 4, 1)),
-        (Permutation(1, 2, 4, 3), Cycle(2, 1), Permutation(2, 1, 4, 3)),
-        (Permutation(1, 2, 3, 4), Cycle(1, 2, 3, 4), Permutation(2, 3, 4, 1)),
-        (Permutation(1, 2), Cycle(1), Permutation(1, 2)),
-        (Permutation(1, 2), Cycle(2), Permutation(1, 2)),
-        (Permutation(1, 2), CycleDecomposition(Cycle(1), Cycle(2)), Permutation(1, 2))
-    ]
+    (Permutation(1), Permutation(1), Permutation(1)),
+    (Permutation(1, 2, 3), Permutation(3, 2, 1), Permutation(3, 2, 1)),
+    (
+        Permutation(3, 4, 5, 1, 2),
+        Permutation(3, 5, 1, 2, 4),
+        Permutation(5, 2, 3, 4, 1)
+    ),
+]
 TEST_MUL_ERROR = [
     (Permutation(1, 2, 3), Permutation(1, 2), ValueError, "Cannot compose permutation"),
-    (Permutation(1, 2), Cycle(1, 2, 3), ValueError, "Cannot compose permutation"),
+    (Permutation(1, 2), Cycle(1, 2, 3), TypeError, "Product between types "),
     (Permutation(1, 2), 123, TypeError, "Product between types `Permutation` and"),
-    (Permutation(1, 2), CycleDecomposition(Cycle(3, 2), Cycle(1)), ValueError, "Cannot compose permutation"),
+    (
+        Permutation(1, 2),
+        CycleDecomposition(Cycle(3, 2), Cycle(1)),
+        TypeError,
+        "Product between"
+    ),
 ]
 TEST_REPR = [
     (Permutation(1), "Permutation(1)"),

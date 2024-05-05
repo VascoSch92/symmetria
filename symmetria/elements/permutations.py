@@ -9,7 +9,6 @@ __all__ = ["Permutation"]
 class Permutation(_Element):
     """
     BLa bla per la classe
-    :todo: write that we can also do with list and tuple and give examples
     """
     __slots__ = ["_map", "_domain"]
 
@@ -59,24 +58,25 @@ class Permutation(_Element):
         """
         return self != Permutation(*self.domain)
 
-    def __call__(self, item: Union[int, Iterable, "Permutation"]) -> Union[int, Iterable, "Permutation"]:
+    def __call__(self, item: Any) -> Any:
         """
-        Call the permutation on the `item` object, i.e., mimic a permutation action on a set.
+        Call the permutation on the `item` object, i.e., mimic a permutation action on the element `item`.
 
         - If `item` is an integer, it applies the permutation to the integer.
-        - If `item` is an iterable, e.g., a ``str``, ``list`` or ``tuple``, it applies the permutation permuting
-            the values using the indeces.
-        - If `item` is a permutation, it returns the multiplication of the two permutations.
+        - If `item` is a string, a list or a tuple, it applies the permutation permuting the values using the indeces.
+        - If `item` is a permutation, it returns the multiplication of the two permutations, i.e., the compositions.
+        - If `item` is a cycle or a cycle decomposition, it returns the composition in cycle decomposition.
 
         :param item: The object on which the permutation acts.
-        :type item: Union[int, Iterable, Permutation]
+        :type item: Any
 
         :return: The permuted object.
-        :rtype: Union[int, Iterable, Permutation]
+        :rtype: Any
 
         :raises AssertionError: If the length of the permutation is greater than the length of `item`, i.e.,
             the permutation cannot permute the `item`.
-        :raises TypeError: If `item` is not an integer, an iterable or a permutation.
+        :raises ValueError: If the permutation and the object `item` don't belong to the same Symmetric group.
+        :raises TypeError: If the `item` is not of a supported type. See list above for supported types.
 
         :example:
             >>> permutation = Permutation(3, 1, 2)
@@ -92,49 +92,73 @@ class Permutation(_Element):
         if isinstance(item, int):
             return self._call_on_integer(idx=item)
         elif isinstance(item, (str, List, Tuple)):
-            assert len(self) <= len(item), f"Not enough object to permute {item} using the permutation {self}."
-            permuted = self._call_on_iterable(original=item)
-            if isinstance(item, str):
-                return "".join(permuted)
-            elif isinstance(item, Tuple):
-                return tuple(p for p in permuted)
-            return self._call_on_iterable(original=item)
+            if len(self) > len(item):
+                raise ValueError(f"Not enough object to permute {item} using the permutation {self}.")
+            return self._call_on_str_list_tuple(original=item)
         elif isinstance(item, Permutation):
             return self * item
-        raise TypeError(f"Expected type `int`, `Iterable` or `Permutation`, but got {type(item)}")
+        elif isinstance(item, symmetria.elements.cycles.Cycle):
+            if set(item.domain).issubset(set(self.domain)) is False:
+                raise ValueError(
+                    f"Cannot compose permutation {self} with cycle {item},"
+                    " because they don't live in the same Symmetric group."
+                )
+            return self._call_on_cycle(cycle=item)
+        elif isinstance(item, symmetria.elements.cycles.CycleDecomposition):
+            if self.domain != item.domain:
+                raise ValueError(
+                    f"Cannot compose permutation {self} with cycle decomposition {item},"
+                    " because they don't live in the same Symmetric group."
+                )
+            return self._call_on_cycle_decomposition(item)
+        raise TypeError(f"Calling a permutation on {type(item)} is not supported.")
 
     def _call_on_integer(self, idx: int) -> int:
         """Private method for calls on integer."""
         return self[idx] if 1 <= idx <= len(self) else idx
 
-    def _call_on_iterable(self, original: Iterable) -> List:
-        """Private method for calls on iterable."""
-        permuted = [None for _ in original]
+    def _call_on_str_list_tuple(self, original: Union[str, Tuple, List]) -> Union[str, Tuple, List]:
+        """Private method for calls on strings, tuples and lists."""
+        permuted = [_ for _ in original]
         for idx, w in enumerate(original, 1):
             permuted[self._call_on_integer(idx=idx) - 1] = w
-        return permuted
+        if isinstance(original, str):
+            return "".join(permuted)
+        elif isinstance(original, Tuple):
+            return tuple(p for p in permuted)
+        else:
+            return permuted
+
+    def _call_on_cycle(self, cycle: "Cycle") -> "CycleDecomposition":
+        """Private method for calls on cycles."""
+        permutation = []
+        for element in self.domain:
+            if element in cycle:
+                idx = cycle.elements.index(element)
+                permutation.append(self[cycle[(idx + 1) % len(cycle)]])
+            else:
+                permutation.append(self[element])
+        cycle_decomposition = Permutation(*permutation).cycle_decomposition()
+        return cycle_decomposition
+
+    def _call_on_cycle_decomposition(self, cycle_decomposition: "CycleDecomposition") -> "CycleDecomposition":
+        """Private method for calls on cycle decomposition."""
+        return Permutation.from_dict(
+            p={idx: self._map[cycle_decomposition.map[idx]] for idx in self.domain}
+        ).cycle_decomposition()
 
     def __eq__(self, other: Any) -> bool:
         """
-        Check if the permutation object is equal to another object.
-
-        - If `other` is a ``Permutation``, it checks whether the permutation maps are equal.
-        - If `other` is a ``Cycle``, it converts it to a ``Permutation`` and checks for equality.
-        - If `other` is a ``CycleDecomposition``, it converts it to a ``Permutation`` and checks for equality.
-        - If `other` is not of any above type, it returns False.
+        Check if the permutation is equal to another object.
 
         :param other: The object to compare with.
         :type other: Any
 
-        :return: True if the ``Permutation`` is equal to `other`, False otherwise.
+        :return: True if the permutation is equal to `other`, i.e., they define the same map. Otherwise, False.
         :rtype: bool
         """
         if isinstance(other, Permutation):
             return self.map == other.map
-        elif isinstance(other, symmetria.elements.cycles.Cycle):
-            return self == Permutation.from_cycle(other)
-        elif isinstance(other, symmetria.elements.cycles.CycleDecomposition):
-            return self == Permutation.from_cycle_decomposition(other)
         return False
 
     def __getitem__(self, item: int) -> int:
@@ -177,6 +201,9 @@ class Permutation(_Element):
         :rtype: int
 
         :example:
+            >>> permutation = Permutation(1)
+            >>> len(permutation)
+            1
             >>> permutation = Permutation(3, 1, 2)
             >>> len(permutation)
             3
@@ -186,7 +213,28 @@ class Permutation(_Element):
         """
         return len(list(self.domain))
 
-    def __mul__(self, other: Union["Permutation", "Cycle", "CycleDecomposition"]) -> "Permutation":
+    def __mul__(self, other: "Permutation") -> "Permutation":
+        """
+        Multiplies the permutation with another permutation, resulting in a new permutation
+        that represents the composition of the two permutations.
+
+        :param other: The other permutation to multiply with.
+        :type other: Permutation
+
+        :return: The composition of the two permutations.
+        :rtype: Permutation
+
+        :raises ValueError: If the permutations don't live in the same Symmetric group.
+        :raises TypeError: If the other object is not a Permutation.
+
+        :example:
+            >>> Permutation(1, 2, 3) * Permutation(3, 2, 1)
+            Permutation(3, 2, 1)
+            >>> Permutation(1) * Permutation(1)
+            Permutation(1)
+            >>> Permutation(3, 4, 5, 1, 2) * Permutation(3, 5, 1, 2, 4)
+            Permutation(5, 2, 3, 4, 1)
+        """
         if isinstance(other, Permutation):
             if self.domain != other.domain:
                 raise ValueError(
@@ -194,27 +242,6 @@ class Permutation(_Element):
                     " because they don't live in the same Symmetric group."
                 )
             return Permutation.from_dict(p={idx: self._map[other._map[idx]] for idx in self.domain})
-        elif isinstance(other, symmetria.elements.cycles.Cycle):
-            if set(other.domain).issubset(set(self.domain)) is False:
-                raise ValueError(
-                    f"Cannot compose permutation {self} with cycle {other},"
-                    " because they don't live in the same Symmetric group."
-                )
-            permutation = []
-            for element in self.domain:
-                if element in other:
-                    idx = other.elements.index(element)
-                    permutation.append(self[other[(idx + 1) % len(other)]])
-                else:
-                    permutation.append(self[element])
-            return Permutation(*permutation)
-        elif isinstance(other, symmetria.elements.cycles.CycleDecomposition):
-            if self.domain != other.domain:
-                raise ValueError(
-                    f"Cannot compose permutation {self} with cycle decomposition {other},"
-                    " because they don't live in the same Symmetric group."
-                )
-            return Permutation.from_dict(p={idx: self._map[other.map[idx]] for idx in self.domain})
         raise TypeError(f"Product between types `Permutation` and {type(other)} is not implemented.")
 
     def __repr__(self) -> str:
@@ -305,6 +332,24 @@ class Permutation(_Element):
 
     @classmethod
     def from_cycle_decomposition(cls, cycle_decomposition: "CycleDecomposition") -> "Permutation":
+        """
+        Return a permutation from a cycle decomposition. In other word, it converts a cycle decomposition into a
+        permutation.
+
+        :param cycle_decomposition: A cycle decomposition.
+        :type cycle_decomposition: CycleDecomposition
+
+        :return: A permutation equivalent to the given cycle.
+        :rtype: Permutation
+
+        :example:
+            >>> cd = CycleDecomposition(Cycle(1))
+            >>> Permutation.from_cycle_decomposition(cd)
+            (1)
+            >>> cd = CycleDecomposition(Cycle(4, 3), Cycle(1, 2)))
+            >>> Permutation.from_cycle_decomposition(cd)
+            (2, 1, 4, 3)
+        """
         return Permutation.from_dict(p=cycle_decomposition.map)
 
     @property
@@ -348,6 +393,77 @@ class Permutation(_Element):
         """
         return self._map
 
+    def equivalent(self, other: Any) -> bool:
+        """
+        Checks if the permutation is equivalent to another object. This method is introduced because we can have
+        different representation of the same permutation, e.g., as a cycle, or as cycle decomposition.
+
+        :param other: The object to compare with.
+        :type other: Any
+
+        :return: True if the permutation is equivalent to the other object, False otherwise.
+        :rtype: bool
+
+        :example:
+            >>> permutation_a = Permutation(1, 2, 3)
+            >>> permutation_b = Permutation(1, 2, 3)
+            >>> permutation_a.equivalent(permutation_b)
+            True
+            >>> permutation = Permutation(3, 1, 2)
+            >>> cycle = Cycle(1, 3, 2)
+            >>> cycle.equivalent(cycle)
+            True
+            >>> permutation = Permutation(2, 1, 4, 3)
+            >>> cycle_decomposition = CycleDecomposition(Cycle(1, 2), Cycle(3, 4))
+            >>> permutation.equivalent(cycle_decomposition)
+            True
+        """
+        if isinstance(other, Permutation):
+            return self == other
+        elif isinstance(other, symmetria.elements.cycles.Cycle):
+            return self == Permutation.from_cycle(other)
+        elif isinstance(other, symmetria.elements.cycles.CycleDecomposition):
+            return self == Permutation.from_cycle_decomposition(other)
+        return False
+
+    def orbit(self, item: Any) -> List[Any]:
+        """
+        Calculates the orbit of the specified element under the permutation,
+        which is the set of all elements obtained by repeatedly applying the permutation
+        to the initial element until it returns to itself.
+
+        :param item: The initial element or iterable to compute the orbit for.
+        :type item: Any
+
+        :return: The orbit of the specified element under the permutation.
+        :rtype: List[Any]
+
+        :example:
+            >>> permutation = Permutation(3, 1, 2)
+            >>> permutation.orbit(1)
+            [1, 3, 2]
+            >>> permutation.orbit([1, 2, 3])
+            [[1, 2, 3], [2, 3, 1], [3, 1, 2]]
+            >>> permutation.orbit("abc")
+            ['abc', 'bca', 'cab']
+            >>> permutation.orbit(Permutation(3, 1, 2))
+            [Permutation(3, 1, 2), Permutation(2, 3, 1), Permutation(1, 2, 3)]
+            >>> permutation.orbit(Cycle(1, 2, 3))
+            [
+                CycleDecomposition(Cycle(1, 2, 3)),
+                CycleDecomposition(Cycle(1), Cycle(2), Cycle(3)),
+                CycleDecomposition(Cycle(1, 3, 2)),
+            ]
+        """
+        if isinstance(item, symmetria.elements.cycles.Cycle):
+            item = item.cycle_decomposition()
+        orbit = [item]
+        next_element = self(item)
+        while next_element != item:
+            orbit.append(next_element)
+            next_element = self(next_element)
+        return orbit
+
     def order(self) -> int:
         r"""
         Return the order of the permutation.
@@ -370,36 +486,6 @@ class Permutation(_Element):
             4
         """
         return self.cycle_decomposition().order()
-
-    def orbit(self, item: Union[int, Iterable, "Permutation"]) -> List[Union[int, Iterable, "Permutation"]]:
-        """
-        Calculates the orbit of the specified element under the permutation,
-        which is the set of all elements obtained by repeatedly applying the permutation
-        to the initial element until it returns to itself.
-
-        :param item: The initial element or iterable to compute the orbit for.
-        :type item: Union[int, Iterable, "Permutation"]
-
-        :return: The orbit of the specified element under the permutation.
-        :rtype: List[Union[int, Iterable, "Permutation"]]
-
-        :example:
-            >>> permutation = Permutation(3, 1, 2)
-            >>> permutation.orbit(1)
-            [1, 3, 2]
-            >>> permutation.orbit([1, 2, 3])
-            [[1, 2, 3], [2, 3, 1], [3, 1, 2]]
-            >>> permutation.orbit("abc")
-            ['abc', 'bca', 'cab']
-            >>> permutation.orbit(Permutation(3, 1, 2))
-            [Permutation(3, 1, 2), Permutation(2, 3, 1), Permutation(1, 2, 3)]
-        """
-        orbit = [item]
-        next_element = self(item)
-        while next_element != item:
-            orbit.append(next_element)
-            next_element = self(next_element)
-        return orbit
 
     def cycle_decomposition(self) -> "CycleDecomposition":
         """
@@ -426,6 +512,23 @@ class Permutation(_Element):
                 cycles.append(symmetria.elements.cycles.Cycle(*orbit))
                 visited.update(orbit)
         return symmetria.elements.cycles.CycleDecomposition(*cycles)
+
+    def cycle_notation(self) -> str:
+        """
+        Returns a string representing the cycle notation of the permutation.
+
+        :return: The cycle notation of the permutation.
+        :rtype: str
+
+        :example:
+            >>> Permutation(1).cycle_notation()
+            '(1)'
+            >>> Permutation(3, 1, 2).cycle_notation()
+            '(1 3 2)'
+            >>> Permutation(3, 1, 2, 4, 5, 6).cycle_notation()
+            '(1 3 2)(4)(5)(6)'
+        """
+        return self.cycle_decomposition().cycle_notation()
 
     def is_derangement(self) -> bool:
         r"""
@@ -499,5 +602,6 @@ class Permutation(_Element):
 if __name__ == '__main__':
     a = Permutation(1)
     b = Permutation(3, 1, 2)
-    c = Permutation(1, 3, 4, 5, 2, 6)
-    print(b.orbit(1), b.orbit([1, 2, 3]), b.orbit("abc"), b.orbit(b))
+    c = Permutation(3, 1, 2, 4, 5, 6)
+    from symmetria.elements.cycles import CycleDecomposition, Cycle
+    print(a.cycle_notation(), b.cycle_notation(), c.cycle_notation())
