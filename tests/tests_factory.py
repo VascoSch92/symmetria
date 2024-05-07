@@ -1,7 +1,8 @@
-from typing import Any, Type, Dict, Set
-import pytest
-from symmetria.elements.cycle_decomposition import CycleDecomposition
+from typing import Any, Set, Dict, Type
 
+import pytest
+
+from symmetria.elements.cycle_decomposition import CycleDecomposition
 
 ##########################
 # CONSTRUCTOR VALIDATORS #
@@ -24,9 +25,7 @@ def validate_from_cycle(class_: Any, constructor: Dict, expected_value: Any) -> 
         )
 
 
-def validate_from_cycle_decomposition(
-    class_: Any, constructor: Dict, expected_value: Any
-) -> None:
+def validate_from_cycle_decomposition(class_: Any, constructor: Dict, expected_value: Any) -> None:
     if class_.from_cycle_decomposition(constructor) != expected_value:
         raise ValueError(
             f"The expression `{class_.name()}.from_cycle_decomposition({constructor}))` must evaluate {expected_value}, "
@@ -74,17 +73,13 @@ def validate_equivalent(lhs: Any, rhs: Any, expected_value: bool) -> None:
 def validate_domain(item: Any, expected_value: bool) -> None:
     if item.domain != expected_value:
         raise ValueError(
-            f"The expression `{item.rep()}.domain()` must evaluate {expected_value}, "
-            f"but got {item.domain}."
+            f"The expression `{item.rep()}.domain()` must evaluate {expected_value}, " f"but got {item.domain}."
         )
 
 
 def validate_map(item: Any, expected_value: Dict[int, int]) -> None:
     if item.map != expected_value:
-        raise ValueError(
-            f"The expression `{item.rep()}.map()` must evaluate {expected_value}, "
-            f"but got {item.map}."
-        )
+        raise ValueError(f"The expression `{item.rep()}.map()` must evaluate {expected_value}, " f"but got {item.map}.")
 
 
 def validate_orbit(element: Any, item: Any, expected_value: int) -> None:
@@ -98,16 +93,14 @@ def validate_orbit(element: Any, item: Any, expected_value: int) -> None:
 def validate_order(item: Any, expected_value: int) -> None:
     if item.order() != expected_value:
         raise ValueError(
-            f"The expression `{item.rep()}.order()` must evaluate {expected_value}, "
-            f"but got {item.order()}."
+            f"The expression `{item.rep()}.order()` must evaluate {expected_value}, " f"but got {item.order()}."
         )
 
 
 def validate_support(item: Any, expected_value: Set[int]) -> None:
     if item.support() != expected_value:
         raise ValueError(
-            f"The expression `{item.rep()}.support()` must evaluate {expected_value}, "
-            f"but got {item.support()}."
+            f"The expression `{item.rep()}.support()` must evaluate {expected_value}, " f"but got {item.support()}."
         )
 
 
@@ -118,9 +111,7 @@ def validate_support(item: Any, expected_value: Set[int]) -> None:
 
 def validate_bool(item: Any, expected_value: bool) -> None:
     if bool(item) != expected_value:
-        raise ValueError(
-            f"The expression `bool({item.rep()})` must evaluate {expected_value}, but got {bool(item)}."
-        )
+        raise ValueError(f"The expression `bool({item.rep()})` must evaluate {expected_value}, but got {bool(item)}.")
 
 
 def validate_call(item: Any, call_on: Any, expected_value: Any) -> None:
@@ -131,9 +122,7 @@ def validate_call(item: Any, call_on: Any, expected_value: Any) -> None:
         )
 
 
-def validate_call_error(
-    item: Any, call_on: Any, error: Type[Exception], msg: str
-) -> None:
+def validate_call_error(item: Any, call_on: Any, error: Type[Exception], msg: str) -> None:
     with pytest.raises(error, match=msg):
         _ = item(call_on)
 
@@ -147,30 +136,22 @@ def validate_eq(lhs: Any, rhs: Any, expected_value: bool) -> None:
 
 def validate_getitem(item: Any, idx: int, expected_value: int) -> None:
     if item[idx] != expected_value:
-        raise ValueError(
-            f"The expression {item.rep()}[{idx}] must evaluate {expected_value}, but got {item[idx]}."
-        )
+        raise ValueError(f"The expression {item.rep()}[{idx}] must evaluate {expected_value}, but got {item[idx]}.")
 
 
 def validate_int(item: Any, expected_value: int) -> None:
     if int(item) != expected_value:
-        raise ValueError(
-            f"The expression `int({item.rep()})` must evaluate {expected_value}, but got {int(item)}."
-        )
+        raise ValueError(f"The expression `int({item.rep()})` must evaluate {expected_value}, but got {int(item)}.")
 
 
 def validate_len(item: Any, expected_value: int) -> None:
     if len(item) != expected_value:
-        raise ValueError(
-            f"The expression `len({item.rep()})` must evaluate {expected_value}, but got {len(item)}."
-        )
+        raise ValueError(f"The expression `len({item.rep()})` must evaluate {expected_value}, but got {len(item)}.")
 
 
 def validate_mul(lhs: Any, rhs: Any, expected_value: Any) -> None:
     if (lhs * rhs) != expected_value:
-        raise ValueError(
-            f"The expression `{lhs.rep()}*{rhs.rep()}` must evaluate {expected_value}, but got {lhs*rhs}."
-        )
+        raise ValueError(f"The expression `{lhs.rep()}*{rhs.rep()}` must evaluate {expected_value}, but got {lhs*rhs}.")
 
 
 def validate_mul_error(lhs: Any, rhs: Any, error: Type[Exception], msg: str) -> None:

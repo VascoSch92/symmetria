@@ -1,5 +1,5 @@
 from abc import ABC, abstractmethod
-from typing import Dict, Set, Iterable, Any, List
+from typing import Any, Set, Dict, List, Iterable
 
 
 class _Element(ABC):

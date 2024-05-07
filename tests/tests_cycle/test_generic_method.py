@@ -1,25 +1,25 @@
 import pytest
 
+from tests.tests_factory import (
+    validate_map,
+    validate_orbit,
+    validate_order,
+    validate_domain,
+    validate_support,
+    validate_equivalent,
+    validate_cycle_notation,
+    validate_is_derangement,
+)
 from tests.tests_cycle.test_cases import (
-    TEST_CYCLE_NOTATION,
-    TEST_ELEMENTS,
-    TEST_IS_DERANGEMENT,
-    TEST_EQUIVALENT,
+    TEST_MAP,
+    TEST_ORBIT,
     TEST_ORDER,
     TEST_DOMAIN,
     TEST_SUPPORT,
-    TEST_ORBIT,
-    TEST_MAP,
-)
-from tests.tests_factory import (
-    validate_cycle_notation,
-    validate_is_derangement,
-    validate_order,
-    validate_support,
-    validate_domain,
-    validate_map,
-    validate_equivalent,
-    validate_orbit,
+    TEST_ELEMENTS,
+    TEST_EQUIVALENT,
+    TEST_CYCLE_NOTATION,
+    TEST_IS_DERANGEMENT,
 )
 
 

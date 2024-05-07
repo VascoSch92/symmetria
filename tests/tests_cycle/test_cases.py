@@ -1,7 +1,6 @@
-from symmetria.elements.permutation import Permutation
 from symmetria.elements.cycle import Cycle
+from symmetria.elements.permutation import Permutation
 from symmetria.elements.cycle_decomposition import CycleDecomposition
-
 
 ############################
 # TEST CASES CONSTRUCTORS  #
@@ -9,8 +8,8 @@ from symmetria.elements.cycle_decomposition import CycleDecomposition
 
 TEST_CONSTRUCTOR = [[1], [1, 2], [3, 2, 1], [4, 5, 6, 3, 2, 1], [4, 3, 2, 1]]
 TEST_CONSTRUCTOR_ERROR = [
-    (["1"], ValueError, f"Expected `int` type, but got {type('1')}."),
-    ([1, 2, 3.4], ValueError, f"Expected `int` type, but got {type(3.4)}."),
+    (["1"], ValueError, f"Expected `int` type, but got {str}."),
+    ([1, 2, 3.4], ValueError, f"Expected `int` type, but got {float}."),
     ([1, 0], ValueError, f"Expected all strictly positive values, but got {0}."),
     ([1, -1], ValueError, f"Expected all strictly positive values, but got {-1}."),
 ]
@@ -34,8 +33,8 @@ TEST_DOMAIN = [
 TEST_ELEMENTS = [
     (Cycle(1), (1,)),
     (Cycle(13), (13,)),
-    (Cycle(1, 2), tuple((1, 2))),
-    (Cycle(1, 2, 3), tuple((1, 2, 3))),
+    (Cycle(1, 2), (1, 2)),
+    (Cycle(1, 2, 3), (1, 2, 3)),
 ]
 TEST_EQUIVALENT = [
     (Cycle(13), Cycle(13), True),
@@ -126,7 +125,7 @@ TEST_CALL = [
     ),
 ]
 TEST_CALL_ERROR = [
-    (Cycle(1), 0.99, TypeError, f"Calling a cycle"),
+    (Cycle(1), 0.99, TypeError, "Calling a cycle"),
     (Cycle(2, 1), [1], ValueError, "Not enough object "),
     (Cycle(13), Permutation(1, 2, 3), ValueError, "Cannot compose"),
     (Cycle(13), Cycle(1), ValueError, "Cannot compose"),

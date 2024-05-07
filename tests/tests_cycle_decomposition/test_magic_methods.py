@@ -1,24 +1,24 @@
 import pytest
 
+from tests.tests_factory import (
+    validate_eq,
+    validate_bool,
+    validate_call,
+    validate_repr,
+    validate_getitem,
+    validate_mul_error,
+    validate_call_error,
+)
 from symmetria.elements.cycle import Cycle
 from symmetria.elements.cycle_decomposition import CycleDecomposition
 from tests.tests_cycle_decomposition.test_cases import (
-    TEST_BOOL,
     TEST_EQ,
-    TEST_GETITEM,
-    TEST_REPR,
+    TEST_BOOL,
     TEST_CALL,
-    TEST_CALL_ERROR,
+    TEST_REPR,
+    TEST_GETITEM,
     TEST_MUL_ERROR,
-)
-from tests.tests_factory import (
-    validate_bool,
-    validate_eq,
-    validate_getitem,
-    validate_repr,
-    validate_call,
-    validate_call_error,
-    validate_mul_error,
+    TEST_CALL_ERROR,
 )
 
 

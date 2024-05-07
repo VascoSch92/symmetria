@@ -1,24 +1,24 @@
 import pytest
 
-from tests.tests_cycle_decomposition.test_cases import (
-    TEST_CYCLE_NOTATION,
-    TEST_IS_DERANGEMENT,
-    TEST_MAP,
-    TEST_ORDER,
-    TEST_SUPPORT,
-    TEST_ORBIT,
-    TEST_EQUIVALENT,
-    TEST_CYCLE_DECOMPOSITION,
-)
 from tests.tests_factory import (
+    validate_map,
+    validate_orbit,
+    validate_order,
+    validate_support,
+    validate_equivalent,
     validate_cycle_notation,
     validate_is_derangement,
-    validate_order,
-    validate_map,
-    validate_support,
-    validate_orbit,
-    validate_equivalent,
     validate_cycle_decomposition,
+)
+from tests.tests_cycle_decomposition.test_cases import (
+    TEST_MAP,
+    TEST_ORBIT,
+    TEST_ORDER,
+    TEST_SUPPORT,
+    TEST_EQUIVALENT,
+    TEST_CYCLE_NOTATION,
+    TEST_IS_DERANGEMENT,
+    TEST_CYCLE_DECOMPOSITION,
 )
 
 
@@ -29,9 +29,7 @@ from tests.tests_factory import (
 )
 def test_cycle_decomposition(cycle_decomposition, expected_value) -> None:
     """Tests for the method `cycle_decomposition()`."""
-    validate_cycle_decomposition(
-        item=cycle_decomposition, expected_value=expected_value
-    )
+    validate_cycle_decomposition(item=cycle_decomposition, expected_value=expected_value)
 
 
 @pytest.mark.parametrize(

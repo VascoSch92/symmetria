@@ -1,4 +1,4 @@
-from symmetria import Permutation, Cycle, CycleDecomposition
+from symmetria import Cycle, Permutation, CycleDecomposition
 
 ############################
 # TEST CASES CONSTRUCTORS  #
@@ -6,7 +6,7 @@ from symmetria import Permutation, Cycle, CycleDecomposition
 
 TEST_CONSTRUCTOR = [[1], [1, 2], [3, 2, 1], [4, 5, 6, 3, 2, 1], [4, 3, 2, 1]]
 TEST_CONSTRUCTOR_ERROR = [
-    (["1"], ValueError, f"Expected `int` type, but got {type('1')}"),
+    (["1"], ValueError, f"Expected `int` type, but got {str}"),
     ([-1], ValueError, "Expected all strictly positive values, but got -1"),
     (
         [1, 3],

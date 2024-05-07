@@ -18,6 +18,7 @@ clean:
 	@echo "[INFO] -- cleaning"
 	@rm -rf "./$(BUILDDIR)"
 	@rm -rf "./$(SOURCEDIR)/changelog.md"
+	@rm -rf "./$(SOURCEDIR)/license.txt"
 	@rm -rf "./$(SOURCEDIR)/contributing.md"
 
 copy-changelog:
@@ -28,8 +29,12 @@ copy-contributing:
 	@echo "[INFO] Copying CONTRIBUTING.md in "docs/$(SOURCEDIR)""
 	@cp -r ../CONTRIBUTING.md "$(SOURCEDIR)/contributing.md"
 
+copy-license:
+	@echo "[INFO] Copying LICENSE.txt in "docs/$(SOURCEDIR)""
+	@cp -r ../LICENSE.txt "$(SOURCEDIR)/license.txt"
+
 doc:
 	@echo "[INFO] Build documentation"
 	@$(SPHINXBUILD) "$(SOURCEDIR)" "$(BUILDDIR)"
 
-generate-documentation: clean copy-changelog copy-contributing doc
+build-docs: clean copy-changelog copy-contributing copy-license doc

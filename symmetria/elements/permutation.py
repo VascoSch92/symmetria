@@ -1,7 +1,7 @@
-from typing import Dict, List, Union, Tuple, Set, Iterable, Any
+from typing import Any, Set, Dict, List, Tuple, Union, Iterable
 
-import symmetria.elements.cycle_decomposition
 import symmetria.elements.cycle
+import symmetria.elements.cycle_decomposition
 from symmetria.interfaces import _Element
 
 __all__ = ["Permutation"]
@@ -29,6 +29,7 @@ class Permutation(_Element):
         >>> permutation = Permutation(*[3, 1, 2])
         >>> permutation = Permutation(*(3, 1, 2))
     """
+
     __slots__ = ["_map", "_domain"]
 
     def __init__(self, *image: int) -> None:
@@ -49,13 +50,9 @@ class Permutation(_Element):
             if isinstance(img, int) is False:
                 raise ValueError(f"Expected `int` type, but got {type(img)}.")
             if img < 1:
-                raise ValueError(
-                    f"Expected all strictly positive values, but got {img}"
-                )
+                raise ValueError(f"Expected all strictly positive values, but got {img}")
             elif img > len(image):
-                raise ValueError(
-                    f"The permutation is not injecting on its image. Indeed, {img} is not in the image."
-                )
+                raise ValueError(f"The permutation is not injecting on its image. Indeed, {img} is not in the image.")
             elif img in _map.values():
                 raise ValueError(
                     f"It seems that the permutation is not bijective. Indeed, {img} has two, or more, pre-images."
@@ -116,9 +113,7 @@ class Permutation(_Element):
             return self._call_on_integer(idx=item)
         elif isinstance(item, (str, List, Tuple)):
             if len(self) > len(item):
-                raise ValueError(
-                    f"Not enough object to permute {item} using the permutation {self}."
-                )
+                raise ValueError(f"Not enough object to permute {item} using the permutation {self}.")
             return self._call_on_str_list_tuple(original=item)
         elif isinstance(item, Permutation):
             return self * item
@@ -129,9 +124,7 @@ class Permutation(_Element):
                     " because they don't live in the same Symmetric group."
                 )
             return self._call_on_cycle(cycle=item)
-        elif isinstance(
-            item, symmetria.elements.cycle_decomposition.CycleDecomposition
-        ):
+        elif isinstance(item, symmetria.elements.cycle_decomposition.CycleDecomposition):
             if self.domain != item.domain:
                 raise ValueError(
                     f"Cannot compose permutation {self} with cycle decomposition {item},"
@@ -144,11 +137,9 @@ class Permutation(_Element):
         """Private method for calls on integer."""
         return self[idx] if 1 <= idx <= len(self) else idx
 
-    def _call_on_str_list_tuple(
-        self, original: Union[str, Tuple, List]
-    ) -> Union[str, Tuple, List]:
+    def _call_on_str_list_tuple(self, original: Union[str, Tuple, List]) -> Union[str, Tuple, List]:
         """Private method for calls on strings, tuples and lists."""
-        permuted = [_ for _ in original]
+        permuted = list(_ for _ in original)
         for idx, w in enumerate(original, 1):
             permuted[self._call_on_integer(idx=idx) - 1] = w
         if isinstance(original, str):
@@ -167,12 +158,9 @@ class Permutation(_Element):
                 permutation.append(self[cycle[(idx + 1) % len(cycle)]])
             else:
                 permutation.append(self[element])
-        cycle_decomposition = Permutation(*permutation).cycle_decomposition()
-        return cycle_decomposition
+        return Permutation(*permutation).cycle_decomposition()
 
-    def _call_on_cycle_decomposition(
-        self, cycle_decomposition: "CycleDecomposition"
-    ) -> "CycleDecomposition":
+    def _call_on_cycle_decomposition(self, cycle_decomposition: "CycleDecomposition") -> "CycleDecomposition":
         """Private method for calls on cycle decomposition."""
         return Permutation.from_dict(
             p={idx: self._map[cycle_decomposition.map[idx]] for idx in self.domain}
@@ -222,9 +210,7 @@ class Permutation(_Element):
             >>> int(permutation)
             134526
         """
-        return sum(
-            [self[element] * 10 ** (len(self) - element) for element in self.domain]
-        )
+        return sum([self[element] * 10 ** (len(self) - element) for element in self.domain])
 
     def __len__(self) -> int:
         """
@@ -274,12 +260,8 @@ class Permutation(_Element):
                     f"Cannot compose permutation {self} with permutation {other},"
                     " because they don't live in the same Symmetric group."
                 )
-            return Permutation.from_dict(
-                p={idx: self._map[other._map[idx]] for idx in self.domain}
-            )
-        raise TypeError(
-            f"Product between types `Permutation` and {type(other)} is not implemented."
-        )
+            return Permutation.from_dict(p={idx: self._map[other._map[idx]] for idx in self.domain})
+        raise TypeError(f"Product between types `Permutation` and {type(other)} is not implemented.")
 
     def __repr__(self) -> str:
         r"""
@@ -368,9 +350,7 @@ class Permutation(_Element):
         return Permutation(*image)
 
     @classmethod
-    def from_cycle_decomposition(
-        cls, cycle_decomposition: "CycleDecomposition"
-    ) -> "Permutation":
+    def from_cycle_decomposition(cls, cycle_decomposition: "CycleDecomposition") -> "Permutation":
         """
         Return a permutation from a cycle decomposition. In other word, it converts a cycle decomposition into a
         permutation.
@@ -461,9 +441,7 @@ class Permutation(_Element):
             return self == other
         elif isinstance(other, symmetria.elements.cycle.Cycle):
             return self == Permutation.from_cycle(other)
-        elif isinstance(
-            other, symmetria.elements.cycle_decomposition.CycleDecomposition
-        ):
+        elif isinstance(other, symmetria.elements.cycle_decomposition.CycleDecomposition):
             return self == Permutation.from_cycle_decomposition(other)
         return False
 

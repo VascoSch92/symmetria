@@ -1,26 +1,26 @@
 import pytest
 
-from tests.tests_cycle.test_cases import (
-    TEST_BOOL,
-    TEST_EQ,
-    TEST_INT,
-    TEST_LEN,
-    TEST_REPR,
-    TEST_MUL_ERROR,
-    TEST_CALL,
-    TEST_CALL_ERROR,
-    TEST_GETITEM,
-)
 from tests.tests_factory import (
-    validate_bool,
     validate_eq,
     validate_int,
     validate_len,
-    validate_mul_error,
-    validate_repr,
+    validate_bool,
     validate_call,
-    validate_call_error,
+    validate_repr,
     validate_getitem,
+    validate_mul_error,
+    validate_call_error,
+)
+from tests.tests_cycle.test_cases import (
+    TEST_EQ,
+    TEST_INT,
+    TEST_LEN,
+    TEST_BOOL,
+    TEST_CALL,
+    TEST_REPR,
+    TEST_GETITEM,
+    TEST_MUL_ERROR,
+    TEST_CALL_ERROR,
 )
 
 
@@ -87,7 +87,7 @@ def test_int(cycle, expected_value) -> None:
 @pytest.mark.parametrize(
     argnames="cycle, expected_value",
     argvalues=TEST_LEN,
-    ids=[f"len({c})={l}" for c, l in TEST_LEN],
+    ids=[f"len({c})={length}" for c, length in TEST_LEN],
 )
 def test_len(cycle, expected_value) -> None:
     """Tests for the method `__len__()`."""

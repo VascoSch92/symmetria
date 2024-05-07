@@ -1,8 +1,145 @@
+[project]
+name = "symmetria"
+version = "0.0.0"
+description = "TO-DO"
+authors = [
+    {name = "Vasco Schiavo"},
+]
+maintainers = [
+    {name = "Vasco Schiavo"},
+]
+readme = {file="README.md", content-type="text/markdown"}
+requires-python = ">=3.9,<3.13"
+keywords = [
+    "math",
+    "mathematics",
+    "symmetry",
+    "permutation",
+]
+classifiers = [
+    "Intended Audience :: Education",
+    "Intended Audience :: Developers",
+    "Intended Audience :: End Users/Desktop",
+    "Intended Audience :: Science/Research",
+    "License :: OSI Approved :: MIT License",
+    "Topic :: Education",
+    "Topic :: Scientific/Engineering :: Mathematics",
+    "Operating System :: Microsoft :: Windows",
+    "Operating System :: POSIX",
+    "Operating System :: Unix",
+    "Operating System :: MacOS",
+    "Programming Language :: Python",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+]
+
+[project.optional-dependencies]
+dev = [
+    "pre-commit",
+    "pytest",
+    "pytest-cov",
+]
+docs = [
+    "jupyter",
+    "myst-parser",
+    "nbsphinx>=0.8.6",
+    "numpydoc",
+    "pydata-sphinx-theme",
+    "sphinx<8.0.0,!=7.2.0",
+    "sphinx-design<0.6.0",
+    "sphinx-issues<5.0.0",
+    "sphinx-gallery<0.17.0",
+    "sphinx-panels",
+    "tabulate",
+]
+
+[project.urls]
+Homepage = "https://github.com/VascoSch92/symmetria"
+Repository = "https://github.com/VascoSch92/symmetria"
+Documentation = "https://github.com/VascoSch92/symmetria" # change when there is documentation
+Download = "https://github.com/VascoSch92/symmetria" # change later
+
+[project.license]
+file = "LICENSE"
+
+[build-system]
+requires = ["setuptools>61", "wheel", "toml", "build"]
+build-backend = "setuptools.build_meta"
+
+
 [tool.pytest.ini_options]
 cache_dir = "tests/.cache/pytest"
-
 
 log_cli = true
 log_level = "DEBUG"
 log_format = "%(asctime)s %(levelname)s %(message)s"
 log_date_format = "%Y-%m-%d %H:%M:%S"
+
+[tool.ruff]
+cache-dir = "tests/.cache/ruff"
+
+# Set of rules enabled
+lint.select = [
+    "ARG002", # Checks for the presence of unused arguments in instance method definitions
+    "ANN201", # Missing return type annotation for public function
+    "E", # Pycodestyle Error
+    "F", # Pyflakes
+    "B", # Flake8-bugbear
+    "W", # Pycodestyle Warning
+    "RET504", # Checks for variable assignments that immediately precede a return of the assigned variable.
+    "D200", # One-line docstring should fit on one line
+    "D202", # No blank lines allowed after function docstring
+    "D300", # Use triple double quotes """
+    "D404", # First word of the docstring should not be "This"
+    "UP003", # Use {} instead of type(...)
+    "UP008", # Use super() instead of super(_class_, self)
+    "UP011", # Unnecessary parentheses to functools.lru_cache
+    "UP027", # Replace unpacked list comprehension with a generator expression
+    "UP032", # Use f-string instead of format call
+    "C4", # flake8-comprehensions
+    "ICN", # flake8-import-conventions
+    "NPY", # NumPy-specific rules (NPY)
+    "ARG", # flake8-unused-arguments
+    "PLE0604", # Invalid object in __all__, must contain only strings
+    "PLE0605", # Invalid format for __all__, must be tuple or list
+    "PIE", # flake8-pie
+    "PTH", # flake8-use-pathlib
+    "Q000",
+    "LOG", # checks for impropriate use of logging
+    "Q002", # flake-8 double quotes for dosctring
+    "I001", # Import block is un-sorted or un-formatted
+]
+
+# Ignored rules
+lint.ignore = [
+    "C400", # Unnecessary generator (rewrite using list())
+    "F821", # Checks for uses of undefined names
+    "B020", # Checks for contextlib.suppress without arguments
+    "B023", # Checks for function definitions that use a loop variable
+    "PTH123", # Checks for uses of the open builtin
+    "PIE804", # Checks for unnecessary dict kwargs
+    "PIE807", # Checks for lambdas that can be replaced with the list builtin
+    "W605", # Checks for invalid escape sequences
+]
+
+# ignore unusued imports in the __init__
+lint.per-file-ignores = {"symmetria/__init__.py" = ["F401", "F403"]}
+
+# Set the max length of a line
+line-length = 121
+
+# The style in which the output message should be formatted
+output-format = "grouped"
+
+lint.flake8-quotes.inline-quotes = "double"
+lint.flake8-quotes.docstring-quotes = "double"
+lint.flake8-quotes.multiline-quotes = "double"
+
+lint.isort.combine-as-imports = true
+lint.isort.length-sort = true
+
+[tool.ruff.format]
+indent-style = "space"
+skip-magic-trailing-comma = false

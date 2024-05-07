@@ -1,6 +1,6 @@
-from itertools import combinations
 from math import lcm
-from typing import Tuple, List, Any, Dict, Iterable, Set, Union
+from typing import Any, Set, Dict, List, Tuple, Union, Iterable
+from itertools import combinations
 
 import symmetria.elements.cycle
 import symmetria.elements.permutation
@@ -32,6 +32,7 @@ class CycleDecomposition(_Element):
         >>> cycle = CycleDecomposition(*[Cycle(2, 1), Cycle(4, 3)])
         >>> cycle = CycleDecomposition(*(Cycle(2, 1), Cycle(4, 3)))
     """
+
     __slots__ = ["_cycles", "_domain"]
 
     def __init__(self, *cycles: "Cycle") -> None:
@@ -56,9 +57,7 @@ class CycleDecomposition(_Element):
         # checks that the cycles are disjoint
         for cycle_a, cycle_b in combinations(cycles, 2):
             if set(cycle_a.elements) & set(cycle_b.elements):
-                raise ValueError(
-                    f"The cycles {cycle_a} and {cycle_b} don't have disjoint support."
-                )
+                raise ValueError(f"The cycles {cycle_a} and {cycle_b} don't have disjoint support.")
 
         # checks that every element is included in a cycle
         elements = {element for cycle in cycles for element in cycle.elements}
@@ -122,9 +121,7 @@ class CycleDecomposition(_Element):
             return self._call_on_integer(original=item)
         elif isinstance(item, (str, List, Tuple)):
             if max(self.domain) > len(item):
-                raise ValueError(
-                    f"Not enough object to permute {item} using the cycle {self}."
-                )
+                raise ValueError(f"Not enough object to permute {item} using the cycle {self}.")
             return self._call_on_str_list_tuple(original=item)
         elif isinstance(item, symmetria.elements.permutation.Permutation):
             if self.domain != item.domain:
@@ -140,9 +137,7 @@ class CycleDecomposition(_Element):
                     " because they don't live in the same Symmetric group."
                 )
             return self * CycleDecomposition(item)
-        elif isinstance(
-            item, symmetria.elements.cycle_decomposition.CycleDecomposition
-        ):
+        elif isinstance(item, symmetria.elements.cycle_decomposition.CycleDecomposition):
             if self.domain != item.domain:
                 raise ValueError(
                     f"Cannot compose cycle decomposition {self} with cycle decomposition {item},"
@@ -157,11 +152,9 @@ class CycleDecomposition(_Element):
             return self.map[original]
         return original
 
-    def _call_on_str_list_tuple(
-        self, original: Union[str, Tuple, List]
-    ) -> Union[str, Tuple, List]:
+    def _call_on_str_list_tuple(self, original: Union[str, Tuple, List]) -> Union[str, Tuple, List]:
         """Private method for calls on string, list and tuple."""
-        permuted = [_ for _ in original]
+        permuted = list(_ for _ in original)
         for idx, w in enumerate(original, 1):
             permuted[self._call_on_integer(original=idx) - 1] = w
         if isinstance(original, str):
@@ -172,10 +165,7 @@ class CycleDecomposition(_Element):
             return permuted
 
     def _call_on_permutation(self, original: "Permutation") -> "Permutation":
-        return (
-            symmetria.elements.permutation.Permutation.from_cycle_decomposition(self)
-            * original
-        )
+        return symmetria.elements.permutation.Permutation.from_cycle_decomposition(self) * original
 
     def __eq__(self, other: Any) -> bool:
         """
@@ -288,9 +278,7 @@ class CycleDecomposition(_Element):
             return symmetria.elements.permutation.Permutation.from_dict(
                 p={idx: self.map[other.map[idx]] for idx in self.domain}
             ).cycle_decomposition()
-        raise TypeError(
-            f"Product between types `CycleDecomposition` and {type(other)} is not implemented."
-        )
+        raise TypeError(f"Product between types `CycleDecomposition` and {type(other)} is not implemented.")
 
     def __repr__(self) -> str:
         r"""
@@ -447,9 +435,7 @@ class CycleDecomposition(_Element):
             >>> cycle_decomposition.support()
             {2, 3}
         """
-        return {
-            element for cycle in self if len(cycle) != 1 for element in cycle.elements
-        }
+        return {element for cycle in self if len(cycle) != 1 for element in cycle.elements}
 
     def is_derangement(self) -> bool:
         r"""
@@ -510,12 +496,7 @@ class CycleDecomposition(_Element):
                         return False
             return True
         elif isinstance(other, symmetria.elements.permutation.Permutation):
-            return (
-                symmetria.elements.permutation.Permutation.from_cycle_decomposition(
-                    self
-                )
-                == other
-            )
+            return symmetria.elements.permutation.Permutation.from_cycle_decomposition(self) == other
         return False
 
     def orbit(self, item: Any) -> List[Any]:

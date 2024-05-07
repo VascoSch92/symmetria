@@ -1,28 +1,28 @@
 import pytest
 
 from tests.tests_factory import (
-    validate_bool,
-    validate_call,
-    validate_call_error,
     validate_eq,
     validate_int,
     validate_len,
     validate_mul,
-    validate_mul_error,
-    validate_repr,
     validate_str,
+    validate_bool,
+    validate_call,
+    validate_repr,
+    validate_mul_error,
+    validate_call_error,
 )
 from tests.tests_permutation.test_cases import (
+    TEST_EQ,
+    TEST_INT,
+    TEST_LEN,
+    TEST_MUL,
+    TEST_STR,
     TEST_BOOL,
     TEST_CALL,
-    TEST_CALL_ERROR,
-    TEST_EQ,
-    TEST_LEN,
     TEST_REPR,
-    TEST_MUL,
-    TEST_INT,
     TEST_MUL_ERROR,
-    TEST_STR,
+    TEST_CALL_ERROR,
 )
 
 
@@ -79,7 +79,7 @@ def test_int(permutation, expected_value) -> None:
 @pytest.mark.parametrize(
     argnames="permutation, expected_value",
     argvalues=TEST_LEN,
-    ids=[f"len({p.rep()})={l}" for p, l in TEST_LEN],
+    ids=[f"len({p.rep()})={length}" for p, length in TEST_LEN],
 )
 def test_len(permutation, expected_value) -> None:
     """Tests for the method `__len__()`."""
