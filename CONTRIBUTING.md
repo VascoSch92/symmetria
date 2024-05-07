@@ -9,7 +9,8 @@ If you would like to contribute to the project, please take a moment to read the
    [issue](https://github.com/VascoSch92/symmetria/issues) section. 
    There are plenty of ideas we would like to implement here. 
 2. Time to code. Once you have finished coding your implementation, open a pull-request (PR) to the ``main`` branch. 
-   Note that the PR name should start with one of the following (included parentheses):
+   Note that the PR title should start with one of the following (included parentheses):
+
    1. [API_CHANGE]: If there is a change to the project's API.
    2. [DEPRECATED]: If the PR deprecate some functionalities.
    3. [DOC]: If the PR improves the documentation.
@@ -18,6 +19,13 @@ If you would like to contribute to the project, please take a moment to read the
    6. [FIX]: If the PR solve issues, bugs, or unexpected behavior.
    7. [REMOVE]: If the PR remove a feature or functionality from the project.
    8. [RELEASE]: If the PR is a preparation for a release.
+   
+   An example is
+
+   ```text
+   [FEATURE] Add method AAA to class BBB
+   ```
+   
 3. However, before opening a PR, it is a good practice to have pre-commit installed.
    To use the pre-commit hook, you first need to install ``pre-commit`` using the command:
 
