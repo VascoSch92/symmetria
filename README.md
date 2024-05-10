@@ -36,6 +36,12 @@ pip install git+https://github.com/VascoSch92/symmetria@xxx
 
 where ``xxx`` is the name of the branch or the tag you would like to install.
 
+You can check that `symmetria` was successfully installed by typing the command
+
+```bash
+symmetria --version
+```
+
 ## Quickstart
 
 Let's get started with symmetria. First and foremost, we can import the `Permutation` 
