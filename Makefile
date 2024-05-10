@@ -14,6 +14,7 @@ help:
 	@echo " * build: build and check dist."
 	@echo " * build-docs: build documentation."
 	@echo " * build-docs-open: build documentation and open it."
+	@echo " * clean: clean caches and others."
 	@echo " * init: install dependencies."
 	@echo " * init-docs: install docs dependencies."
 	@echo " * init-dev: install dev dependencies."
@@ -39,6 +40,14 @@ build-docs-open:
 	@echo "[INFO] Build documentation and open it"
 	@cd "./$(DOCSDIR)" && make build-docs
 	@open "./$(DOCSDIR)/build/index.html"
+
+clean:
+	@echo "[INFO] Clean caches and others"
+	@rm -rf "./$(DISTDIR)"
+	@rm -rf "./htmlcov"
+	@rm -rf "./.coverage"
+	@rm -rf "./symmetria.egg-info"
+	@rm -rf "./tests/.cache"
 
 init:
 	@echo "[INFO] Install dependencies"
