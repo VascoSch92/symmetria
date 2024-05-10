@@ -22,4 +22,4 @@ jobs:
             echo "[API_CHANGE], [DEPRECATED], [DOC], [ENHANCEMENT], [FEATURE], [FIX], [MAINTENANCE], [RELEASE]"
             echo "Please, correct the PR title accordingly."
             exit 1
-          fi 
+          fi
