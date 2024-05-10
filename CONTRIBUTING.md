@@ -19,7 +19,6 @@ If you would like to contribute to the project, please take a moment to read the
    6. [FIX]: If the PR solve issues, bugs, or unexpected behavior.
    7. [MAINTENANCE]: If the PR has to do with CI/CD or setup.
    8. [RELEASE]: If the PR is a preparation for a release.
-   9. [REMOVE]: If the PR remove a feature or functionality from the project.
    
    An example is
 
