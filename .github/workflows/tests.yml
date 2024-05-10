@@ -36,6 +36,8 @@ jobs:
         fail_on_failure: True
         require_tests: True
   test-build-dist:
+    runs-on: ubuntu-latest
+    steps:
     - name: Checkout repository
       uses: actions/checkout@v4
     - name: Set up Python
