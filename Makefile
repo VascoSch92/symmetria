@@ -17,6 +17,7 @@ help:
 	@echo " * clean: clean caches and others."
 	@echo " * init: install dependencies."
 	@echo " * init-docs: install docs dependencies."
+	@echo " * init-dist: install dist dependencies."
 	@echo " * init-dev: install dev dependencies."
 	@echo " * install-pre-commit: install/update pre-commit and install it in git-hook."
 	@echo " * pre-commit: run pre-commit."
@@ -50,25 +51,38 @@ clean:
 	@rm -rf "./.coverage"
 	@rm -rf "./symmetria.egg-info"
 	@rm -rf "./tests/.cache"
+	@rm -rf "./test-report.xml"
 
 init:
 	@echo "[INFO] Install dependencies"
+	@make pip
 	@pip install .
 
 init-docs:
 	@echo "[INFO] Install docs dependencies"
+	@make pip
 	@pip install '.[docs]'
+
+init-dist:
+	@echo "[INFO] Install dist dependencies"
+	@make pip
+	@pip install setuptools wheel twine
 
 init-dev:
 	@echo "[INFO] Install dev dependencies"
+	@make pip
 	@pip install '.[dev]'
 
 install-pre-commit:
 	@echo "[INFO] Install or update pre-commit"
+	@make pip
 	@pip install pre-commit
 	@pre-commit --version
 	@echo "[INFO] Install pre-commit into git-hooks"
 	@pre-commit install
+
+pip:
+	@python -m pip install --upgrade pip
 
 pre-commit:
 	@echo "[INFO] Run pre-commit"
