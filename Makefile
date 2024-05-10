@@ -66,7 +66,7 @@ init-docs:
 init-dist:
 	@echo "[INFO] Install dist dependencies"
 	@make pip
-	@pip install setuptools wheel twine
+	@pip install setuptools wheel twine build
 
 init-dev:
 	@echo "[INFO] Install dev dependencies"
