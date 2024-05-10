@@ -17,8 +17,9 @@ If you would like to contribute to the project, please take a moment to read the
    4. [ENHANCEMENT]: if the PR improve and existing functionality.
    5. [FEATURE]: if the PR add a new feature.
    6. [FIX]: If the PR solve issues, bugs, or unexpected behavior.
-   7. [REMOVE]: If the PR remove a feature or functionality from the project.
+   7. [MAINTENANCE]: If the PR has to do with CI/CD or setup.
    8. [RELEASE]: If the PR is a preparation for a release.
+   9. [REMOVE]: If the PR remove a feature or functionality from the project.
    
    An example is
 

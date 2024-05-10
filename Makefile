@@ -18,6 +18,7 @@ help:
 	@echo " * init: install dependencies."
 	@echo " * init-docs: install docs dependencies."
 	@echo " * init-dev: install dev dependencies."
+	@echo " * install-pre-commit: install/update pre-commit and install it in git-hook."
 	@echo " * pre-commit: run pre-commit."
 	@echo " * release: release a dist."
 	@echo " * test: run tests."
@@ -60,6 +61,13 @@ init-docs:
 init-dev:
 	@echo "[INFO] Install dev dependencies"
 	@pip install '.[dev]'
+
+install-pre-commit:
+	@echo "[INFO] Install or update pre-commit"
+	@pip install pre-commit
+	@pre-commit --version
+	@echo "[INFO] Install pre-commit into git-hooks"
+	@pre-commit install
 
 pre-commit:
 	@echo "[INFO] Run pre-commit"
