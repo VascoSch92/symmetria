@@ -22,8 +22,9 @@ help:
 	@echo " * pre-commit: run pre-commit."
 	@echo " * release: release a dist."
 	@echo " * test: run tests."
-	@echo " * test-report: run tests with coverage report."
-	@echo " * test-report-open: run tests with coverage and open it."
+	@echo " * test-report-xml: run tests and generate test-report.xml."
+	@echo " * test-report-missing: run tests with coverage report."
+	@echo " * test-report-missing-html: run tests with coverage and open it."
 
 .PHONY: help Makefile
 
@@ -81,11 +82,15 @@ test:
 	@echo "[INFO] Run tests"
 	@pytest "./$(TESTSDIR)"
 
-test-report:
+test-report-xml:
+	@echo "[INFO] Run tests and generate test-report.xml"
+	@pytest "./$(TESTSDIR)" --junitxml=test-report.xml
+
+test-report-missing:
 	@echo "[INFO] Run tests with coverage report"
 	@pytest --cov="./$(SOURCEDIR)" --cov-report term-missing
 
-test-report-html:
+test-report-missing-html:
 	@echo "[INFO] Run tests with coverage and open it"
 	@pytest --cov="./$(SOURCEDIR)" --cov-report term-missing --cov-report html
 	@open ./htmlcov/index.html
