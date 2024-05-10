@@ -13,7 +13,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        python-version: ["3.9", "3.10", "3.11"]
+        python-version: ["3.9", "3.10", "3.11", "3.12"]
     steps:
     - name: Checkout repository
       uses: actions/checkout@v4
@@ -32,3 +32,6 @@ jobs:
       if: success() || failure() # always run even if the previous step fails
       with:
         report_paths: 'test-report.xml'
+        check_name: Test-report Python ${{ matrix.python-version }}
+        fail_on_failure: True
+        require_tests: True
