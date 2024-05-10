@@ -20,6 +20,9 @@ The version is represented by three digits: a.b.c.
 
 ## Unreleased
 
-## [0.0.0] - YYYY-MM-DD
+MAINTENANCE:
+- Add workflows: `tests.yml`, `code-style.yml`, `release.yml` and `check-pr-title.yml`
 
-🎉🚀 First version of symmetria 🚀🎉
+## [0.0.0] - 2024-05-01
+
+🎉🚀 First version of ``symmetria`` 🚀🎉
