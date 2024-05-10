@@ -1,7 +1,7 @@
 [project]
 name = "symmetria"
 version = "0.0.0"
-description = "TO-DO"
+description = "Symmetria provides an intuitive, thorough, and comprehensive framework for interacting with the symmetric group and its elements."
 authors = [
     {name = "Vasco Schiavo"},
 ]
@@ -9,6 +9,7 @@ maintainers = [
     {name = "Vasco Schiavo"},
 ]
 readme = {file="README.md", content-type="text/markdown"}
+# entry point
 requires-python = ">=3.9,<3.13"
 keywords = [
     "math",
@@ -58,8 +59,8 @@ docs = [
 [project.urls]
 Homepage = "https://github.com/VascoSch92/symmetria"
 Repository = "https://github.com/VascoSch92/symmetria"
-Documentation = "https://github.com/VascoSch92/symmetria" # change when there is documentation
-Download = "https://github.com/VascoSch92/symmetria" # change later
+# Documentation = "https://github.com/VascoSch92/symmetria" # change when there is documentation
+# Download = "https://github.com/VascoSch92/symmetria"
 
 [project.license]
 file = "LICENSE"
@@ -68,6 +69,8 @@ file = "LICENSE"
 requires = ["setuptools>61", "wheel", "toml", "build"]
 build-backend = "setuptools.build_meta"
 
+[project.scripts]
+symmetria = "symmetria:_log_version"
 
 [tool.pytest.ini_options]
 cache_dir = "tests/.cache/pytest"
