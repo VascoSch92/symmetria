@@ -17,13 +17,15 @@ help:
 	@echo " * clean: clean caches and others."
 	@echo " * init: install dependencies."
 	@echo " * init-docs: install docs dependencies."
+	@echo " * init-dist: install dist dependencies."
 	@echo " * init-dev: install dev dependencies."
 	@echo " * install-pre-commit: install/update pre-commit and install it in git-hook."
 	@echo " * pre-commit: run pre-commit."
 	@echo " * release: release a dist."
 	@echo " * test: run tests."
-	@echo " * test-report: run tests with coverage report."
-	@echo " * test-report-open: run tests with coverage and open it."
+	@echo " * test-report-xml: run tests and generate test-report.xml."
+	@echo " * test-report-missing: run tests with coverage report."
+	@echo " * test-report-missing-html: run tests with coverage and open it."
 
 .PHONY: help Makefile
 
@@ -49,25 +51,38 @@ clean:
 	@rm -rf "./.coverage"
 	@rm -rf "./symmetria.egg-info"
 	@rm -rf "./tests/.cache"
+	@rm -rf "./test-report.xml"
 
 init:
 	@echo "[INFO] Install dependencies"
+	@make pip
 	@pip install .
 
 init-docs:
 	@echo "[INFO] Install docs dependencies"
+	@make pip
 	@pip install '.[docs]'
+
+init-dist:
+	@echo "[INFO] Install dist dependencies"
+	@make pip
+	@pip install setuptools wheel twine build
 
 init-dev:
 	@echo "[INFO] Install dev dependencies"
+	@make pip
 	@pip install '.[dev]'
 
 install-pre-commit:
 	@echo "[INFO] Install or update pre-commit"
+	@make pip
 	@pip install pre-commit
 	@pre-commit --version
 	@echo "[INFO] Install pre-commit into git-hooks"
 	@pre-commit install
+
+pip:
+	@python -m pip install --upgrade pip
 
 pre-commit:
 	@echo "[INFO] Run pre-commit"
@@ -81,11 +96,15 @@ test:
 	@echo "[INFO] Run tests"
 	@pytest "./$(TESTSDIR)"
 
-test-report:
+test-report-xml:
+	@echo "[INFO] Run tests and generate test-report.xml"
+	@pytest "./$(TESTSDIR)" --junitxml=test-report.xml
+
+test-report-missing:
 	@echo "[INFO] Run tests with coverage report"
 	@pytest --cov="./$(SOURCEDIR)" --cov-report term-missing
 
-test-report-html:
+test-report-missing-html:
 	@echo "[INFO] Run tests with coverage and open it"
 	@pytest --cov="./$(SOURCEDIR)" --cov-report term-missing --cov-report html
 	@open ./htmlcov/index.html

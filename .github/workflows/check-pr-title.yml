@@ -1,0 +1,25 @@
+name: check-pr-title
+
+on:
+  pull_request:
+    branches: main
+    types: [opened, edited, reopened]
+
+jobs:
+  check_pr_title:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check PR title
+        id: check_title
+        run: |
+          title=$(jq -r ".pull_request.title" "$GITHUB_EVENT_PATH")
+          echo "PR tile: $title"
+          if [[ "$title" =~ ^\[(API_CHANGE|DEPRECATED|DOC|ENHANCEMENT|FEATURE|FIX|MAINTENANCE|RELEASE)\] ]]; then
+            echo "PR title format is correct."
+            exit 0
+          else
+            echo "Error: PR title format is incorrect. It should start with one of the following prefixes: [FEATURE], [DOCS], [RELEASE]"
+            echo "[API_CHANGE], [DEPRECATED], [DOC], [ENHANCEMENT], [FEATURE], [FIX], [MAINTENANCE], [RELEASE]"
+            echo "Please, correct the PR title accordingly."
+            exit 1
+          fi

@@ -1,0 +1,52 @@
+name: tests-suite
+
+on:
+  pull_request:
+    branches:
+      - main
+
+permissions:
+  checks: write
+
+jobs:
+  tests-suite-by-version:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python-version: ["3.9", "3.10", "3.11", "3.12"]
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v4
+    - name: Set up Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: ${{ matrix.python-version }}
+    - name: Install dependencies
+      run: |
+        make init-dev
+    - name: Run tests
+      run: |
+        make test-report-xml
+    - name: Test Report
+      uses: mikepenz/action-junit-report@v4
+      if: success() || failure() # always run even if the previous step fails
+      with:
+        report_paths: 'test-report.xml'
+        check_name: Test-report Python ${{ matrix.python-version }}
+        fail_on_failure: True
+        require_tests: True
+  test-build-dist:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v4
+    - name: Set up Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: 3.12
+    - name: Install dependencies
+      run: |
+        make init-dist
+    - name: Build and test dist
+      run: |
+        make build

@@ -1,0 +1,26 @@
+name: publish-release
+
+on:
+  release:
+    types: [published]
+
+jobs:
+  publish-release:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: "3.12"
+      - name: Install dependencies
+        run: |
+          make init-dist
+      - name: Build distribution
+        run: |
+          make build
+      - name: Publish on PyPI
+        run: |
+          export PYPI_PASSWORD=${{ secrets.PYPI_PASSWORD }}
+          make release
