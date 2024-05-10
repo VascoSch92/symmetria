@@ -35,3 +35,16 @@ jobs:
         check_name: Test-report Python ${{ matrix.python-version }}
         fail_on_failure: True
         require_tests: True
+  test-build-dist:
+    - name: Checkout repository
+      uses: actions/checkout@v4
+    - name: Set up Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: 3.12
+    - name: Install dependencies
+      run: |
+        make init-dist
+    - name: Build and test dist
+      run: |
+        make build
