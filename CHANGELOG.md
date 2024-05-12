@@ -24,6 +24,8 @@ MAINTENANCE:
 - `.github`: add workflows `tests.yml`, `code-style.yml`, `release.yml` and `check-pr-title.yml`
 - `.github.pull_request_template.md`: add pull request template
 - `.github.ISSUE_TEMPLATE`: add templates for issues
+- `tests`: in module tests we import as in the API
+
 
 ## [0.0.0] - 2024-05-01
 

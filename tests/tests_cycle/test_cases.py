@@ -1,6 +1,4 @@
-from symmetria.elements.cycle import Cycle
-from symmetria.elements.permutation import Permutation
-from symmetria.elements.cycle_decomposition import CycleDecomposition
+from symmetria import Cycle, Permutation, CycleDecomposition
 
 ############################
 # TEST CASES CONSTRUCTORS  #
