@@ -1,5 +1,6 @@
 import pytest
 
+from symmetria import Cycle, CycleDecomposition
 from tests.tests_factory import (
     validate_eq,
     validate_bool,
@@ -9,8 +10,6 @@ from tests.tests_factory import (
     validate_mul_error,
     validate_call_error,
 )
-from symmetria.elements.cycle import Cycle
-from symmetria.elements.cycle_decomposition import CycleDecomposition
 from tests.tests_cycle_decomposition.test_cases import (
     TEST_EQ,
     TEST_BOOL,

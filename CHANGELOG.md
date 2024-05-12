@@ -22,6 +22,7 @@ The version is represented by three digits: a.b.c.
 
 MAINTENANCE:
 - Add workflows: `tests.yml`, `code-style.yml`, `release.yml` and `check-pr-title.yml`
+- `tests`: in module tests we import as in the API
 
 ## [0.0.0] - 2024-05-01
 

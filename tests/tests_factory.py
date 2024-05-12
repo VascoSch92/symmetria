@@ -2,7 +2,7 @@ from typing import Any, Set, Dict, Type
 
 import pytest
 
-from symmetria.elements.cycle_decomposition import CycleDecomposition
+from symmetria import CycleDecomposition
 
 ##########################
 # CONSTRUCTOR VALIDATORS #
