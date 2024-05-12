@@ -21,7 +21,8 @@ The version is represented by three digits: a.b.c.
 ## Unreleased
 
 MAINTENANCE:
-- Add workflows: `tests.yml`, `code-style.yml`, `release.yml` and `check-pr-title.yml`
+- `.github`: add workflows `tests.yml`, `code-style.yml`, `release.yml` and `check-pr-title.yml`
+- `.github.pull_request_template.md`: add pull request template
 
 ## [0.0.0] - 2024-05-01
 
