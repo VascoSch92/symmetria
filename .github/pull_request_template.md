@@ -1,7 +1,7 @@
 **Checklist:**
 
-- [ ] Tests are update.
-- [ ] Documentation is update.
-- [ ] Changelog is update.
-- [ ] If it is the case, the PR is linked to relative issue.
-- [ ] If it is a release, the version number is increased.
+- [ ] Tests are updated.
+- [ ] Documentation is updated.
+- [ ] Changelog is updated.
+- [ ] If applicable, the PR is linked to the relative issue.
+- [ ] If it's a release, the version number is increased.
