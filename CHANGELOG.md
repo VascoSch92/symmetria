@@ -26,6 +26,7 @@ MAINTENANCE:
 - `.github.pull_request_template.md`: add pull request template
 - `.github.ISSUE_TEMPLATE`: add templates for issues
 - `tests`: in module tests we import as in the API
+- `.pre-commit-config.yml`: add `check-toml` and `name-tests-test`
 
 ## \[0.0.0\] - 2024-05-01
 
