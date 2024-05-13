@@ -1,6 +1,6 @@
 import pytest
 
-from tests.tests_factory import (
+from tests.test_factory import (
     validate_eq,
     validate_int,
     validate_len,

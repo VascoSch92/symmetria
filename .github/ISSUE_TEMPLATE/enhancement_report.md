@@ -1,8 +1,9 @@
----
+______________________________________________________________________
+
 name: Enhancement
 about: Make something existing better
-title: "[ENHANCEMENT]"
+title: "\[ENHANCEMENT\]"
 labels: enhancement
 assignees: ''
 
----
+______________________________________________________________________

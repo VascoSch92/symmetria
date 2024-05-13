@@ -1,8 +1,9 @@
----
+______________________________________________________________________
+
 name: Maintenance issue
 about: Suggest a maintenance update
-title: "[MAINTENANCE]"
+title: "\[MAINTENANCE\]"
 labels: maintenance
 assignees: ''
 
----
+______________________________________________________________________
