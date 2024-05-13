@@ -1,9 +1,12 @@
 repos:
--   repo: https://github.com/astral-sh/ruff-pre-commit
-    # Ruff version.
-    rev: v0.4.3
+-   repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v4.6.0 # pre-commit version
     hooks:
-      # Run the linter.
-      - id: ruff
-      # Run the formatter.
-      - id: ruff-format
+    - id: check-toml  # checks toml files for parseable syntax.
+    - id: name-tests-test # verifies that test files are named correctly.
+      args: [--pytest-test-first]
+-   repo: https://github.com/astral-sh/ruff-pre-commit
+    rev: v0.4.4 # ruff version
+    hooks:
+      - id: ruff  # run the linter
+      - id: ruff-format # run the formatter

@@ -1,6 +1,6 @@
 import pytest
 
-from tests.tests_factory import (
+from tests.test_factory import (
     validate_map,
     validate_orbit,
     validate_order,

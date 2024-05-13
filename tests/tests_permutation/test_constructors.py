@@ -1,7 +1,7 @@
 import pytest
 
 from symmetria import Permutation
-from tests.tests_factory import (
+from tests.test_factory import (
     validate_from_dict,
     validate_from_cycle,
     validate_from_cycle_decomposition,

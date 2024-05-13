@@ -1,7 +1,7 @@
 import pytest
 
 from symmetria import Cycle, CycleDecomposition
-from tests.tests_factory import (
+from tests.test_factory import (
     validate_eq,
     validate_bool,
     validate_call,
