@@ -598,8 +598,10 @@ class Permutation(_Element):
         return {idx for idx in self.domain if self(idx) != idx}
 
     def one_line_notation(self) -> str:
-        """
-        Returns a string representation of the permutation in the one-line notation,
+        r"""
+        Returns a string representation of the permutation in the one-line notation, i.e., in the form
+        :math:`\sigma(x_1)\sigma(x_2)...\sigma(x_n)`, where :math:`\sigma` is a permutation and :math:`x_1, ..., x_n`
+        are the elements permuted by :math:`\sigma`.
 
         :return: The one-line notation of the permutation.
         :rtype: str
