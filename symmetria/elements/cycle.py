@@ -10,14 +10,13 @@ from typing import (
 
 import symmetria.elements.permutation
 import symmetria.elements.cycle_decomposition
-from symmetria.interfaces import _Element
+from symmetria._interfaces import _Element
 
 __all__ = ["Cycle"]
 
 
 class Cycle(_Element):
-    r"""
-    The ``Cycle`` class represents the cycles element of a symmetric group.
+    r"""The ``Cycle`` class represents the cycles element of a symmetric group.
 
     Recall that a cycle is a permutation that rearranges the elements of a finite set in a circular fashion, i.e.,
     moves each element to the position of the next element in a cycle manner, with the last element being moved to the
@@ -27,6 +26,9 @@ class Cycle(_Element):
 
     For example, to define the cycle :math:`\sigma \in S_3` given by :math:`\sigma(1)=3, \sigma(2)=1`, and
     :math:`\sigma (3)=2`, you should write ``Cycle(1, 3, 2)``.
+
+    .. note:: A cycle can have different representations. For example, the cycle ``Cycle(1, 3, 2)`` can be also
+        written ``Cycle(2, 1, 3)``. By convention here, a cycle start always with the smaller number.
 
     :param cycle: Set of integers representing the cycle notation of the cycle.
     :type cycle: int
@@ -47,8 +49,8 @@ class Cycle(_Element):
 
     @staticmethod
     def _validate_and_standardize(cycle: Tuple[int, ...]) -> Tuple[int, ...]:
-        """
-        Private method to validate and standardize a set of integers to form a cycle.
+        """Private method to validate and standardize a set of integers to form a cycle.
+
         A tuple is eligible to be a cycle if it contains only strictly positive integers.
         The standard form for a cycle is the (unique) one where the first element is the smallest.
         """
@@ -64,8 +66,7 @@ class Cycle(_Element):
         return cycle[smallest_element_index:] + cycle[:smallest_element_index]
 
     def __bool__(self) -> bool:
-        r"""
-        Check if the cycle is different from the identity cycle.
+        r"""Check if the cycle is different from the identity cycle.
 
         :return: True if the cycle is different from the identity cycle, False otherwise.
         :rtype: bool
@@ -84,8 +85,7 @@ class Cycle(_Element):
         return len(self.elements) != 1
 
     def __call__(self, item: Any) -> Any:
-        """
-        Call the cycle on the `item` object, i.e., mimic a cycle action on the element `item`.
+        """Call the cycle on the `item` object, i.e., mimic a cycle action on the element `item`.
 
         - If `item` is an integer, it applies the cycle to the integer.
         - If `item` is a string, a list or a tuple, it applies the cycle permuting the values using the indeces.
@@ -180,8 +180,7 @@ class Cycle(_Element):
         return cycle_decomposition * original
 
     def __eq__(self, other: Any) -> bool:
-        """
-        Check if the cycle is equal to another object.
+        """Check if the cycle is equal to another object.
 
         :param other: The object to compare with.
         :type other: Any
@@ -201,9 +200,9 @@ class Cycle(_Element):
         return False
 
     def __getitem__(self, item: int) -> int:
-        """
-        Returns the value of the cycle at the given index `item`.
-        The index corresponds to the position in the cycle, starting from 0
+        """Return the value of the cycle at the given index `item`.
+
+        The index corresponds to the position in the cycle, starting from 0.
 
         :param item: The index of the cycle.
         :type item: int
@@ -216,8 +215,9 @@ class Cycle(_Element):
         return self._cycle[item]
 
     def __int__(self) -> int:
-        """
-        Convert the cycle to its integer representation.
+        """Convert the cycle to its integer representation.
+
+        In other words, return a numeric one line notation of the cycle.
 
         :return: The integer representation of the cycle.
         :rtype: int
@@ -239,8 +239,7 @@ class Cycle(_Element):
         return sum([element * 10 ** (len(self) - idx) for idx, element in enumerate(self.elements, 1)])
 
     def __len__(self) -> int:
-        """
-        Returns the length of the cycle, which is the number of elements in its domain.
+        """Return the length of the cycle, which is the number of elements in its domain.
 
         :return: The length of the cycle.
         :rtype: int
@@ -262,8 +261,7 @@ class Cycle(_Element):
         )
 
     def __repr__(self) -> str:
-        r"""
-        Returns a string representation of the cycle in the format "Cycle(x, y, z, ...)",
+        r"""Return a string representation of the cycle in the format "Cycle(x, y, z, ...)",
         where :math:`x, y, z, ... \in \mathbb{N}` are the elements of the cycle.
 
         :return: A string representation of the cycle.
@@ -280,8 +278,10 @@ class Cycle(_Element):
         return f"Cycle({', '.join(str(element) for element in self.elements)})"
 
     def __str__(self) -> str:
-        """
-        Returns a string representation of the cycle in the form of cycle notation.
+        r"""Return a string representation of the cycle in the form of cycle notation.
+
+        Recall that for a cycle :math:`\sigma` of order n, its cycle notation is given by
+        :math:`(\sigma(x) \sigma^2(x), ..., \sigma^n(x))`, where x is an element in the support of the cycle.
 
         :return: A string representation of the cycle.
         :rtype: str
@@ -298,9 +298,9 @@ class Cycle(_Element):
 
     @property
     def domain(self) -> Iterable[int]:
-        """
-        Returns an iterable containing the elements of the domain of the cycle.
-        The domain of a cycle is the set of indices for which the cycle is defined.
+        """Return an iterable containing the elements of the domain of the cycle.
+
+        Here, the domain of a cycle is the set of indices for which the cycle is defined.
 
         :return: The domain of the cycle.
         :rtype: Iterable[int]
@@ -323,8 +323,7 @@ class Cycle(_Element):
 
     @property
     def map(self) -> Dict[int, int]:
-        """
-        Returns a dictionary representing the mapping of the cycle,
+        """Return a dictionary representing the mapping of the cycle,
         where keys are indices and values are the corresponding elements after the permutation.
 
         :return: The mapping of the cycle.
@@ -345,8 +344,7 @@ class Cycle(_Element):
 
     @property
     def elements(self) -> Tuple[int]:
-        """
-        Returns a tuple containing the elements of the cycle.
+        """Return a tuple containing the elements of the cycle.
 
         :return: The elements of the cycle.
         :rtype: Tuple[int]
@@ -359,9 +357,7 @@ class Cycle(_Element):
         return self._cycle
 
     def cycle_decomposition(self) -> "CycleDecomposition":
-        """
-        Converts the cycle into its cycle decomposition,
-        representing it as a product of disjoint cycles.
+        """Convert the cycle into its cycle decomposition, representing it as a product of disjoint cycles.
 
         In the specific case of a cycle, it converts it from the class `Cycle` to the class `CycleDecomposition`.
 
@@ -384,8 +380,10 @@ class Cycle(_Element):
         )
 
     def cycle_notation(self) -> str:
-        """
-        Returns a string representing the cycle notation of the cycle.
+        r"""Return a string representing the cycle notation of the cycle.
+
+        Recall that for a cycle :math:`\sigma` of order n, its cycle notation is given by
+        :math:`(\sigma(x) \sigma^2(x), ..., \sigma^n(x))`, where x is an element in the support of the cycle.
 
         :return: The cycle notation of the cycle.
         :rtype: str
@@ -401,6 +399,26 @@ class Cycle(_Element):
         return str(self)
 
     def equivalent(self, other: Any) -> bool:
+        """Check if the cycle is equivalent to the `other` object.
+
+        In `symmetria`, a permutation of the symmetric group can have different representations. For example,
+        it can be a `Permutation`, or a `Cycle`, or also a `CycleDecomposition`. The method checks if the (self)
+        cycle is representing the same permutation of the `other` object.
+
+        :param other:
+        :type other: Any
+
+        :return: True if the cycle is equivalent to the `other` object.
+        :rtype bool:
+
+        :example:
+            >>> Cycle(1, 2, 3).equivalent(Permutation(2, 3, 1))
+            True
+            >>> Cycle(1, 2, 3).equivalent(CycleDecomposition(Cycle(1, 2, 3)))
+            True
+            >>> Cycle(1, 2, 3).equivalent(CycleDecomposition(Cycle(1, 2, 3)Cycle(4)))
+            False
+        """
         if isinstance(other, Cycle):
             return self == other
         if isinstance(other, symmetria.elements.cycle_decomposition.CycleDecomposition):
@@ -420,8 +438,7 @@ class Cycle(_Element):
         return False
 
     def is_derangement(self) -> bool:
-        r"""
-        Check if the cycle is a derangement.
+        r"""Check if the cycle is a derangement.
 
         Recall that a permutation :math:`\sigma` is called a derangement if it has no fixed points, i.e.,
         :math:`\sigma(x) \neq x` for every :math:`x` in the permutation domain.
@@ -445,10 +462,10 @@ class Cycle(_Element):
         return len(self) > 1
 
     def orbit(self, item: Any) -> List[Any]:
-        """
-        Calculates the orbit of the specified element under the permutation,
-        which is the set of all elements obtained by repeatedly applying the permutation
-        to the initial element until it returns to itself.
+        r"""Compute the orbit of `item` object under the action of the cycle.
+
+        Recall that the orbit of the action of a cycle :math:`\sigma` on an element x is given by the set
+        :math:`\{ \sigma^n(x): n \in \mathbb{N}\}`.
 
         :param item: The initial element or iterable to compute the orbit for.
         :type item: Any
@@ -483,8 +500,7 @@ class Cycle(_Element):
         return orbit
 
     def order(self) -> int:
-        r"""
-        Return the order of the cycle.
+        r"""Return the order of the cycle.
 
         Recall that the order of a permutation :math:`\sigma` is the smallest positive integer :math:`n \in \mathbb{N}`
         such that :math:`\sigma^n = id`, where :math:`id` is the identity permutation. Therefore, the order of a cycle
@@ -507,10 +523,8 @@ class Cycle(_Element):
         return len(self)
 
     def support(self) -> Set[int]:
-        """
-        Returns a set containing the indices in the domain of the cycle
-        whose images are different from their respective indices, i.e., the set of :math:`n` in the cycle
-        domain which are not mapped to itself.
+        """Return a set containing the indices in the domain of the cycle whose images are different from their
+        respective indices, i.e., the set of :math:`n` in the cycle domain which are not mapped to itself.
 
         The support of a cycle is elementwise equal to the domain of the cycle if and only if the cycle is not
         the identity cycle. Otherwise, it is empty.

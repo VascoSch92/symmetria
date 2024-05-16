@@ -2,17 +2,16 @@ from typing import Any, Set, Dict, List, Tuple, Union, Iterable
 
 import symmetria.elements.cycle
 import symmetria.elements.cycle_decomposition
-from symmetria.interfaces import _Element
+from symmetria._interfaces import _Element
 
 __all__ = ["Permutation"]
 
 
 class Permutation(_Element):
-    r"""
-    The ``Permutation`` class represents an element of the symmetric group as a map, i.e., a bijective function from a
-    finite set of integer :math:`\{1, ..., n\}`, for some :math:`n \in \mathbb{N}_{>0}`, to itself.
+    r"""The ``Permutation`` class represents an element of the symmetric group as a map, i.e., a bijective function
+    from a finite set of integer :math:`\{1, ..., n\}`, for some :math:`n \in \mathbb{N}_{>0}`, to itself.
 
-    To define a permutation, you need to provide a sequence of integers defining the image of the permutation.
+    To define a permutation, it is needed to provide a sequence of integers defining the image of the permutation.
 
     For example, to define the permutation :math:`\sigma \in S_3` given by :math:`\sigma(1)=3, \sigma(2)=1`, and
     :math:`\sigma (3)=2`, you should write ``Permutation(3, 1, 2)``.
@@ -38,8 +37,8 @@ class Permutation(_Element):
 
     @staticmethod
     def _validate_image(image: Tuple[int, ...]) -> Dict[int, int]:
-        """
-        Private method to check if a set of integers is eligible as image for a permutation.
+        """Private method to check if a set of integers is eligible as image for a permutation.
+
         Recall that, a tuple of integers represent the image of a permutation if the following conditions hold:
             - all the integers are strictly positive;
             - all the integers are bounded by the total number of integers;
@@ -62,8 +61,7 @@ class Permutation(_Element):
         return _map
 
     def __bool__(self) -> bool:
-        """
-        Check if the permutation is different from the identity permutation.
+        """Check if the permutation is different from the identity permutation.
 
         :return: True if the permutation is different from the identity, False otherwise.
         :rtype: bool
@@ -79,8 +77,7 @@ class Permutation(_Element):
         return self != Permutation(*self.domain)
 
     def __call__(self, item: Any) -> Any:
-        """
-        Call the permutation on the `item` object, i.e., mimic a permutation action on the element `item`.
+        """Call the permutation on the `item` object, i.e., mimic a permutation action on the element `item`.
 
         - If `item` is an integer, it applies the permutation to the integer.
         - If `item` is a string, a list or a tuple, it applies the permutation permuting the values using the indeces.
@@ -167,8 +164,7 @@ class Permutation(_Element):
         ).cycle_decomposition()
 
     def __eq__(self, other: Any) -> bool:
-        """
-        Check if the permutation is equal to another object.
+        """Check if the permutation is equal to `another` object.
 
         :param other: The object to compare with.
         :type other: Any
@@ -181,9 +177,10 @@ class Permutation(_Element):
         return False
 
     def __getitem__(self, item: int) -> int:
-        """
-        Returns the value of the permutation at the given index `item`.
-        The index corresponds to the position in the permutation, starting from 0
+        """Return the value of the permutation at the given index `item`.
+
+        In other words, it returns the image of the permutation at point `item`.
+        The index corresponds to the position in the permutation, starting from 0.
 
         :param item: The index of the permutation.
         :type item: int
@@ -196,8 +193,7 @@ class Permutation(_Element):
         return self.map[item]
 
     def __int__(self) -> int:
-        """
-        Convert the permutation to its integer representation.
+        """Convert the permutation to its integer representation.
 
         :return: The integer representation of the permutation.
         :rtype: int
@@ -213,8 +209,7 @@ class Permutation(_Element):
         return sum([self[element] * 10 ** (len(self) - element) for element in self.domain])
 
     def __len__(self) -> int:
-        """
-        Returns the length of the permutation, which is the number of elements in its domain.
+        """Return the length of the permutation, which is the number of elements in its domain.
 
         :return: The length of the permutation.
         :rtype: int
@@ -233,8 +228,7 @@ class Permutation(_Element):
         return len(list(self.domain))
 
     def __mul__(self, other: "Permutation") -> "Permutation":
-        """
-        Multiplies the permutation with another permutation, resulting in a new permutation
+        """Multiply the permutation with another permutation, resulting in a new permutation
         that represents the composition of the two permutations.
 
         :param other: The other permutation to multiply with.
@@ -264,8 +258,7 @@ class Permutation(_Element):
         raise TypeError(f"Product between types `Permutation` and {type(other)} is not implemented.")
 
     def __repr__(self) -> str:
-        r"""
-        Returns a string representation of the permutation in the format "Permutation(x, y, z, ...)",
+        r"""Return a string representation of the permutation in the format "Permutation(x, y, z, ...)",
         where :math:`x, y, z, ... \in \mathbb{N}` are the elements of the permutation.
 
         :return: A string representation of the permutation.
@@ -282,8 +275,7 @@ class Permutation(_Element):
         return f"Permutation({', '.join([str(self._map[idx]) for idx in self.domain])})"
 
     def __str__(self) -> str:
-        """
-        Returns a string representation of the permutation in the form of tuples.
+        """Return a string representation of the permutation in the form of tuples.
 
         :return: A string representation of the permutation.
         :rtype: str
@@ -300,8 +292,7 @@ class Permutation(_Element):
 
     @classmethod
     def from_dict(cls, p: Dict[int, int]) -> "Permutation":
-        """
-        Creates a permutation object from a dictionary where keys represent indices and values represent the
+        """Create a permutation object from a dictionary where keys represent indices and values represent the
         images of the indeces.
 
         :param p: A dictionary representing the permutation.
@@ -319,8 +310,9 @@ class Permutation(_Element):
 
     @classmethod
     def from_cycle(cls, cycle: "Cycle") -> "Permutation":
-        """
-        Return a permutation from a cycle. In other word, it converts a cycle into a permutation.
+        """Return a permutation from a cycle.
+
+        In other word, it converts a cycle into a permutation.
 
         :param cycle: A cycle.
         :type cycle: Cycle
@@ -351,9 +343,9 @@ class Permutation(_Element):
 
     @classmethod
     def from_cycle_decomposition(cls, cycle_decomposition: "CycleDecomposition") -> "Permutation":
-        """
-        Return a permutation from a cycle decomposition. In other word, it converts a cycle decomposition into a
-        permutation.
+        """Return a permutation from a cycle decomposition.
+
+        In other word, it converts a cycle decomposition into a permutation.
 
         :param cycle_decomposition: A cycle decomposition.
         :type cycle_decomposition: CycleDecomposition
@@ -373,8 +365,8 @@ class Permutation(_Element):
 
     @property
     def domain(self) -> Iterable[int]:
-        """
-        Returns an iterable containing the elements of the domain of the permutation.
+        """Return an iterable containing the elements of the domain of the permutation.
+
         The domain of a permutation is the set of indices for which the permutation is defined.
 
         :return: The domain of the permutation.
@@ -395,9 +387,9 @@ class Permutation(_Element):
 
     @property
     def map(self) -> Dict[int, int]:
-        """
-        Returns a dictionary representing the mapping of the permutation,
-        where keys are indices and values are the corresponding elements after permutation.
+        """Return a dictionary representing the mapping of the permutation.
+
+        The keys of the dictionary are indices, while the values are the corresponding elements after permutation.
 
         :return: The mapping of the permutation.
         :rtype: Dict[int, int]
@@ -413,9 +405,10 @@ class Permutation(_Element):
         return self._map
 
     def equivalent(self, other: Any) -> bool:
-        """
-        Checks if the permutation is equivalent to another object. This method is introduced because we can have
-        different representation of the same permutation, e.g., as a cycle, or as cycle decomposition.
+        """Check if the permutation is equivalent to another object.
+
+        This method is introduced because we can have different representation of the same permutation, e.g., as a
+        cycle, or as cycle decomposition.
 
         :param other: The object to compare with.
         :type other: Any
@@ -446,10 +439,10 @@ class Permutation(_Element):
         return False
 
     def orbit(self, item: Any) -> List[Any]:
-        """
-        Calculates the orbit of the specified element under the permutation,
-        which is the set of all elements obtained by repeatedly applying the permutation
-        to the initial element until it returns to itself.
+        r"""Compute the orbit of `item` object under the action of the cycle.
+
+        Recall that the orbit of the action of a permutation :math:`\sigma` on an element x is given by the set
+        :math:`\{ \sigma^n(x): n \in \mathbb{N}\}`.
 
         :param item: The initial element or iterable to compute the orbit for.
         :type item: Any
@@ -484,8 +477,7 @@ class Permutation(_Element):
         return orbit
 
     def order(self) -> int:
-        r"""
-        Return the order of the permutation.
+        r"""Return the order of the permutation.
 
         Recall that the order of a permutation :math:`\sigma` is the smallest positive integer :math:`n \in \mathbb{N}`
         such that :math:`\sigma^n = id`, where :math:`id` is the identity permutation.
@@ -507,8 +499,7 @@ class Permutation(_Element):
         return self.cycle_decomposition().order()
 
     def cycle_decomposition(self) -> "CycleDecomposition":
-        """
-        Decomposes the permutation into its cycle decomposition.
+        """Decompose the permutation into its cycle decomposition.
 
         :return: The cycle decomposition of the permutation.
         :rtype: CycleDecomposition
@@ -533,8 +524,7 @@ class Permutation(_Element):
         return symmetria.elements.cycle_decomposition.CycleDecomposition(*cycles)
 
     def cycle_notation(self) -> str:
-        """
-        Returns a string representing the cycle notation of the permutation.
+        """Return a string representing the cycle notation of the permutation.
 
         :return: The cycle notation of the permutation.
         :rtype: str
@@ -550,8 +540,7 @@ class Permutation(_Element):
         return self.cycle_decomposition().cycle_notation()
 
     def is_derangement(self) -> bool:
-        r"""
-        Check if the permutation is a derangement.
+        r"""Check if the permutation is a derangement.
 
         Recall that a permutation :math:`\sigma` is called a derangement if it has no fixed points, i.e.,
         :math:`\sigma(x) \neq x` for every :math:`x` in the permutation domain.
@@ -576,10 +565,8 @@ class Permutation(_Element):
         return True
 
     def support(self) -> Set[int]:
-        """
-        Returns a set containing the indices in the domain of the permutation
-        whose images are different from their respective indices, i.e., the set of :math:`n` in the permutation
-        domain which are not mapped to itself.
+        """Return a set containing the indices in the domain of the permutation whose images are different from their
+        respective indices, i.e., the set of :math:`n` in the permutation domain which are not mapped to itself.
 
         :return: The support set of the permutation.
         :rtype: Set[int]
@@ -598,8 +585,7 @@ class Permutation(_Element):
         return {idx for idx in self.domain if self(idx) != idx}
 
     def one_line_notation(self) -> str:
-        r"""
-        Returns a string representation of the permutation in the one-line notation, i.e., in the form
+        r"""Return a string representation of the permutation in the one-line notation, i.e., in the form
         :math:`\sigma(x_1)\sigma(x_2)...\sigma(x_n)`, where :math:`\sigma` is a permutation and :math:`x_1, ..., x_n`
         are the elements permuted by :math:`\sigma`.
 

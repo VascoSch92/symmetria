@@ -3,7 +3,7 @@ from typing import Any, Set, Dict, List, Iterable
 
 
 class _Element(ABC):
-    """Abstract class which exposes methods to implement in class representing permutations"""
+    """Abstract class which exposes methods to implement in class representing permutations."""
 
     def name(self) -> str:
         """Shortcut for the class name. Used for the tests."""
@@ -40,12 +40,12 @@ class _Element(ABC):
 
     @abstractmethod
     def __repr__(self) -> str:
-        """Implement method `__repr__( )`"""
+        """Implement method `__repr__( )`."""
         raise NotImplementedError
 
     @abstractmethod
     def __str__(self) -> str:
-        """Implement method `__str__( )`"""
+        """Implement method `__str__( )`."""
         raise NotImplementedError
 
     @property
@@ -60,11 +60,11 @@ class _Element(ABC):
         """Return a dictionary representing the map defining the element."""
         raise NotImplementedError
 
-    """@staticmethod
-    @abstractmethod
-    def from_dict(permutation: Dict) -> "Element":
-        raise NotImplementedError
-    """
+    # TODO: decide if we want to implement this method also for the classes Cycle and CycleDecomposition
+    # @staticmethod
+    # @abstractmethod
+    # def from_dict(permutation: Dict) -> "Element":
+    #     raise NotImplementedError
 
     @abstractmethod
     def cycle_decomposition(self) -> "CycleDecomposition":
@@ -73,7 +73,7 @@ class _Element(ABC):
 
     @abstractmethod
     def cycle_notation(self) -> str:
-        """Return the cycle notation of the object"""
+        """Return the cycle notation of the object."""
         raise NotImplementedError
 
     @abstractmethod
