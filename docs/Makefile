@@ -16,29 +16,24 @@ help:
 clean:
 	@echo "[INFO] -- cleaning"
 	@rm -rf "./$(BUILDDIR)"
-	@rm -rf "./$(SOURCEDIR)/pages/changelog.md"
-	@rm -rf "./$(SOURCEDIR)/pages/license.txt"
-	@rm -rf "./$(SOURCEDIR)/pages/contributing.md"
-	@rm -rf "./$(SOURCEDIR)/pages/code_of_conduct.md"
+	@rm -rf "./$(SOURCEDIR)/pages/community/changelog.md"
+	@rm -rf "./$(SOURCEDIR)/pages/community/contributing.md"
+	@rm -rf "./$(SOURCEDIR)/pages/community/code_of_conduct.md"
 
 copy-changelog:
 	@echo "[INFO] Copying CHANGELOG.md in "docs/$(SOURCEDIR)""
-	@cp -r ../CHANGELOG.md "$(SOURCEDIR)/pages/changelog.md"
+	@cp -r ../CHANGELOG.md "$(SOURCEDIR)/pages/community/changelog.md"
 
 copy-contributing:
 	@echo "[INFO] Copying CONTRIBUTING.md in "docs/$(SOURCEDIR)""
-	@cp -r ../CONTRIBUTING.md "$(SOURCEDIR)/pages/contributing.md"
-
-copy-license:
-	@echo "[INFO] Copying LICENSE.txt in "docs/$(SOURCEDIR)""
-	@cp -r ../LICENSE.txt "$(SOURCEDIR)/pages/license.txt"
+	@cp -r ../CONTRIBUTING.md "$(SOURCEDIR)/pages/community/contributing.md"
 
 copy-code-of-conduct:
 	@echo "[INFO] Copying CODE_OF_CONDUCT.md in "docs/$(SOURCEDIR)""
-	@cp -r ../CODE_OF_CONDUCT.md "$(SOURCEDIR)/pages/code_of_conduct.md"
+	@cp -r ../CODE_OF_CONDUCT.md "$(SOURCEDIR)/pages/community/code_of_conduct.md"
 
 doc:
 	@echo "[INFO] Build documentation"
 	@$(SPHINXBUILD) "$(SOURCEDIR)" "$(BUILDDIR)"
 
-build-docs: clean copy-changelog copy-contributing copy-license copy-code-of-conduct doc
+build-docs: clean copy-changelog copy-contributing copy-code-of-conduct doc
