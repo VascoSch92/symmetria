@@ -27,6 +27,7 @@ MAINTENANCE:
 - `.github.ISSUE_TEMPLATE`: add templates for issues
 - `tests`: in module tests we import as in the API
 - `.pre-commit-config.yml`: add `check-toml` and `name-tests-test`
+- `docs`: first version of the docs implemented
 
 ## \[0.0.0\] - 2024-05-01
 
