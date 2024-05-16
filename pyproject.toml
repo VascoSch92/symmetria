@@ -1,6 +1,6 @@
 [project]
 name = "symmetria"
-version = "0.0.0"
+version = "0.0.1"
 description = "Symmetria provides an intuitive, thorough, and comprehensive framework for interacting with the symmetric group and its elements."
 authors = [
     {name = "Vasco Schiavo"},
@@ -9,7 +9,6 @@ maintainers = [
     {name = "Vasco Schiavo"},
 ]
 readme = {file="README.md", content-type="text/markdown"}
-# entry point
 requires-python = ">=3.9,<3.13"
 keywords = [
     "math",
