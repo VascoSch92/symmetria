@@ -20,6 +20,8 @@ The version is represented by three digits: a.b.c.
 
 ## Unreleased
 
+## \[0.0.1\] - 2024-05-16
+
 MAINTENANCE:
 
 - `.github`: add workflows `tests.yml`, `code-style.yml`, `release.yml` and `check-pr-title.yml`
