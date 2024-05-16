@@ -4,14 +4,13 @@ from itertools import combinations
 
 import symmetria.elements.cycle
 import symmetria.elements.permutation
-from symmetria.interfaces import _Element
+from symmetria._interfaces import _Element
 
 __all__ = ["CycleDecomposition"]
 
 
 class CycleDecomposition(_Element):
-    r"""
-    The ``CycleDecomposition`` class represents the cycle decomposition of a permutation of the symmetric group.
+    r"""The ``CycleDecomposition`` class represents the cycle decomposition of a permutation of the symmetric group.
 
     Recall that every permutation of the symmetric group can be represented uniquely as the composition of a finite
     number of cycles thanks to the `Cycle Decomposition Theorem for Permutations`.
@@ -46,8 +45,8 @@ class CycleDecomposition(_Element):
 
     @staticmethod
     def _validate_and_standardize(cycles: Tuple["Cycle", ...]) -> Tuple["Cycle", ...]:
-        """
-        Private method to validate and standardize a tuple of cycles to become a cycle decomposition.
+        """Private method to validate and standardize a tuple of cycles to become a cycle decomposition.
+
         A tuple of cycles is eligible to be a cycle decomposition if and only if:
             - every pair of cycles is disjoint, meaning their supports are disjoint;
             - every element from 1 to the largest permuted element is included in at least one cycle.
@@ -72,8 +71,7 @@ class CycleDecomposition(_Element):
         return tuple(cycles)
 
     def __bool__(self) -> bool:
-        r"""
-        Check if the cycle decomposition is non-empty, i.e., it is different from the identity
+        r"""Check if the cycle decomposition is non-empty, i.e., it is different from the identity
         cycle decomposition.
 
         :return: True if the cycle decomposition is different from the identity cycle decomposition, False otherwise.
@@ -97,8 +95,7 @@ class CycleDecomposition(_Element):
         return any(bool(cycle) for cycle in self)
 
     def __call__(self, item: Any) -> Any:
-        """
-        Call the cycle decomposition on the `item` object, i.e., mimic a cycle decomposition action on the
+        """Call the cycle decomposition on the `item` object, i.e., mimic a cycle decomposition action on the
         element `item`.
 
         - If `item` is an integer, it applies the cycle decomposition to the integer.
@@ -168,8 +165,7 @@ class CycleDecomposition(_Element):
         return symmetria.elements.permutation.Permutation.from_cycle_decomposition(self) * original
 
     def __eq__(self, other: Any) -> bool:
-        """
-        Check if the cycle decomposition is equal to another object.
+        """Check if the cycle decomposition is equal to the `another` object.
 
         :param other: The object to compare with.
         :type other: Any
@@ -188,8 +184,8 @@ class CycleDecomposition(_Element):
         return False
 
     def __getitem__(self, idx: int) -> "Cycle":
-        """
-        Returns the cycle of the cycle decomposition at the given index `item`.
+        """Return the cycle of the cycle decomposition at the given index `item`.
+
         The index corresponds to the position in the cycle decomposition, starting from 0.
 
         :param idx: The index of the cycle.
@@ -220,8 +216,7 @@ class CycleDecomposition(_Element):
         )
 
     def __iter__(self) -> Iterable["Cycle"]:
-        """
-        Return an iterator over the cycles in the cycle decomposition.
+        """Return an iterator over the cycles in the cycle decomposition.
 
         :return: An iterator over the cycles in the cycle decomposition.
         :rtype: Iterable[Cycle]
@@ -236,8 +231,7 @@ class CycleDecomposition(_Element):
         return iter(self._cycles)
 
     def __len__(self) -> int:
-        """
-        Returns the length of the cycle decomposition, which is the number of cycles present in the decomposition.
+        """Return the length of the cycle decomposition, which is the number of cycles present in the decomposition.
 
         :return: The length of the cycle decomposition.
         :rtype: int
@@ -256,8 +250,7 @@ class CycleDecomposition(_Element):
         return len(self._cycles)
 
     def __mul__(self, other: "CycleDecomposition") -> "CycleDecomposition":
-        """
-        Multiplies the cycle decomposition with another cycle decomposition, resulting in a new cycle decomposition
+        """Multiply the cycle decomposition with another cycle decomposition, resulting in a new cycle decomposition
         that represents the composition of the two cycle decompositions.
 
         :param other: The other cycle decomposition to multiply with.
@@ -281,8 +274,7 @@ class CycleDecomposition(_Element):
         raise TypeError(f"Product between types `CycleDecomposition` and {type(other)} is not implemented.")
 
     def __repr__(self) -> str:
-        r"""
-        Returns a string representation of the cycle decomposition in the format
+        r"""Return a string representation of the cycle decomposition in the format
         'CycleDecomposition(Cycle(x, ...), Cycle(y, ...), ...)', where :math:`x, y, ... \in \mathbb{N}` are
         the elements of the cycles.
 
@@ -303,8 +295,7 @@ class CycleDecomposition(_Element):
         return f"CycleDecomposition({', '.join([cycle.__repr__() for cycle in self])})"
 
     def __str__(self) -> str:
-        """
-        Returns a string representation of the cycle decmposition in the cycle notation.
+        """Return a string representation of the cycle decmposition in the cycle notation.
 
         :return: A string representation of the cycle decomposition.
         :rtype: str
@@ -324,8 +315,8 @@ class CycleDecomposition(_Element):
 
     @property
     def domain(self) -> Iterable[int]:
-        """
-        Returns an iterable containing the elements of the domain of the cycle decomposition.
+        """Return an iterable containing the elements of the domain of the cycle decomposition.
+
         The domain of a cycle decomposition is the set of indices for which the cycle decomposition is defined.
 
         :return: The domain of the cycle decomposition.
@@ -346,8 +337,7 @@ class CycleDecomposition(_Element):
 
     @property
     def map(self) -> Dict[int, int]:
-        """
-        Returns a dictionary representing the mapping of the cycle decomposition,
+        """Return a dictionary representing the mapping of the cycle decomposition,
         where keys are indices and values are the corresponding elements after permutation.
 
         :return: The mapping of the cycle decompostiion.
@@ -367,8 +357,9 @@ class CycleDecomposition(_Element):
         return _map
 
     def cycle_decomposition(self) -> "CycleDecomposition":
-        """
-        Return the cycle decomposition of the permutation. As a cycle decomposition is already in the
+        """Return the cycle decomposition of the permutation.
+
+        As a cycle decomposition is already in the
         cycle decomposition, the method return the cycle decomposition itself.
 
         :return: The cycle decomposition of the permutation.
@@ -377,8 +368,7 @@ class CycleDecomposition(_Element):
         return self
 
     def cycle_notation(self) -> str:
-        """
-        Returns a string representing the cycle notation of the cycle decomposition.
+        """Return a string representing the cycle notation of the cycle decomposition.
 
         :return: The cycle notation of the permutation.
         :rtype: str
@@ -397,8 +387,7 @@ class CycleDecomposition(_Element):
         return str(self)
 
     def order(self) -> int:
-        r"""
-        Return the order of the cycle permutation.
+        r"""Return the order of the cycle permutation.
 
         Recall that the order of a cycle decompostion is the least common multiple of lengths (order) of its cycles.
 
@@ -419,10 +408,8 @@ class CycleDecomposition(_Element):
         return lcm(*[len(cycle) for cycle in self])
 
     def support(self) -> Set[int]:
-        """
-        Returns a set containing the indices in the domain of the permutation
-        whose images are different from their respective indices, i.e., the set of :math:`n` in the permutation
-        domain which are not mapped to itself.
+        """Return a set containing the indices in the domain of the permutation whose images are different from
+        their respective indices, i.e., the set of :math:`n` in the permutation domain which are not mapped to itself.
 
         :return: The support set of the cycle decomposition.
         :rtype: Set[int]
@@ -438,8 +425,7 @@ class CycleDecomposition(_Element):
         return {element for cycle in self if len(cycle) != 1 for element in cycle.elements}
 
     def is_derangement(self) -> bool:
-        r"""
-        Check if the cycle decomposition is a derangement.
+        r"""Check if the cycle decomposition is a derangement.
 
         Recall that a permutation :math:`\sigma` is called a derangement if it has no fixed points, i.e.,
         :math:`\sigma(x) \neq x` for every :math:`x` in the permutation domain.
@@ -464,9 +450,10 @@ class CycleDecomposition(_Element):
         return True
 
     def equivalent(self, other: Any) -> bool:
-        """
-        Checks if the cycle decomposition is equivalent to another object. This method is introduced because we can have
-        different representation of the same cycle decomposition, e.g., as a cycle, or as permutation.
+        """Check if the cycle decomposition is equivalent to another object.
+
+        This method is introduced because we can have different representation of the same cycle decomposition, e.g.,
+        as a cycle, or as permutation.
 
         :param other: The object to compare with.
         :type other: Any
@@ -500,6 +487,17 @@ class CycleDecomposition(_Element):
         return False
 
     def orbit(self, item: Any) -> List[Any]:
+        r"""Compute the orbit of `item` object under the action of the cycle decomposition.
+
+        Recall that the orbit of the action of a cycle decomposition :math:`\sigma` on an element x is given by the set
+        :math:`\{ \sigma^n(x): n \in \mathbb{N}\}`.
+
+        :param item: The initial element or iterable to compute the orbit for.
+        :type item: Any
+
+        :return: The orbit of the specified element under the permutation.
+        :rtype: List[Any]
+        """
         if isinstance(item, symmetria.elements.cycle.Cycle):
             item = item.cycle_decomposition()
         orbit = [item]

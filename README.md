@@ -92,15 +92,15 @@ permutation.is_derangement()  # True
 A list of (some) of the functionality implemented for the various classes representing permutation.
 Here, `P` is for `Permutation`, `C`for `Cycle`, and `CD` for `CycleDecomposition`.
 
-| Feature               | Description                                             | P   | C   | CD  |
-| --------------------- | ------------------------------------------------------- | --- | --- | --- |
-| `__call__`            | Call a permutation on an object                         | ✅   | ✅   | ✅   |
-| `__mul__`             | Multiplication (composition) between permutations       | ✅   | ❌   | ✅   |
-| `cycle_decomposition` | Cycle decomposition of the permutation                  | ✅   | ✅   | ✅   |
-| `cycle_notation`      | Returns the cycle notation of the permutation           | ✅   | ✅   | ✅   |
-| `is_derangement`      | Checks if the permutation is a derangement              | ✅   | ✅   | ✅   |
-| `map`                 | Returns the map defining the permutation                | ✅   | ✅   | ✅   |
-| `one_line_notation`   | Returns the one line notation of the permutation        | ✅   | ❌   | ❌   |
-| `support`             | Returns the support of the permutation                  | ✅   | ✅   | ✅   |
-| `orbit`               | Computes image of a given element under the permutation | ✅   | ✅   | ✅   |
-| `order`               | Returns the order of the permutation                    | ✅   | ✅   | ✅   |
+| Feature               | Description                                            | P   | C   | CD  |
+| --------------------- |--------------------------------------------------------| --- | --- | --- |
+| `__call__`            | Call a permutation on an object                        | ✅   | ✅   | ✅   |
+| `__mul__`             | Multiplication (composition) between permutations      | ✅   | ❌   | ✅   |
+| `cycle_decomposition` | Cycle decomposition of the permutation                 | ✅   | ✅   | ✅   |
+| `cycle_notation`      | Return the cycle notation of the permutation           | ✅   | ✅   | ✅   |
+| `is_derangement`      | Check if the permutation is a derangement              | ✅   | ✅   | ✅   |
+| `map`                 | Return the map defining the permutation                | ✅   | ✅   | ✅   |
+| `one_line_notation`   | Return the one line notation of the permutation        | ✅   | ❌   | ❌   |
+| `support`             | Return the support of the permutation                  | ✅   | ✅   | ✅   |
+| `orbit`               | Compute image of a given element under the permutation | ✅   | ✅   | ✅   |
+| `order`               | Return the order of the permutation                    | ✅   | ✅   | ✅   |

@@ -9,7 +9,7 @@ __all__ = ["__version__", "Permutation", "Cycle", "CycleDecomposition"]
 
 
 def _log_version() -> None:
-    """Private method which take a command line argument and log the version of symmetria"""
+    """Private method which take a command line argument and log the version of `symmetria`."""
     if len(sys.argv) == 0 or len(sys.argv) == 1:
         raise Exception("No command provided.")
     elif len(sys.argv) == 2:
