@@ -1,4 +1,4 @@
-from math import lcm
+from math import lcm, prod
 from typing import Any, Set, Dict, List, Tuple, Union, Iterable
 from itertools import combinations
 
@@ -506,3 +506,25 @@ class CycleDecomposition(_Element):
             orbit.append(next_element)
             next_element = self(next_element)
         return orbit
+
+    def sgn(self) -> int:
+        r"""Return the sign of the cycle decomposition.
+
+        Recall that the sign, signature, or signum of a permutation :math:`\sigma` is defined as +1 if :math:`\sigma`
+        is even, and -1 if :math:`\sigma` is odd.
+
+        To compute the sign of a cycle decomposition, we use the fact that the sign is a homomorphism of groups, i.e.,
+        the sign of the cycle decomposition is just the product of the signs of the cycle componing it.
+
+        :return: 1 if the cycle decomposition is even, -1 if the cycle decomposition is odd.
+        :rtype: int
+
+        :example:
+            >>> CycleDecomposition(Cycle(1)).sgn()
+            1
+            >>> CycleDecomposition(Cycle(1, 2), Cycle(3)).sgn()
+            -1
+            >>> CycleDecomposition(Cycle(1), Cycle(2, 4, 7, 6), Cycle(3, 5)).sgn()
+            1
+        """
+        return prod([cycle.sgn() for cycle in self])

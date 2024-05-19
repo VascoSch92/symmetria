@@ -2,6 +2,7 @@ import pytest
 
 from tests.test_factory import (
     validate_map,
+    validate_sgn,
     validate_orbit,
     validate_order,
     validate_domain,
@@ -13,6 +14,7 @@ from tests.test_factory import (
 )
 from tests.tests_permutation.test_cases import (
     TEST_MAP,
+    TEST_SGN,
     TEST_ORBIT,
     TEST_ORDER,
     TEST_DOMAIN,
@@ -117,6 +119,16 @@ def test_one_line_notation(permutation, expected_value) -> None:
             f"The expression `{permutation.__repr__()}.one_line_notation()` must evaluate {expected_value}, "
             f"but got {permutation.one_line_notation()}."
         )
+
+
+@pytest.mark.parametrize(
+    argnames="permutation, expected_value",
+    argvalues=TEST_SGN,
+    ids=[f"{p.rep()}.sgn()={s}" for p, s in TEST_SGN],
+)
+def test_sgn(permutation, expected_value) -> None:
+    """Tests for the method `sgn()`."""
+    validate_sgn(item=permutation, expected_value=expected_value)
 
 
 @pytest.mark.parametrize(

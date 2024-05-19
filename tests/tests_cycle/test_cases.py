@@ -53,6 +53,12 @@ TEST_IS_DERANGEMENT = [
     (Cycle(1, 2), True),
     (Cycle(1, 2, 3), True),
 ]
+TEST_MAP = [
+    (Cycle(1), {1: 1}),
+    (Cycle(13), {13: 13}),
+    (Cycle(1, 2), {1: 2, 2: 1}),
+    (Cycle(1, 2, 3), {1: 2, 2: 3, 3: 1}),
+]
 TEST_ORBIT = [
     (Cycle(3, 1, 2), 1, [1, 2, 3]),
     (Cycle(3, 1, 2), "abc", ["abc", "cab", "bca"]),
@@ -78,17 +84,19 @@ TEST_ORDER = [
     (Cycle(1, 2), 2),
     (Cycle(1, 2, 3), 3),
 ]
+TEST_SGN = [
+    (Cycle(1), 1),
+    (Cycle(13), 1),
+    (Cycle(1, 2), -1),
+    (Cycle(1, 2, 3), 1),
+    (Cycle(1, 2, 3, 4, 5, 6), -1),
+    (Cycle(1, 2, 3, 4, 5, 6, 7), 1),
+]
 TEST_SUPPORT = [
     (Cycle(1), set()),
     (Cycle(13), set()),
     (Cycle(1, 2), {1, 2}),
     (Cycle(1, 2, 3), {1, 2, 3}),
-]
-TEST_MAP = [
-    (Cycle(1), {1: 1}),
-    (Cycle(13), {13: 13}),
-    (Cycle(1, 2), {1: 2, 2: 1}),
-    (Cycle(1, 2, 3), {1: 2, 2: 3, 3: 1}),
 ]
 
 ############################

@@ -604,3 +604,22 @@ class Permutation(_Element):
             '134524'
         """
         return str(int(self))
+
+    def sgn(self) -> int:
+        r"""Return the sign of the permutation.
+
+        Recall that the sign, signature, or signum of a permutation :math:`\sigma` is defined as +1 if :math:`\sigma`
+        is even, and -1 if :math:`\sigma` is odd.
+
+        :return: 1 if the permutation is even, -1 if the permutation is odd.
+        :rtype: int
+
+        :example:
+            >>> Permutation(1).sgn()
+            1
+            >>> Permutation(2, 1).sgn()
+            -1
+            >>> Permutation(2, 3, 4, 5, 6, 1).sgn()
+            -1
+        """
+        return self.cycle_decomposition().sgn()
