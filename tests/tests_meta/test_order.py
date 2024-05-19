@@ -58,16 +58,24 @@ class OrderTestSuite:
 
 
 class TestOrderMethodsElementClass(OrderTestSuite):
+    """Test methods order for class `_Element`."""
+
     SCRIPT_PATH = "symmetria/elements/_interface.py"
 
 
 class TestOrderMethodsPermutationClass(OrderTestSuite):
+    """Test methods order for class `Permutation`."""
+
     SCRIPT_PATH = "symmetria/elements/permutation.py"
 
 
 class TestOrderMethodsCycleClass(OrderTestSuite):
+    """Test methods order for class `Cycle`."""
+
     SCRIPT_PATH = "symmetria/elements/cycle.py"
 
 
 class TestOrderMethodsCycleDecompositionClass(OrderTestSuite):
+    """Test methods order for class `CycleDecomposition`."""
+
     SCRIPT_PATH = "symmetria/elements/cycle_decomposition.py"
