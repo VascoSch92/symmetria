@@ -4,7 +4,7 @@ from itertools import combinations
 
 import symmetria.elements.cycle
 import symmetria.elements.permutation
-from symmetria._interfaces import _Element
+from symmetria.elements._interface import _Element
 
 __all__ = ["CycleDecomposition"]
 
@@ -386,69 +386,6 @@ class CycleDecomposition(_Element):
         """
         return str(self)
 
-    def order(self) -> int:
-        r"""Return the order of the cycle permutation.
-
-        Recall that the order of a cycle decompostion is the least common multiple of lengths (order) of its cycles.
-
-        :return: The order of the cycle permutation.
-        :rtype: int
-
-        :example:
-            >>> cycle_decomposition = CycleDecomposition(Cycle(1))
-            >>> cycle_decomposition.order()
-            1
-            >>> cycle_decomposition = CycleDecomposition(Cycle(1, 3, 2))
-            >>> cycle_decomposition.order()
-            3
-            >>> cycle_decomposition = CycleDecomposition(Cycle(1, 3, 2), Cycle(4, 5))
-            >>> cycle_decomposition.order()
-            6
-        """
-        return lcm(*[len(cycle) for cycle in self])
-
-    def support(self) -> Set[int]:
-        """Return a set containing the indices in the domain of the permutation whose images are different from
-        their respective indices, i.e., the set of :math:`n` in the permutation domain which are not mapped to itself.
-
-        :return: The support set of the cycle decomposition.
-        :rtype: Set[int]
-
-        :example:
-            >>> cycle_decomposition = CycleDecomposition(Cycle(1))
-            >>> cycle_decomposition.support()
-            set()
-            >>> cycle_decomposition = CycleDecomposition(Cycle(1), Cycle(2, 3))
-            >>> cycle_decomposition.support()
-            {2, 3}
-        """
-        return {element for cycle in self if len(cycle) != 1 for element in cycle.elements}
-
-    def is_derangement(self) -> bool:
-        r"""Check if the cycle decomposition is a derangement.
-
-        Recall that a permutation :math:`\sigma` is called a derangement if it has no fixed points, i.e.,
-        :math:`\sigma(x) \neq x` for every :math:`x` in the permutation domain.
-
-        :return: True if the permutation is a derangement, False otherwise.
-        :rtype: bool
-
-        :example:
-            >>> cycle_permutation = CycleDecomposition(Cycle(1))
-            >>> cycle_permutation.is_derangement()
-            False
-            >>> cycle_decomposition = CycleDecomposition(Cycle(1, 2, 3))
-            >>> cycle_decomposition.is_derangement()
-            True
-            >>> cycle_decomposition = CycleDecomposition(Cycle(1), Cycle(2, 3))
-            >>> cycle_decomposition.is_derangement()
-            False
-        """
-        for cycle in self:
-            if len(cycle) == 1:
-                return False
-        return True
-
     def equivalent(self, other: Any) -> bool:
         """Check if the cycle decomposition is equivalent to another object.
 
@@ -486,6 +423,31 @@ class CycleDecomposition(_Element):
             return symmetria.elements.permutation.Permutation.from_cycle_decomposition(self) == other
         return False
 
+    def is_derangement(self) -> bool:
+        r"""Check if the cycle decomposition is a derangement.
+
+        Recall that a permutation :math:`\sigma` is called a derangement if it has no fixed points, i.e.,
+        :math:`\sigma(x) \neq x` for every :math:`x` in the permutation domain.
+
+        :return: True if the permutation is a derangement, False otherwise.
+        :rtype: bool
+
+        :example:
+            >>> cycle_permutation = CycleDecomposition(Cycle(1))
+            >>> cycle_permutation.is_derangement()
+            False
+            >>> cycle_decomposition = CycleDecomposition(Cycle(1, 2, 3))
+            >>> cycle_decomposition.is_derangement()
+            True
+            >>> cycle_decomposition = CycleDecomposition(Cycle(1), Cycle(2, 3))
+            >>> cycle_decomposition.is_derangement()
+            False
+        """
+        for cycle in self:
+            if len(cycle) == 1:
+                return False
+        return True
+
     def orbit(self, item: Any) -> List[Any]:
         r"""Compute the orbit of `item` object under the action of the cycle decomposition.
 
@@ -506,3 +468,41 @@ class CycleDecomposition(_Element):
             orbit.append(next_element)
             next_element = self(next_element)
         return orbit
+
+    def order(self) -> int:
+        r"""Return the order of the cycle permutation.
+
+        Recall that the order of a cycle decompostion is the least common multiple of lengths (order) of its cycles.
+
+        :return: The order of the cycle permutation.
+        :rtype: int
+
+        :example:
+            >>> cycle_decomposition = CycleDecomposition(Cycle(1))
+            >>> cycle_decomposition.order()
+            1
+            >>> cycle_decomposition = CycleDecomposition(Cycle(1, 3, 2))
+            >>> cycle_decomposition.order()
+            3
+            >>> cycle_decomposition = CycleDecomposition(Cycle(1, 3, 2), Cycle(4, 5))
+            >>> cycle_decomposition.order()
+            6
+        """
+        return lcm(*[len(cycle) for cycle in self])
+
+    def support(self) -> Set[int]:
+        """Return a set containing the indices in the domain of the permutation whose images are different from
+        their respective indices, i.e., the set of :math:`n` in the permutation domain which are not mapped to itself.
+
+        :return: The support set of the cycle decomposition.
+        :rtype: Set[int]
+
+        :example:
+            >>> cycle_decomposition = CycleDecomposition(Cycle(1))
+            >>> cycle_decomposition.support()
+            set()
+            >>> cycle_decomposition = CycleDecomposition(Cycle(1), Cycle(2, 3))
+            >>> cycle_decomposition.support()
+            {2, 3}
+        """
+        return {element for cycle in self if len(cycle) != 1 for element in cycle.elements}

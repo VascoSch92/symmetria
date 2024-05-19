@@ -10,7 +10,7 @@ from typing import (
 
 import symmetria.elements.permutation
 import symmetria.elements.cycle_decomposition
-from symmetria._interfaces import _Element
+from symmetria.elements._interface import _Element
 
 __all__ = ["Cycle"]
 
