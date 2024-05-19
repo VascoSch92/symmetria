@@ -585,27 +585,6 @@ class Permutation(_Element):
         """
         return self.cycle_decomposition().order()
 
-    def one_line_notation(self) -> str:
-        r"""Return a string representation of the permutation in the one-line notation, i.e., in the form
-        :math:`\sigma(x_1)\sigma(x_2)...\sigma(x_n)`, where :math:`\sigma` is a permutation and :math:`x_1, ..., x_n`
-        are the elements permuted by :math:`\sigma`.
-
-        :return: The one-line notation of the permutation.
-        :rtype: str
-
-        :example:
-            >>> permutation = Permutation(1)
-            >>> permutation.one_line_notation()
-            '1'
-            >>> permutation = Permutation(3, 1, 2)
-            >>> permutation.one_line_notation()
-            '123'
-            >>> permutation = Permutation(1, 3, 4, 5, 2, 6)
-            >>> permutation.one_line_notation()
-            '134524'
-        """
-        return str(int(self))
-
     def sgn(self) -> int:
         r"""Return the sign of the permutation.
 
@@ -624,23 +603,23 @@ class Permutation(_Element):
             -1
         """
         return self.cycle_decomposition().sgn()
-      
+
     def support(self) -> Set[int]:
-      """Return a set containing the indices in the domain of the permutation whose images are different from their
-      respective indices, i.e., the set of :math:`n` in the permutation domain which are not mapped to itself.
+        r"""Return a set containing the indices in the domain of the permutation whose images are different from their
+        respective indices, i.e., the set of :math:`n` in the permutation domain which are not mapped to itself.
 
-      :return: The support set of the permutation.
-      :rtype: Set[int]
+        :return: The support set of the permutation.
+        :rtype: Set[int]
 
-      :example:
-          >>> permutation = Permutation(1)
-          >>> permutation.support()
-          set()
-          >>> permutation = Permutation(3, 1, 2)
-          >>> permutation.support()
-          {1, 2, 3}
-          >>> permutation = Permutation(1, 3, 4, 5, 2, 6)
-          >>> permutation.support()
-          {2, 3, 4, 5}
-      """
-      return {idx for idx in self.domain if self(idx) != idx}
+        :example:
+            >>> permutation = Permutation(1)
+            >>> permutation.support()
+            set()
+            >>> permutation = Permutation(3, 1, 2)
+            >>> permutation.support()
+            {1, 2, 3}
+            >>> permutation = Permutation(1, 3, 4, 5, 2, 6)
+            >>> permutation.support()
+            {2, 3, 4, 5}
+        """
+        return {idx for idx in self.domain if self(idx) != idx}
