@@ -511,7 +511,7 @@ class CycleDecomposition(_Element):
             1
         """
         return prod([cycle.sgn() for cycle in self])
-      
+
     def support(self) -> Set[int]:
         """Return a set containing the indices in the domain of the permutation whose images are different from
         their respective indices, i.e., the set of :math:`n` in the permutation domain which are not mapped to itself.
