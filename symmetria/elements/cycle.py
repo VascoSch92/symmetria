@@ -522,6 +522,29 @@ class Cycle(_Element):
         """
         return len(self)
 
+    def sgn(self) -> int:
+        r"""Return the sign of the cycle.
+
+        Recall that the sign, signature, or signum of a permutation :math:`\sigma` is defined as +1 if :math:`\sigma`
+        is even, and -1 if :math:`\sigma` is odd.
+
+        To compute the sign of a cycle, we use the fact that a cycle is odd if and only if it has even length.
+
+        :return: 1 if the cycle is even, -1 if the cycle is odd.
+        :rtype: int
+
+        :example:
+            >>> Cycle(1).sgn()
+            1
+            >>> Cycle(1, 2).sgn()
+            -1
+            >>> Cycle(1, 2, 3, 4, 5, 6).sgn()
+            -1
+            >>> Cycle(1, 2, 3, 4, 5, 6, 7).sgn()
+            1
+        """
+        return -1 if len(self) % 2 == 0 else 1
+
     def support(self) -> Set[int]:
         """Return a set containing the indices in the domain of the cycle whose images are different from their
         respective indices, i.e., the set of :math:`n` in the cycle domain which are not mapped to itself.

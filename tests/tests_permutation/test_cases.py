@@ -128,6 +128,7 @@ TEST_ORDER = [
     (Permutation(1, 4, 3, 2), 2),
     (Permutation(1, 4, 5, 7, 3, 2, 6), 4),
 ]
+TEST_SGN = [(Permutation(1), 1), (Permutation(2, 1), -1), (Permutation(2, 3, 4, 5, 6, 1), -1)]
 
 ############################
 # TEST CASES MAGIC METHODS #

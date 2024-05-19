@@ -97,6 +97,11 @@ TEST_SUPPORT = [
     (CycleDecomposition(Cycle(1), Cycle(2, 4, 7, 6), Cycle(3, 5)), {2, 4, 7, 6, 3, 5}),
     (CycleDecomposition(Cycle(1, 6, 2, 4, 7), Cycle(3, 5)), {1, 6, 2, 4, 7, 3, 5}),
 ]
+TEST_SGN = [
+    (CycleDecomposition(Cycle(1)), 1),
+    (CycleDecomposition(Cycle(1, 2), Cycle(3)), -1),
+    (CycleDecomposition(Cycle(1), Cycle(2, 4, 7, 6), Cycle(3, 5)), 1),
+]
 
 ############################
 # TEST CASES MAGIC METHODS #

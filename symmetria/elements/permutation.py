@@ -585,8 +585,27 @@ class Permutation(_Element):
         """
         return self.cycle_decomposition().order()
 
+    def sgn(self) -> int:
+        r"""Return the sign of the permutation.
+
+        Recall that the sign, signature, or signum of a permutation :math:`\sigma` is defined as +1 if :math:`\sigma`
+        is even, and -1 if :math:`\sigma` is odd.
+
+        :return: 1 if the permutation is even, -1 if the permutation is odd.
+        :rtype: int
+
+        :example:
+            >>> Permutation(1).sgn()
+            1
+            >>> Permutation(2, 1).sgn()
+            -1
+            >>> Permutation(2, 3, 4, 5, 6, 1).sgn()
+            -1
+        """
+        return self.cycle_decomposition().sgn()
+
     def support(self) -> Set[int]:
-        """Return a set containing the indices in the domain of the permutation whose images are different from their
+        r"""Return a set containing the indices in the domain of the permutation whose images are different from their
         respective indices, i.e., the set of :math:`n` in the permutation domain which are not mapped to itself.
 
         :return: The support set of the permutation.

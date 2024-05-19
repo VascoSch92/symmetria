@@ -60,11 +60,6 @@ Here, **P** denotes the class ``Permutation``, **C** the class ``Cycle``, and **
      - ✅
      - ❌
      - ❌
-   * - ``support``
-     - Return the support of the permutation
-     - ✅
-     - ✅
-     - ✅
    * - ``orbit``
      - Compute image of a given element under the permutation
      - ✅
@@ -72,6 +67,16 @@ Here, **P** denotes the class ``Permutation``, **C** the class ``Cycle``, and **
      - ✅
    * - ``order``
      - Return the order of the permutation
+     - ✅
+     - ✅
+     - ✅
+   * - ``sgn``
+     - Return the sign of the permutation
+     - ✅
+     - ✅
+     - ✅
+   * - ``support``
+     - Return the support of the permutation
      - ✅
      - ✅
      - ✅

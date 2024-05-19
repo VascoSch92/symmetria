@@ -73,13 +73,13 @@ def validate_equivalent(lhs: Any, rhs: Any, expected_value: bool) -> None:
 def validate_domain(item: Any, expected_value: bool) -> None:
     if item.domain != expected_value:
         raise ValueError(
-            f"The expression `{item.rep()}.domain()` must evaluate {expected_value}, " f"but got {item.domain}."
+            f"The expression `{item.rep()}.domain()` must evaluate {expected_value}, but got {item.domain}."
         )
 
 
 def validate_map(item: Any, expected_value: Dict[int, int]) -> None:
     if item.map != expected_value:
-        raise ValueError(f"The expression `{item.rep()}.map()` must evaluate {expected_value}, " f"but got {item.map}.")
+        raise ValueError(f"The expression `{item.rep()}.map()` must evaluate {expected_value}, but got {item.map}.")
 
 
 def validate_orbit(element: Any, item: Any, expected_value: int) -> None:
@@ -93,14 +93,19 @@ def validate_orbit(element: Any, item: Any, expected_value: int) -> None:
 def validate_order(item: Any, expected_value: int) -> None:
     if item.order() != expected_value:
         raise ValueError(
-            f"The expression `{item.rep()}.order()` must evaluate {expected_value}, " f"but got {item.order()}."
+            f"The expression `{item.rep()}.order()` must evaluate {expected_value}, but got {item.order()}."
         )
+
+
+def validate_sgn(item: Any, expected_value: int) -> None:
+    if item.sgn() != expected_value:
+        raise ValueError(f"The expression `{item.rep()}.sgn()` must evaluate {expected_value}, but got {item.sgn()}.")
 
 
 def validate_support(item: Any, expected_value: Set[int]) -> None:
     if item.support() != expected_value:
         raise ValueError(
-            f"The expression `{item.rep()}.support()` must evaluate {expected_value}, " f"but got {item.support()}."
+            f"The expression `{item.rep()}.support()` must evaluate {expected_value}, but got {item.support()}."
         )
 
 

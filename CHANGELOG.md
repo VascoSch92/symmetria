@@ -20,9 +20,17 @@ The version is represented by three digits: a.b.c.
 
 ## Unreleased
 
+
+FEATURE:
+
+- `symmetria.Permutation`: add `sgn` method
+- `symmetria.Cycle`: add `sgn` method
+- `symmetria.CyclePermutation`: add `sgn` method
+
 MAINTENANCE:
 
 - `tests.tests_meta.test_order.py`: add test suite for order of methods
+
 
 ## \[0.0.1\] - 2024-05-16
 

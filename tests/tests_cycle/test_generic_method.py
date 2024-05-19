@@ -2,6 +2,7 @@ import pytest
 
 from tests.test_factory import (
     validate_map,
+    validate_sgn,
     validate_orbit,
     validate_order,
     validate_domain,
@@ -12,6 +13,7 @@ from tests.test_factory import (
 )
 from tests.tests_cycle.test_cases import (
     TEST_MAP,
+    TEST_SGN,
     TEST_ORBIT,
     TEST_ORDER,
     TEST_DOMAIN,
@@ -105,6 +107,16 @@ def test_orbit(cycle, item, expected_value) -> None:
 def test_order(cycle, expected_value) -> None:
     """Tests for the method `order()`."""
     validate_order(item=cycle, expected_value=expected_value)
+
+
+@pytest.mark.parametrize(
+    argnames="cycle, expected_value",
+    argvalues=TEST_SGN,
+    ids=[f"{p}.sgn()={o}" for p, o in TEST_SGN],
+)
+def test_sgn(cycle, expected_value) -> None:
+    """Tests for the method `sgn()`."""
+    validate_sgn(item=cycle, expected_value=expected_value)
 
 
 @pytest.mark.parametrize(
