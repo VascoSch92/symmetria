@@ -2,7 +2,7 @@ from typing import Any, Set, Dict, List, Tuple, Union, Iterable
 
 import symmetria.elements.cycle
 import symmetria.elements.cycle_decomposition
-from symmetria._interfaces import _Element
+from symmetria.elements._interface import _Element
 
 __all__ = ["Permutation"]
 
@@ -404,6 +404,47 @@ class Permutation(_Element):
         """
         return self._map
 
+    def cycle_decomposition(self) -> "CycleDecomposition":
+        """Decompose the permutation into its cycle decomposition.
+
+        :return: The cycle decomposition of the permutation.
+        :rtype: CycleDecomposition
+
+        :example:
+            >>> permutation = Permutation(1)
+            >>> permutation.cycle_decomposition()
+            (1)
+            >>> permutation = Permutation(3, 1, 2)
+            >>> permutation.cycle_decomposition()
+            (1 3 2)
+            >>> permutation = Permutation(1, 3, 4, 5, 2, 6)
+            >>> permutation.cycle_decomposition()
+            (1)(2 3 4 5)(6)
+        """
+        cycles, visited = [], set()
+        for idx in self.domain:
+            if idx not in visited:
+                orbit = self.orbit(idx)
+                cycles.append(symmetria.elements.cycle.Cycle(*orbit))
+                visited.update(orbit)
+        return symmetria.elements.cycle_decomposition.CycleDecomposition(*cycles)
+
+    def cycle_notation(self) -> str:
+        """Return a string representing the cycle notation of the permutation.
+
+        :return: The cycle notation of the permutation.
+        :rtype: str
+
+        :example:
+            >>> Permutation(1).cycle_notation()
+            '(1)'
+            >>> Permutation(3, 1, 2).cycle_notation()
+            '(1 3 2)'
+            >>> Permutation(3, 1, 2, 4, 5, 6).cycle_notation()
+            '(1 3 2)(4)(5)(6)'
+        """
+        return self.cycle_decomposition().cycle_notation()
+
     def equivalent(self, other: Any) -> bool:
         """Check if the permutation is equivalent to another object.
 
@@ -437,6 +478,52 @@ class Permutation(_Element):
         elif isinstance(other, symmetria.elements.cycle_decomposition.CycleDecomposition):
             return self == Permutation.from_cycle_decomposition(other)
         return False
+
+    def is_derangement(self) -> bool:
+        r"""Check if the permutation is a derangement.
+
+        Recall that a permutation :math:`\sigma` is called a derangement if it has no fixed points, i.e.,
+        :math:`\sigma(x) \neq x` for every :math:`x` in the permutation domain.
+
+        :return: True if the permutation is a derangement, False otherwise.
+        :rtype: bool
+
+        :example:
+            >>> permutation = Permutation(1)
+            >>> permutation.is_derangement()
+            False
+            >>> permutation = Permutation(3, 1, 2)
+            >>> permutation.is_derangement()
+            True
+            >>> permutation = Permutation(1, 3, 4, 5, 2, 6)
+            >>> permutation.is_derangement()
+            False
+        """
+        for idx in self.domain:
+            if self(idx) == idx:
+                return False
+        return True
+
+    def one_line_notation(self) -> str:
+        r"""Return a string representation of the permutation in the one-line notation, i.e., in the form
+        :math:`\sigma(x_1)\sigma(x_2)...\sigma(x_n)`, where :math:`\sigma` is a permutation and :math:`x_1, ..., x_n`
+        are the elements permuted by :math:`\sigma`.
+
+        :return: The one-line notation of the permutation.
+        :rtype: str
+
+        :example:
+            >>> permutation = Permutation(1)
+            >>> permutation.one_line_notation()
+            '1'
+            >>> permutation = Permutation(3, 1, 2)
+            >>> permutation.one_line_notation()
+            '123'
+            >>> permutation = Permutation(1, 3, 4, 5, 2, 6)
+            >>> permutation.one_line_notation()
+            '134524'
+        """
+        return str(int(self))
 
     def orbit(self, item: Any) -> List[Any]:
         r"""Compute the orbit of `item` object under the action of the cycle.
@@ -498,92 +585,6 @@ class Permutation(_Element):
         """
         return self.cycle_decomposition().order()
 
-    def cycle_decomposition(self) -> "CycleDecomposition":
-        """Decompose the permutation into its cycle decomposition.
-
-        :return: The cycle decomposition of the permutation.
-        :rtype: CycleDecomposition
-
-        :example:
-            >>> permutation = Permutation(1)
-            >>> permutation.cycle_decomposition()
-            (1)
-            >>> permutation = Permutation(3, 1, 2)
-            >>> permutation.cycle_decomposition()
-            (1 3 2)
-            >>> permutation = Permutation(1, 3, 4, 5, 2, 6)
-            >>> permutation.cycle_decomposition()
-            (1)(2 3 4 5)(6)
-        """
-        cycles, visited = [], set()
-        for idx in self.domain:
-            if idx not in visited:
-                orbit = self.orbit(idx)
-                cycles.append(symmetria.elements.cycle.Cycle(*orbit))
-                visited.update(orbit)
-        return symmetria.elements.cycle_decomposition.CycleDecomposition(*cycles)
-
-    def cycle_notation(self) -> str:
-        """Return a string representing the cycle notation of the permutation.
-
-        :return: The cycle notation of the permutation.
-        :rtype: str
-
-        :example:
-            >>> Permutation(1).cycle_notation()
-            '(1)'
-            >>> Permutation(3, 1, 2).cycle_notation()
-            '(1 3 2)'
-            >>> Permutation(3, 1, 2, 4, 5, 6).cycle_notation()
-            '(1 3 2)(4)(5)(6)'
-        """
-        return self.cycle_decomposition().cycle_notation()
-
-    def is_derangement(self) -> bool:
-        r"""Check if the permutation is a derangement.
-
-        Recall that a permutation :math:`\sigma` is called a derangement if it has no fixed points, i.e.,
-        :math:`\sigma(x) \neq x` for every :math:`x` in the permutation domain.
-
-        :return: True if the permutation is a derangement, False otherwise.
-        :rtype: bool
-
-        :example:
-            >>> permutation = Permutation(1)
-            >>> permutation.is_derangement()
-            False
-            >>> permutation = Permutation(3, 1, 2)
-            >>> permutation.is_derangement()
-            True
-            >>> permutation = Permutation(1, 3, 4, 5, 2, 6)
-            >>> permutation.is_derangement()
-            False
-        """
-        for idx in self.domain:
-            if self(idx) == idx:
-                return False
-        return True
-
-    def support(self) -> Set[int]:
-        """Return a set containing the indices in the domain of the permutation whose images are different from their
-        respective indices, i.e., the set of :math:`n` in the permutation domain which are not mapped to itself.
-
-        :return: The support set of the permutation.
-        :rtype: Set[int]
-
-        :example:
-            >>> permutation = Permutation(1)
-            >>> permutation.support()
-            set()
-            >>> permutation = Permutation(3, 1, 2)
-            >>> permutation.support()
-            {1, 2, 3}
-            >>> permutation = Permutation(1, 3, 4, 5, 2, 6)
-            >>> permutation.support()
-            {2, 3, 4, 5}
-        """
-        return {idx for idx in self.domain if self(idx) != idx}
-
     def one_line_notation(self) -> str:
         r"""Return a string representation of the permutation in the one-line notation, i.e., in the form
         :math:`\sigma(x_1)\sigma(x_2)...\sigma(x_n)`, where :math:`\sigma` is a permutation and :math:`x_1, ..., x_n`
@@ -623,3 +624,23 @@ class Permutation(_Element):
             -1
         """
         return self.cycle_decomposition().sgn()
+      
+    def support(self) -> Set[int]:
+      """Return a set containing the indices in the domain of the permutation whose images are different from their
+      respective indices, i.e., the set of :math:`n` in the permutation domain which are not mapped to itself.
+
+      :return: The support set of the permutation.
+      :rtype: Set[int]
+
+      :example:
+          >>> permutation = Permutation(1)
+          >>> permutation.support()
+          set()
+          >>> permutation = Permutation(3, 1, 2)
+          >>> permutation.support()
+          {1, 2, 3}
+          >>> permutation = Permutation(1, 3, 4, 5, 2, 6)
+          >>> permutation.support()
+          {2, 3, 4, 5}
+      """
+      return {idx for idx in self.domain if self(idx) != idx}
