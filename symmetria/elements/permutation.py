@@ -479,6 +479,26 @@ class Permutation(_Element):
             return self == Permutation.from_cycle_decomposition(other)
         return False
 
+    def inverse(self) -> "Permutation":
+        r"""Return the inverse of the permutation.
+
+        Recall that the inverse of a permutation :math:`\sigma \in S_n`, for some :math:`n \in \mathbb{N}`, is the
+        the only permutation :math:`\tau \in S_n` such that :math:`\sigma * \tau = \tau * \sigma = id`,
+        where :math:`id` is the identity permutation.
+
+        :return: The inverse of the permutation.
+        :rtype: Permutation
+
+        :example:
+            >>> Permutation(1, 2, 3).inverse()
+            Permutation(1, 2, 3)
+            >>> Permutation(1, 3, 4, 2).inverse()
+            Permutation(1, 4, 2, 3)
+            >>> Permutation(2, 3, 1, 5, 4).inverse()
+            Permutation(3, 1, 2, 5, 4)
+        """
+        return Permutation.from_dict({item: key for key, item in self.map.items()})
+
     def is_derangement(self) -> bool:
         r"""Check if the permutation is a derangement.
 

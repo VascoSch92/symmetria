@@ -45,6 +45,11 @@ Here, **P** denotes the class ``Permutation``, **C** the class ``Cycle``, and **
      - ✅
      - ✅
      - ✅
+   * - ``inverse``
+     - Compute the inverse of the permutation
+     - ✅
+     - ✅
+     - ✅
    * - ``is_derangement``
      - Check if the permutation is a derangement
      - ✅

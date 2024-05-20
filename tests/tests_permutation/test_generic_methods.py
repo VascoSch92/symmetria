@@ -6,6 +6,7 @@ from tests.test_factory import (
     validate_orbit,
     validate_order,
     validate_domain,
+    validate_inverse,
     validate_support,
     validate_equivalent,
     validate_cycle_notation,
@@ -18,6 +19,7 @@ from tests.tests_permutation.test_cases import (
     TEST_ORBIT,
     TEST_ORDER,
     TEST_DOMAIN,
+    TEST_INVERSE,
     TEST_SUPPORT,
     TEST_EQUIVALENT,
     TEST_CYCLE_NOTATION,
@@ -65,6 +67,16 @@ def test_domain(permutation, expected_value) -> None:
 def test_equivalent(lhs, rhs, expected_value) -> None:
     """Tests for the method `equivalent()`."""
     validate_equivalent(lhs=lhs, rhs=rhs, expected_value=expected_value)
+
+
+@pytest.mark.parametrize(
+    argnames="permutation, expected_value",
+    argvalues=TEST_INVERSE,
+    ids=[f"{p}.inverse()={e}" for p, e in TEST_INVERSE],
+)
+def test_inverse(permutation, expected_value) -> None:
+    """Tests for the method `inverse()`."""
+    validate_inverse(item=permutation, expected_value=expected_value)
 
 
 @pytest.mark.parametrize(
