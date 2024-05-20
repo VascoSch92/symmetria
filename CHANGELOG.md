@@ -26,6 +26,9 @@ FEATURE:
 - `symmetria.Permutation`: add `sgn` method
 - `symmetria.Cycle`: add `sgn` method
 - `symmetria.CyclePermutation`: add `sgn` method
+- `symmetria.Permutation`: add `inverse` method
+- `symmetria.Cycle`: add `inverse` method
+- `symmetria.CyclePermutation`: add `inverse` method
 
 MAINTENANCE:
 

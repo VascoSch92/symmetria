@@ -82,6 +82,11 @@ class _Element(ABC):
         raise NotImplementedError
 
     @abstractmethod
+    def inverse(self) -> "_Element":
+        """Return the inverse of the permutation object."""
+        raise NotImplementedError
+
+    @abstractmethod
     def is_derangement(self) -> bool:
         """Return if the element is a derangement or not."""
         raise NotImplementedError
@@ -94,6 +99,11 @@ class _Element(ABC):
     @abstractmethod
     def order(self) -> int:
         """Return the order of the element."""
+        raise NotImplementedError
+
+    @abstractmethod
+    def sgn(self) -> int:
+        """Return the sign of the permutation object."""
         raise NotImplementedError
 
     @abstractmethod

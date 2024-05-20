@@ -54,6 +54,13 @@ def validate_cycle_notation(item: Any, expected_value: str) -> None:
         )
 
 
+def validate_inverse(item: Any, expected_value: Any) -> None:
+    if item.inverse() != expected_value:
+        raise ValueError(
+            f"The expression `{item.rep()}.inverse()` must evaluate {expected_value}, " f"but got {item.inverse()}."
+        )
+
+
 def validate_is_derangement(item: Any, expected_value: bool) -> None:
     if item.is_derangement() is not expected_value:
         raise ValueError(

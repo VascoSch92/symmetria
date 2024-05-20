@@ -80,6 +80,11 @@ TEST_EQUIVALENT = [
     (Permutation(1, 2, 3), 123, False),
     (Permutation(1, 3, 2, 4), "hello-world", False),
 ]
+TEST_INVERSE = [
+    (Permutation(1, 2, 3), Permutation(1, 2, 3)),
+    (Permutation(1, 3, 4, 2), Permutation(1, 4, 2, 3)),
+    (Permutation(2, 3, 1, 5, 4), Permutation(3, 1, 2, 5, 4)),
+]
 TEST_IS_DERANGEMENT = [
     (Permutation(1), False),
     (Permutation(2, 1), True),

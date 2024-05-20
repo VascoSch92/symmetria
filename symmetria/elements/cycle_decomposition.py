@@ -423,6 +423,24 @@ class CycleDecomposition(_Element):
             return symmetria.elements.permutation.Permutation.from_cycle_decomposition(self) == other
         return False
 
+    def inverse(self) -> "CycleDecomposition":
+        r"""Return the inverse of the cycle decomposition.
+
+        Recall that the inverse of a permutation :math:`\sigma \in S_n`, for some :math:`n \in \mathbb{N}`, is the
+        the only permutation :math:`\tau \in S_n` such that :math:`\sigma * \tau = \tau * \sigma = id`,
+        where :math:`id` is the identity permutation.
+
+        :return: The inverse of the cycle decomposition.
+        :rtype: Cycle
+
+        :example:
+            >>> CycleDecomposition(Cycle(1, 2, 3)).inverse()
+            CycleDecomposition(Cycle(3, 2, 1))
+            >>> CycleDecomposition(Cycle(1, 2), Cycle(3, 4)).inverse()
+            CycleDecomposition(Cycle(2, 1), Cycle(4, 3))
+        """
+        return CycleDecomposition(*[cycle.inverse() for cycle in self])
+
     def is_derangement(self) -> bool:
         r"""Check if the cycle decomposition is a derangement.
 

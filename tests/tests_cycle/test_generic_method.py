@@ -6,6 +6,7 @@ from tests.test_factory import (
     validate_orbit,
     validate_order,
     validate_domain,
+    validate_inverse,
     validate_support,
     validate_equivalent,
     validate_cycle_notation,
@@ -17,6 +18,7 @@ from tests.tests_cycle.test_cases import (
     TEST_ORBIT,
     TEST_ORDER,
     TEST_DOMAIN,
+    TEST_INVERSE,
     TEST_SUPPORT,
     TEST_ELEMENTS,
     TEST_EQUIVALENT,
@@ -67,6 +69,16 @@ def test_equivalent(lhs, rhs, expected_value) -> None:
 def test_domain(cycle, expected_value) -> None:
     """Tests for the property `domain`."""
     validate_domain(item=cycle, expected_value=expected_value)
+
+
+@pytest.mark.parametrize(
+    argnames="cycle, expected_value",
+    argvalues=TEST_INVERSE,
+    ids=[f"{cycle}.inverse()={s}" for cycle, s in TEST_INVERSE],
+)
+def test_inverse(cycle, expected_value) -> None:
+    """Tests for the method `inverse()`."""
+    validate_inverse(item=cycle, expected_value=expected_value)
 
 
 @pytest.mark.parametrize(

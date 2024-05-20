@@ -437,6 +437,28 @@ class Cycle(_Element):
             return symmetria.elements.permutation.Permutation.from_cycle(cycle=self) == other
         return False
 
+    def inverse(self) -> "Cycle":
+        r"""Return the inverse of the cycle.
+
+        Recall that the inverse of a permutation :math:`\sigma \in S_n`, for some :math:`n \in \mathbb{N}`, is the
+        the only permutation :math:`\tau \in S_n` such that :math:`\sigma * \tau = \tau * \sigma = id`,
+        where :math:`id` is the identity permutation.
+
+        In the case of cycles, it suffices to consider the backward cycle.
+
+        :return: The inverse of the cycle.
+        :rtype: Cycle
+
+        :example:
+            >>> Cycle(1, 2, 3).inverse()
+            Cycle(3, 2, 1)
+            >>> Cycle(1, 3, 4, 2).inverse()
+            Cycle(2, 4, 3, 1)
+            >>> Cycle(2, 3, 1, 5, 4).inverse()
+            Cycle(4, 5, 1, 3, 2)
+        """
+        return Cycle(*self.elements[::-1])
+
     def is_derangement(self) -> bool:
         r"""Check if the cycle is a derangement.
 

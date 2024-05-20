@@ -47,6 +47,11 @@ TEST_EQUIVALENT = [
     (Cycle(13), 13, False),
     (Cycle(1), "13", False),
 ]
+TEST_INVERSE = [
+    (Cycle(1, 2, 3), Cycle(3, 2, 1)),
+    (Cycle(1, 3, 4, 2), Cycle(2, 4, 3, 1)),
+    (Cycle(2, 3, 1, 5, 4), Cycle(4, 5, 1, 3, 2)),
+]
 TEST_IS_DERANGEMENT = [
     (Cycle(1), False),
     (Cycle(13), False),
