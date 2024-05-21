@@ -93,6 +93,18 @@ TEST_IS_DERANGEMENT = [
     (Permutation(1, 4, 5, 7, 3, 2, 6), False),
     (Permutation(6, 4, 5, 7, 3, 2, 1), True),
 ]
+TEST_IS_EVEN = [
+    (Permutation(1), True),
+    (Permutation(2, 1), False),
+    (Permutation(2, 1, 3), False),
+    (Permutation(2, 3, 4, 5, 6, 1), False),
+]
+TEST_IS_ODD = [
+    (Permutation(1), False),
+    (Permutation(2, 1), True),
+    (Permutation(2, 1, 3), True),
+    (Permutation(2, 3, 4, 5, 6, 1), True),
+]
 TEST_MAP = [
     (Permutation(1), {1: 1}),
     (Permutation(2, 1), {1: 2, 2: 1}),

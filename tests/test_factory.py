@@ -69,6 +69,20 @@ def validate_is_derangement(item: Any, expected_value: bool) -> None:
         )
 
 
+def validate_is_even(item: Any, expected_value: bool) -> None:
+    if item.is_even() is not expected_value:
+        raise ValueError(
+            f"The expression `{item.rep()}.is_even()` must evaluate {expected_value}, but got {item.is_even()}."
+        )
+
+
+def validate_is_odd(item: Any, expected_value: bool) -> None:
+    if item.is_odd() is not expected_value:
+        raise ValueError(
+            f"The expression `{item.rep()}.is_odd()` must evaluate {expected_value}, but got {item.is_odd()}."
+        )
+
+
 def validate_equivalent(lhs: Any, rhs: Any, expected_value: bool) -> None:
     if lhs.equivalent(other=rhs) != expected_value:
         raise ValueError(

@@ -524,6 +524,48 @@ class Permutation(_Element):
                 return False
         return True
 
+    def is_even(self) -> bool:
+        """Check if the permutation is even.
+
+        Recall that a permutation is said to be even if it can be expressed as the product of an even number of
+        transpositions.
+
+        :return: True if the permutation is even, False otherwise.
+        :rtype: bool
+
+        :example:
+            >>> Permutation(1).is_even()
+            True
+            >>> Permutation(2, 1).is_even()
+            False
+            >>> Permutation(2, 1, 3).is_even()
+            False
+            >>> Permutation(2, 3, 4, 5, 6, 1).is_even()
+            False
+        """
+        return self.sgn() == 1
+
+    def is_odd(self) -> bool:
+        """Check if the permutation is odd.
+
+        Recall that a permutation is said to be odd if it can be expressed as the product of an odd number of
+        transpositions.
+
+        :return: True if the permutation is odd, False otherwise.
+        :rtype: bool
+
+        :example:
+            >>> Permutation(1).is_odd()
+            False
+            >>> Permutation(2, 1).is_odd()
+            True
+            >>> Permutation(2, 1, 3).is_odd()
+            True
+            >>> Permutation(2, 3, 4, 5, 6, 1).is_odd()
+            True
+        """
+        return self.sgn() == -1
+
     def one_line_notation(self) -> str:
         r"""Return a string representation of the permutation in the one-line notation, i.e., in the form
         :math:`\sigma(x_1)\sigma(x_2)...\sigma(x_n)`, where :math:`\sigma` is a permutation and :math:`x_1, ..., x_n`

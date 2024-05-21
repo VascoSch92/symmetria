@@ -5,7 +5,9 @@ from tests.test_factory import (
     validate_sgn,
     validate_orbit,
     validate_order,
+    validate_is_odd,
     validate_inverse,
+    validate_is_even,
     validate_support,
     validate_equivalent,
     validate_cycle_notation,
@@ -17,7 +19,9 @@ from tests.tests_cycle_decomposition.test_cases import (
     TEST_SGN,
     TEST_ORBIT,
     TEST_ORDER,
+    TEST_IS_ODD,
     TEST_INVERSE,
+    TEST_IS_EVEN,
     TEST_SUPPORT,
     TEST_EQUIVALENT,
     TEST_CYCLE_NOTATION,
@@ -64,6 +68,26 @@ def test_inverse(cycle_decomposition, expected_value) -> None:
 def test_is_derangement(cycle_decomposition, expected_value) -> None:
     """Tests for the method `is_derangement()`."""
     validate_is_derangement(item=cycle_decomposition, expected_value=expected_value)
+
+
+@pytest.mark.parametrize(
+    argnames="cycle_decomposition, expected_value",
+    argvalues=TEST_IS_EVEN,
+    ids=[f"{cycle}.is_even()={s}" for cycle, s in TEST_IS_EVEN],
+)
+def test_is_even(cycle_decomposition, expected_value) -> None:
+    """Tests for the method `is_even()`."""
+    validate_is_even(item=cycle_decomposition, expected_value=expected_value)
+
+
+@pytest.mark.parametrize(
+    argnames="cycle_decomposition, expected_value",
+    argvalues=TEST_IS_ODD,
+    ids=[f"{cycle}.is_odd()={s}" for cycle, s in TEST_IS_ODD],
+)
+def test_is_odd(cycle_decomposition, expected_value) -> None:
+    """Tests for the method `is_odd()`."""
+    validate_is_odd(item=cycle_decomposition, expected_value=expected_value)
 
 
 @pytest.mark.parametrize(
