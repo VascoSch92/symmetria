@@ -92,6 +92,16 @@ class _Element(ABC):
         raise NotImplementedError
 
     @abstractmethod
+    def is_even(self) -> bool:
+        """Return if the element is even or not."""
+        raise NotImplementedError
+
+    @abstractmethod
+    def is_odd(self) -> bool:
+        """Return if the element is odd or not."""
+        raise NotImplementedError
+
+    @abstractmethod
     def orbit(self, item: Any) -> List[Any]:
         """Return the orbit created from the action of the element on the item."""
         raise NotImplementedError

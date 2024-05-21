@@ -58,6 +58,18 @@ TEST_IS_DERANGEMENT = [
     (Cycle(1, 2), True),
     (Cycle(1, 2, 3), True),
 ]
+TEST_IS_EVEN = [
+    (Cycle(1), True),
+    (Cycle(1, 2), False),
+    (Cycle(1, 2, 3, 4, 5, 6), False),
+    (Cycle(1, 2, 3, 4, 5, 6, 7), True),
+]
+TEST_IS_ODD = [
+    (Cycle(1), False),
+    (Cycle(1, 2), True),
+    (Cycle(1, 2, 3, 4, 5, 6), True),
+    (Cycle(1, 2, 3, 4, 5, 6, 7), False),
+]
 TEST_MAP = [
     (Cycle(1), {1: 1}),
     (Cycle(13), {13: 13}),

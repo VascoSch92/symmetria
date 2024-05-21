@@ -466,6 +466,44 @@ class CycleDecomposition(_Element):
                 return False
         return True
 
+    def is_even(self) -> bool:
+        """Check if the cycle decomposition is even.
+
+        Recall that a permutation is said to be even if it can be expressed as the product of an even number of
+        transpositions.
+
+        :return: True if the cycle decomposition is even, False otherwise.
+        :rtype: bool
+
+        :example:
+            >>> CycleDecomposition(Cycle(1)).is_even()
+            True
+            >>> CycleDecomposition(Cycle(1, 2), Cycle(3)).is_even()
+            False
+            >>> CycleDecomposition(Cycle(1), Cycle(2, 4, 7, 6), Cycle(3, 5)).is_even()
+            True
+        """
+        return self.sgn() == 1
+
+    def is_odd(self) -> bool:
+        """Check if the cycle decomposition is odd.
+
+        Recall that a permutation is said to be odd if it can be expressed as the product of an odd number of
+        transpositions.
+
+        :return: True if the cycle decomposition is odd, False otherwise.
+        :rtype: bool
+
+        :example:
+            >>> CycleDecomposition(Cycle(1)).is_odd()
+            False
+            >>> CycleDecomposition(Cycle(1, 2), Cycle(3)).is_odd()
+            True
+            >>> CycleDecomposition(Cycle(1), Cycle(2, 4, 7, 6), Cycle(3, 5)).is_odd()
+            False
+        """
+        return self.sgn() == -1
+
     def orbit(self, item: Any) -> List[Any]:
         r"""Compute the orbit of `item` object under the action of the cycle decomposition.
 

@@ -45,6 +45,16 @@ TEST_IS_DERANGEMENT = [
     (CycleDecomposition(Cycle(1), Cycle(2, 4, 7, 6), Cycle(3, 5)), False),
     (CycleDecomposition(Cycle(1, 6, 2, 4, 7), Cycle(3, 5)), True),
 ]
+TEST_IS_EVEN = [
+    (CycleDecomposition(Cycle(1)), True),
+    (CycleDecomposition(Cycle(1, 2), Cycle(3)), False),
+    (CycleDecomposition(Cycle(1), Cycle(2, 4, 7, 6), Cycle(3, 5)), True),
+]
+TEST_IS_ODD = [
+    (CycleDecomposition(Cycle(1)), False),
+    (CycleDecomposition(Cycle(1, 2), Cycle(3)), True),
+    (CycleDecomposition(Cycle(1), Cycle(2, 4, 7, 6), Cycle(3, 5)), False),
+]
 TEST_EQUIVALENT = [
     (CycleDecomposition(Cycle(1)), CycleDecomposition(Cycle(1)), True),
     (CycleDecomposition(Cycle(1)), Cycle(1), True),

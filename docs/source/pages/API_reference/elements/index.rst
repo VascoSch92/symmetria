@@ -55,6 +55,16 @@ Here, **P** denotes the class ``Permutation``, **C** the class ``Cycle``, and **
      - ✅
      - ✅
      - ✅
+   * - ``is_even``
+     - Check if the permutation is even
+     - ✅
+     - ✅
+     - ✅
+   * - ``is_odd``
+     - Check if the permutation is odd
+     - ✅
+     - ✅
+     - ✅
    * - ``map``
      - Return the map defining the permutation
      - ✅

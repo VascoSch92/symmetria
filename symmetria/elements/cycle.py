@@ -483,6 +483,48 @@ class Cycle(_Element):
         """
         return len(self) > 1
 
+    def is_even(self) -> bool:
+        """Check if the cycle is even.
+
+        Recall that a cycle is said to be even if it can be expressed as the product of an even number of
+        transpositions.
+
+        :return: True if the cycle is even, False otherwise.
+        :rtype: bool
+
+        :example:
+            >>> Cycle(1).is_even()
+            True
+            >>> Cycle(1, 2).is_even()
+            False
+            >>> Cycle(1, 2, 3, 4, 5, 6).is_even()
+            False
+            >>> Cycle(1, 2, 3, 4, 5, 6, 7).is_even()
+            True
+        """
+        return self.sgn() == 1
+
+    def is_odd(self) -> bool:
+        """Check if the cycle is odd.
+
+        Recall that a cycle is said to be odd if it can be expressed as the product of an odd number of
+        transpositions.
+
+        :return: True if the cycle is odd, False otherwise.
+        :rtype: bool
+
+        :example:
+            >>> Cycle(1).is_odd()
+            False
+            >>> Cycle(1, 2).is_odd()
+            True
+            >>> Cycle(1, 2, 3, 4, 5, 6).is_odd()
+            True
+            >>> Cycle(1, 2, 3, 4, 5, 6, 7).is_odd()
+            False
+        """
+        return self.sgn() == -1
+
     def orbit(self, item: Any) -> List[Any]:
         r"""Compute the orbit of `item` object under the action of the cycle.
 
