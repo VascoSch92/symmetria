@@ -79,7 +79,7 @@ def validate_is_even(item: Any, expected_value: bool) -> None:
 def validate_is_odd(item: Any, expected_value: bool) -> None:
     if item.is_odd() is not expected_value:
         raise ValueError(
-            f"The expression `{item.rep()}.is_odd()` must evaluate {expected_value}, " f"but got {item.is_odd()}."
+            f"The expression `{item.rep()}.is_odd()` must evaluate {expected_value}, but got {item.is_odd()}."
         )
 
 
