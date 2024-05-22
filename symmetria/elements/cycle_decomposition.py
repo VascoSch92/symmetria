@@ -392,7 +392,7 @@ class CycleDecomposition(_Element):
         Recall that the cycle type of the permutation :math:`\sigma` is a sequence of integer, where
         There is a 1 for every fixed point of :math:`\sigma`, a 2 for every transposition, and so on.
 
-        ..note:: Note that the resulting tuple is sorted in ascending order.
+        .. note:: Note that the resulting tuple is sorted in ascending order.
 
         :return: The cycle type of the cycle decomposition.
         :rtype: Tuple[int]
