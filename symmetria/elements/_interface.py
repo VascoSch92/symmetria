@@ -1,5 +1,5 @@
 from abc import ABC, abstractmethod
-from typing import Any, Set, Dict, List, Iterable
+from typing import Any, Set, Dict, List, Tuple, Iterable
 
 
 class _Element(ABC):
@@ -74,6 +74,11 @@ class _Element(ABC):
     @abstractmethod
     def cycle_notation(self) -> str:
         """Return the cycle notation of the object."""
+        raise NotImplementedError
+
+    @abstractmethod
+    def cycle_type(self) -> Tuple[int]:
+        """Return the cycle type of the permutation."""
         raise NotImplementedError
 
     @abstractmethod

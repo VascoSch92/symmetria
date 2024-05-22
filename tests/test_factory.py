@@ -1,4 +1,4 @@
-from typing import Any, Set, Dict, Type
+from typing import Any, Set, Dict, Type, Tuple
 
 import pytest
 
@@ -46,6 +46,13 @@ def validate_cycle_decomposition(item: Any, expected_value: CycleDecomposition) 
         )
 
 
+def validate_cycle_type(item: Any, expected_value: Tuple[int]) -> None:
+    if item.cycle_type() != expected_value:
+        raise ValueError(
+            f"The expression `{item.rep()}.cycle_type()` must evaluate {expected_value}, but got {item.cycle_type()}."
+        )
+
+
 def validate_cycle_notation(item: Any, expected_value: str) -> None:
     if item.cycle_notation() != expected_value:
         raise ValueError(
@@ -57,7 +64,7 @@ def validate_cycle_notation(item: Any, expected_value: str) -> None:
 def validate_inverse(item: Any, expected_value: Any) -> None:
     if item.inverse() != expected_value:
         raise ValueError(
-            f"The expression `{item.rep()}.inverse()` must evaluate {expected_value}, " f"but got {item.inverse()}."
+            f"The expression `{item.rep()}.inverse()` must evaluate {expected_value}, but got {item.inverse()}."
         )
 
 

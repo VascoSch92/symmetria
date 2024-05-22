@@ -1,5 +1,6 @@
 import pytest
 
+from symmetria import Cycle
 from tests.test_factory import (
     validate_map,
     validate_sgn,
@@ -39,6 +40,12 @@ from tests.tests_cycle.test_cases import (
 def test_cycle_notation(cycle, expected_value) -> None:
     """Tests for the method `cycle_notation()`."""
     validate_cycle_notation(item=cycle, expected_value=expected_value)
+
+
+def test_cycle_type() -> None:
+    """Tests for the method `cycle_type()`."""
+    with pytest.raises(NotImplementedError, match="The method `cycle_type`"):
+        _ = Cycle(1).cycle_type()
 
 
 @pytest.mark.parametrize(

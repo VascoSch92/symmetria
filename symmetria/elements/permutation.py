@@ -445,6 +445,29 @@ class Permutation(_Element):
         """
         return self.cycle_decomposition().cycle_notation()
 
+    def cycle_type(self) -> Tuple[int]:
+        r"""Return the cycle type of the permutation.
+
+        Recall that the cycle type of the permutation :math:`\sigma` is a sequence of integer, where
+        There is a 1 for every fixed point of :math:`\sigma`, a 2 for every transposition, and so on.
+
+        .. note:: Note that the resulting tuple is sorted in ascending order.
+
+        :return: The cycle type of the permutation.
+        :rtype: Tuple[int]
+
+        :example:
+            >>> Permutation(1).cycle_type()
+            (1)
+            >>> Permutation(3, 1, 2).cycle_type()
+            (3)
+            >>> Permutation(3, 1, 2, 4, 5, 6).cycle_type()
+            (1, 1, 1, 3)
+            >>> Permutation(1, 4, 5, 7, 3, 2, 6).cycle_type()
+            (1, 2, 4)
+        """
+        return tuple(sorted(len(cycle) for cycle in self.cycle_decomposition()))
+
     def equivalent(self, other: Any) -> bool:
         """Check if the permutation is equivalent to another object.
 

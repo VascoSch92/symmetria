@@ -40,6 +40,11 @@ Here, **P** denotes the class ``Permutation``, **C** the class ``Cycle``, and **
      - ✅
      - ✅
      - ✅
+   * - ``cycle_type``
+     - Return the cycle type of the permutation
+     - ✅
+     - ❌
+     - ✅
    * - ``cycle_notation``
      - Return the cycle notation of the permutation
      - ✅

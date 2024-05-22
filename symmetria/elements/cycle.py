@@ -398,6 +398,16 @@ class Cycle(_Element):
         """
         return str(self)
 
+    def cycle_type(self) -> Tuple[int]:
+        """
+        :raise NotImplementedError: The method is not implemented for the class ``Cycle``,
+            because cycles are used as building blocks for permutations and are not proper permutation.
+        """
+        raise NotImplementedError(
+            "The method `cycle_type` is not implemented for cycles, as cycles are building blocks to construct \n"
+            "permutations and not proper ones."
+        )
+
     def equivalent(self, other: Any) -> bool:
         """Check if the cycle is equivalent to the `other` object.
 
