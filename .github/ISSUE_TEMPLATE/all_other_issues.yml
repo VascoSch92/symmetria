@@ -1,0 +1,5 @@
+name: 🌍 Report all other issues or questions
+description: Let us know about anything else not covered by one of our specific issue types.
+title: ''
+labels:
+  - needs triage

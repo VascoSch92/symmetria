@@ -1,0 +1,5 @@
+name: 📚 Documentation issue
+description: Suggest how we can improve our documentation
+title: "\[DOCS\]"
+labels:
+  - documentation
