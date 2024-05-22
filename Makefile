@@ -15,6 +15,7 @@ help:
 	@echo " * build-docs: build documentation."
 	@echo " * build-docs-open: build documentation and open it."
 	@echo " * clean: clean caches and others."
+	@echo " * doctest: run doctest."
 	@echo " * init: install dependencies."
 	@echo " * init-docs: install docs dependencies."
 	@echo " * init-dist: install dist dependencies."
@@ -53,10 +54,14 @@ clean:
 	@rm -rf "./tests/.cache"
 	@rm -rf "./test-report.xml"
 
+doctest:
+	@echo "[INFO] Run doctest"
+	@pytest --doctest-modules symmetria
+
 init:
 	@echo "[INFO] Install dependencies"
 	@make pip
-	@pip install .
+	@pip install '.[dev]'
 
 init-docs:
 	@echo "[INFO] Install docs dependencies"

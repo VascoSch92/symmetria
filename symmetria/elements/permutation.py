@@ -24,6 +24,8 @@ class Permutation(_Element):
     :raises ValueError: If there are repeated integers.
 
     :example:
+        >>> from symmetria import Permutation
+
         >>> permutation = Permutation(3, 1, 2)
         >>> permutation = Permutation(*[3, 1, 2])
         >>> permutation = Permutation(*(3, 1, 2))
@@ -67,11 +69,11 @@ class Permutation(_Element):
         :rtype: bool
 
         :example:
-            >>> permutation = Permutation(1)
-            >>> bool(permutation)
+            >>> from symmetria import Permutation
+
+            >>> bool(Permutation(1))
             False
-            >>> permutation = Permutation(2, 1, 3)
-            >>> bool(permutation)
+            >>> bool(Permutation(2, 1, 3))
             True
         """
         return self != Permutation(*self.domain)
@@ -96,15 +98,17 @@ class Permutation(_Element):
         :raises TypeError: If the `item` is not of a supported type. See list above for supported types.
 
         :example:
+            >>> from symmetria import Permutation
+
             >>> permutation = Permutation(3, 1, 2)
             >>> permutation(2)
             1
             >>> permutation("abc")
-            "cab"
+            'bca'
             >>> permutation([1, 2, 3])
-            [3, 1, 2]
+            [2, 3, 1]
             >>> permutation(Permutation(3, 1, 2))
-            [3, 1, 2]
+            Permutation(2, 3, 1)
         """
         if isinstance(item, int):
             return self._call_on_integer(idx=item)
@@ -199,11 +203,11 @@ class Permutation(_Element):
         :rtype: int
 
         :example:
-            >>> permutation = Permutation(3, 1, 2)
-            >>> int(permutation)
+            >>> from symmetria import Permutation
+
+            >>> int(Permutation(3, 1, 2))
             312
-            >>> permutation = Permutation(1, 3, 4, 5, 2, 6)
-            >>> int(permutation)
+            >>> int(Permutation(1, 3, 4, 5, 2, 6))
             134526
         """
         return sum([self[element] * 10 ** (len(self) - element) for element in self.domain])
@@ -215,14 +219,13 @@ class Permutation(_Element):
         :rtype: int
 
         :example:
-            >>> permutation = Permutation(1)
-            >>> len(permutation)
+            >>> from symmetria import Permutation
+
+            >>> len(Permutation(1))
             1
-            >>> permutation = Permutation(3, 1, 2)
-            >>> len(permutation)
+            >>> len(Permutation(3, 1, 2))
             3
-            >>> permutation = Permutation(1, 3, 4, 5, 2, 6)
-            >>> len(permutation)
+            >>> len(Permutation(1, 3, 4, 5, 2, 6))
             6
         """
         return len(list(self.domain))
@@ -241,6 +244,8 @@ class Permutation(_Element):
         :raises TypeError: If the other object is not a Permutation.
 
         :example:
+            >>> from symmetria import Permutation
+
             >>> Permutation(1, 2, 3) * Permutation(3, 2, 1)
             Permutation(3, 2, 1)
             >>> Permutation(1) * Permutation(1)
@@ -265,12 +270,12 @@ class Permutation(_Element):
         :rtype: str
 
         :example:
-            >>> permutation = Permutation(3, 1, 2)
-            >>> permutation.__repr__()
-            Permutation(3, 1, 2)
-            >>> permutation = Permutation(1, 3, 4, 5, 2, 6)
-            >>> permutation.__repr__()
-            Permutation(1, 3, 4, 5, 2, 6)
+            >>> from symmetria import Permutation
+
+            >>> Permutation(3, 1, 2).__repr__()
+            'Permutation(3, 1, 2)'
+            >>> Permutation(1, 3, 4, 5, 2, 6).__repr__()
+            'Permutation(1, 3, 4, 5, 2, 6)'
         """
         return f"Permutation({', '.join([str(self._map[idx]) for idx in self.domain])})"
 
@@ -281,11 +286,11 @@ class Permutation(_Element):
         :rtype: str
 
         :example:
-            >>> permutation = Permutation(3, 1, 2)
-            >>> print(permutation)
+            >>> from symmetria import Permutation
+
+            >>> print(Permutation(3, 1, 2))
             (3, 1, 2)
-            >>> permutation = Permutation(1, 3, 4, 5, 2, 6)
-            >>> print(permutation)
+            >>> print(Permutation(1, 3, 4, 5, 2, 6))
             (1, 3, 4, 5, 2, 6)
         """
         return "(" + ", ".join([str(self[idx]) for idx in self.domain]) + ")"
@@ -302,9 +307,10 @@ class Permutation(_Element):
         :rtype: Permutation
 
         :example:
-            >>> permutation = Permutation.from_dict({1: 3, 2: 1, 3:, 2})
-            >>> print(permutation) # Permutation(2, 1, 2)
-            (3, 1, 2)
+            >>> from symmetria import Permutation
+
+            >>> Permutation.from_dict({1: 3, 2: 1, 3: 2})
+            Permutation(3, 1, 2)
         """
         return Permutation(*[p[idx] for idx in range(1, len(p) + 1)])
 
@@ -321,15 +327,14 @@ class Permutation(_Element):
         :rtype: Permutation
 
         :example:
-            >>> permutation = Permutation.from_cycle(Cycle(1))
-            >>> print(permutation) # Permutation(1)
-            (1)
-            >>> permutation = Permutation.from_cycle(Cycle(1, 2, 3)) # Permutation(2, 3, 1)
-            >>> print(permutation) # Permutation(2, 3, 1)
-            (2, 3, 1)
-            >>> permutation = Permutation.from_cycle(Cycle(3)) # Permutation(1, 2, 3)
-            >>> print(permutation) # Permutation(1, 2, 3)
-            (1, 2, 3)
+            >>> from symmetria import Cycle, Permutation
+
+            >>> Permutation.from_cycle(Cycle(1))
+            Permutation(1)
+            >>> Permutation.from_cycle(Cycle(1, 2, 3))
+            Permutation(2, 3, 1)
+            >>> Permutation.from_cycle(Cycle(3))
+            Permutation(1, 2, 3)
         """
         image = []
         cycle_length = len(cycle)
@@ -354,12 +359,12 @@ class Permutation(_Element):
         :rtype: Permutation
 
         :example:
-            >>> cd = CycleDecomposition(Cycle(1))
-            >>> Permutation.from_cycle_decomposition(cd)
-            (1)
-            >>> cd = CycleDecomposition(Cycle(4, 3), Cycle(1, 2)))
-            >>> Permutation.from_cycle_decomposition(cd)
-            (2, 1, 4, 3)
+            >>> from symmetria import Cycle, CycleDecomposition, Permutation
+
+            >>> Permutation.from_cycle_decomposition(CycleDecomposition(Cycle(1)))
+            Permutation(1)
+            >>> Permutation.from_cycle_decomposition(CycleDecomposition(Cycle(4, 3), Cycle(1, 2)))
+            Permutation(2, 1, 4, 3)
         """
         return Permutation.from_dict(p=cycle_decomposition.map)
 
@@ -373,14 +378,13 @@ class Permutation(_Element):
         :rtype: Iterable[int]
 
         :example:
-            >>> permutation = Permutation(1)
-            >>> permutation.domain()
+            >>> from symmetria import Permutation
+
+            >>> Permutation(1).domain
             range(1, 2)
-            >>> permutation = Permutation(3, 1, 2)
-            >>> permutation.domain()
+            >>> Permutation(3, 1, 2).domain
             range(1, 4)
-            >>> permutation = Permutation(1, 3, 4, 5, 2, 6)
-            >>> permutation.domain()
+            >>> Permutation(1, 3, 4, 5, 2, 6).domain
             range(1, 7)
         """
         return self._domain
@@ -395,12 +399,10 @@ class Permutation(_Element):
         :rtype: Dict[int, int]
 
         :example:
-            >>> permutation = Permutation(1)
-            >>> permutation.map()
+            >>> Permutation(1).map
             {1: 1}
-            >>> permutation = Permutation(3, 1, 2)
-            >>> permutation.map()
-            {1: 3, 2: 1, 3: 3}
+            >>> Permutation(3, 1, 2).map
+            {1: 3, 2: 1, 3: 2}
         """
         return self._map
 
@@ -411,15 +413,14 @@ class Permutation(_Element):
         :rtype: CycleDecomposition
 
         :example:
-            >>> permutation = Permutation(1)
-            >>> permutation.cycle_decomposition()
-            (1)
-            >>> permutation = Permutation(3, 1, 2)
-            >>> permutation.cycle_decomposition()
-            (1 3 2)
-            >>> permutation = Permutation(1, 3, 4, 5, 2, 6)
-            >>> permutation.cycle_decomposition()
-            (1)(2 3 4 5)(6)
+            >>> from symmetria import Cycle, CycleDecomposition, Permutation
+
+            >>> Permutation(1).cycle_decomposition()
+            CycleDecomposition(Cycle(1))
+            >>> Permutation(3, 1, 2).cycle_decomposition()
+            CycleDecomposition(Cycle(1, 3, 2))
+            >>> Permutation(1, 3, 4, 5, 2, 6).cycle_decomposition()
+            CycleDecomposition(Cycle(1), Cycle(2, 3, 4, 5), Cycle(6))
         """
         cycles, visited = [], set()
         for idx in self.domain:
@@ -436,6 +437,8 @@ class Permutation(_Element):
         :rtype: str
 
         :example:
+            >>> from symmetria import Permutation
+
             >>> Permutation(1).cycle_notation()
             '(1)'
             >>> Permutation(3, 1, 2).cycle_notation()
@@ -457,10 +460,12 @@ class Permutation(_Element):
         :rtype: Tuple[int]
 
         :example:
+            >>> from symmetria import Permutation
+
             >>> Permutation(1).cycle_type()
-            (1)
+            (1,)
             >>> Permutation(3, 1, 2).cycle_type()
-            (3)
+            (3,)
             >>> Permutation(3, 1, 2, 4, 5, 6).cycle_type()
             (1, 1, 1, 3)
             >>> Permutation(1, 4, 5, 7, 3, 2, 6).cycle_type()
@@ -481,17 +486,13 @@ class Permutation(_Element):
         :rtype: bool
 
         :example:
-            >>> permutation_a = Permutation(1, 2, 3)
-            >>> permutation_b = Permutation(1, 2, 3)
-            >>> permutation_a.equivalent(permutation_b)
+            >>> from symmetria import Cycle, CycleDecomposition, Permutation
+
+            >>> Permutation(1, 2, 3).equivalent(Permutation(1, 2, 3))
             True
-            >>> permutation = Permutation(3, 1, 2)
-            >>> cycle = Cycle(1, 3, 2)
-            >>> cycle.equivalent(cycle)
+            >>> Permutation(3, 1, 2).equivalent(Cycle(1, 3, 2))
             True
-            >>> permutation = Permutation(2, 1, 4, 3)
-            >>> cycle_decomposition = CycleDecomposition(Cycle(1, 2), Cycle(3, 4))
-            >>> permutation.equivalent(cycle_decomposition)
+            >>> Permutation(2, 1, 4, 3).equivalent(CycleDecomposition(Cycle(1, 2), Cycle(3, 4)))
             True
         """
         if isinstance(other, Permutation):
@@ -513,6 +514,8 @@ class Permutation(_Element):
         :rtype: Permutation
 
         :example:
+            >>> from symmetria import Permutation
+
             >>> Permutation(1, 2, 3).inverse()
             Permutation(1, 2, 3)
             >>> Permutation(1, 3, 4, 2).inverse()
@@ -532,14 +535,13 @@ class Permutation(_Element):
         :rtype: bool
 
         :example:
-            >>> permutation = Permutation(1)
-            >>> permutation.is_derangement()
+            >>> from symmetria import Permutation
+
+            >>> Permutation(1).is_derangement()
             False
-            >>> permutation = Permutation(3, 1, 2)
-            >>> permutation.is_derangement()
+            >>> Permutation(3, 1, 2).is_derangement()
             True
-            >>> permutation = Permutation(1, 3, 4, 5, 2, 6)
-            >>> permutation.is_derangement()
+            >>> Permutation(1, 3, 4, 5, 2, 6).is_derangement()
             False
         """
         for idx in self.domain:
@@ -557,6 +559,8 @@ class Permutation(_Element):
         :rtype: bool
 
         :example:
+            >>> from symmetria import Permutation
+
             >>> Permutation(1).is_even()
             True
             >>> Permutation(2, 1).is_even()
@@ -578,6 +582,8 @@ class Permutation(_Element):
         :rtype: bool
 
         :example:
+            >>> from symmetria import Permutation
+
             >>> Permutation(1).is_odd()
             False
             >>> Permutation(2, 1).is_odd()
@@ -598,15 +604,14 @@ class Permutation(_Element):
         :rtype: str
 
         :example:
-            >>> permutation = Permutation(1)
-            >>> permutation.one_line_notation()
+            >>> from symmetria import Permutation
+
+            >>> Permutation(1).one_line_notation()
             '1'
-            >>> permutation = Permutation(3, 1, 2)
-            >>> permutation.one_line_notation()
-            '123'
-            >>> permutation = Permutation(1, 3, 4, 5, 2, 6)
-            >>> permutation.one_line_notation()
-            '134524'
+            >>> Permutation(3, 1, 2).one_line_notation()
+            '312'
+            >>> Permutation(1, 3, 4, 5, 2, 6).one_line_notation()
+            '134526'
         """
         return str(int(self))
 
@@ -623,6 +628,7 @@ class Permutation(_Element):
         :rtype: List[Any]
 
         :example:
+            >>> from symmetria import Cycle, CycleDecomposition, Permutation
             >>> permutation = Permutation(3, 1, 2)
             >>> permutation.orbit(1)
             [1, 3, 2]
@@ -632,12 +638,6 @@ class Permutation(_Element):
             ['abc', 'bca', 'cab']
             >>> permutation.orbit(Permutation(3, 1, 2))
             [Permutation(3, 1, 2), Permutation(2, 3, 1), Permutation(1, 2, 3)]
-            >>> permutation.orbit(Cycle(1, 2, 3))
-            [
-                CycleDecomposition(Cycle(1, 2, 3)),
-                CycleDecomposition(Cycle(1), Cycle(2), Cycle(3)),
-                CycleDecomposition(Cycle(1, 3, 2)),
-            ]
         """
         if isinstance(item, symmetria.elements.cycle.Cycle):
             item = item.cycle_decomposition()
@@ -658,14 +658,13 @@ class Permutation(_Element):
         :rtype: int
 
         :example:
-            >>> permutation = Permutation(3, 1, 2)
-            >>> permutation.order()
+            >>> from symmetria import Permutation
+
+            >>> Permutation(1, 2, 3).order()
             1
-            >>> permutation = Permutation(3, 1, 2)
-            >>> permutation.order()
+            >>> Permutation(3, 1, 2).order()
             3
-            >>> permutation = Permutation(1, 3, 4, 5, 2, 6)
-            >>> permutation.order()
+            >>> Permutation(1, 3, 4, 5, 2, 6).order()
             4
         """
         return self.cycle_decomposition().order()
@@ -680,6 +679,8 @@ class Permutation(_Element):
         :rtype: int
 
         :example:
+            >>> from symmetria import Permutation
+
             >>> Permutation(1).sgn()
             1
             >>> Permutation(2, 1).sgn()
@@ -697,14 +698,13 @@ class Permutation(_Element):
         :rtype: Set[int]
 
         :example:
-            >>> permutation = Permutation(1)
-            >>> permutation.support()
+            >>> from symmetria import Permutation
+
+            >>> Permutation(1).support()
             set()
-            >>> permutation = Permutation(3, 1, 2)
-            >>> permutation.support()
+            >>> Permutation(3, 1, 2).support()
             {1, 2, 3}
-            >>> permutation = Permutation(1, 3, 4, 5, 2, 6)
-            >>> permutation.support()
+            >>> Permutation(1, 3, 4, 5, 2, 6).support()
             {2, 3, 4, 5}
         """
         return {idx for idx in self.domain if self(idx) != idx}
