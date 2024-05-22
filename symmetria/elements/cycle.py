@@ -36,6 +36,8 @@ class Cycle(_Element):
     :raises ValueError: If there is an integer in the provided cycle which is not strictly positive.
 
     :example:
+        >>> from symmetria import Cycle
+
         >>> cycle = Cycle(1, 3, 2)
         >>> cycle = Cycle(*[1, 3, 2])
         >>> cycle = Cycle(*(1, 3, 2))
@@ -72,11 +74,11 @@ class Cycle(_Element):
         :rtype: bool
 
         :example:
-            >>> cycle = Cycle(1)
-            >>> bool(cycle)
+            >>> from symmetria import Cycle
+
+            >>> bool(Cycle(1))
             False
-            >>> cycle = Cycle(2, 1, 3)
-            >>> bool(cycle)
+            >>> bool(Cycle(2, 1, 3))
             True
 
         :note: Every cycle of the form ``Cycle(n)`` is considered empty for every :math:`n \in \mathbb{N}`, i.e.,
@@ -104,11 +106,13 @@ class Cycle(_Element):
         :raises TypeError: If the `item` is not of a supported type. See list above for supported types.
 
         :example:
+            >>> from symmetria import Cycle, Permutation
+
             >>> cycle = Cycle(3, 1, 2)
             >>> cycle(2)
             3
             >>> cycle("abc")
-            "cab"
+            'cab'
             >>> cycle([1, 2, 3])
             [3, 1, 2]
             >>> cycle(Permutation(3, 1, 2))
@@ -223,17 +227,15 @@ class Cycle(_Element):
         :rtype: int
 
         :example:
-            >>> cycle = Cycle(1)
-            >>> int(cycle)
+            >>> from symmetria import Cycle
+
+            >>> int(Cycle(1))
             1
-            >>> cycle = Cycle(13)
-            >>> int(cycle)
+            >>> int(Cycle(13))
             13
-            >>> cycle = Cycle(3, 1, 2)
-            >>> int(cycle)
-            312
-            >>> cycle = Cycle(1, 3, 4, 5, 2, 6)
-            >>> int(cycle)
+            >>> int(Cycle(3, 1, 2))
+            123
+            >>> int(Cycle(1, 3, 4, 5, 2, 6))
             134526
         """
         return sum([element * 10 ** (len(self) - idx) for idx, element in enumerate(self.elements, 1)])
@@ -245,11 +247,11 @@ class Cycle(_Element):
         :rtype: int
 
         :example:
-            >>> cycle = Cycle(3, 1, 2)
-            >>> len(cycle)
+            >>> from symmetria import Cycle
+
+            >>> len(Cycle(3, 1, 2))
             3
-            >>> Cycle = Cycle(1, 3, 4, 5, 2, 6)
-            >>> len(cycle)
+            >>> len(Cycle(1, 3, 4, 5, 2, 6))
             6
         """
         return len(self._cycle)
@@ -268,12 +270,12 @@ class Cycle(_Element):
         :rtype: str
 
         :example:
-            >>> cycle = Cycle(3, 1, 2)
-            >>> cycle.__repr__()
-            Cycle(3, 1, 2)
-            >>> cycle = Cycle(1, 3, 4, 5, 2, 6)
-            >>> cycle.__repr__()
-            Cycle(1, 3, 4, 5, 2, 6)
+            >>> from symmetria import Cycle
+
+            >>> Cycle(3, 1, 2).__repr__()
+            'Cycle(1, 2, 3)'
+            >>> Cycle(1, 3, 4, 5, 2, 6).__repr__()
+            'Cycle(1, 3, 4, 5, 2, 6)'
         """
         return f"Cycle({', '.join(str(element) for element in self.elements)})"
 
@@ -287,11 +289,11 @@ class Cycle(_Element):
         :rtype: str
 
         :example:
-            >>> cycle = Cycle(3, 1, 2)
-            >>> print(cycle)
-            (3 1 2)
-            >>> cycle = Cycle(1, 3, 4, 5, 2, 6)
-            >>> print(cycle)
+            >>> from symmetria import Cycle
+
+            >>> print(Cycle(3, 1, 2))
+            (1 2 3)
+            >>> print(Cycle(1, 3, 4, 5, 2, 6))
             (1 3 4 5 2 6)
         """
         return "(" + " ".join([str(element) for element in self.elements]) + ")"
@@ -306,17 +308,15 @@ class Cycle(_Element):
         :rtype: Iterable[int]
 
         :example:
-            >>> cycle = Cycle(1)
-            >>> cycle.domain()
+            >>> from symmetria import Cycle
+
+            >>> Cycle(1).domain
             range(1, 2)
-            >>> cycle = Cycle(13)
-            >>> cycle.domain()
+            >>> Cycle(13).domain
             range(1, 14)
-            >>> cycle = Cycle(3, 1, 2)
-            >>> cycle.domain()
+            >>> Cycle(3, 1, 2).domain
             range(1, 4)
-            >>> cycle = Cycle(1, 3, 4, 5, 2, 6)
-            >>> cycle.domain()
+            >>> Cycle(1, 3, 4, 5, 2, 6).domain
             range(1, 7)
         """
         return self._domain
@@ -330,14 +330,13 @@ class Cycle(_Element):
         :rtype: Dict[int, int]
 
         :example:
-            >>> cycle = Cycle(1)
-            >>> cycle.map
+            >>> from symmetria import Cycle
+
+            >>> Cycle(1).map
             {1: 1}
-            >>> cycle = Cycle(3)
-            >>> cycle.map
-            {1: 1, 2: 2, 3: 3}
-            >>> cycle = Cycle(3, 1, 2)
-            >>> cycle.map
+            >>> Cycle(3).map
+            {3: 3}
+            >>> Cycle(3, 1, 2).map
             {1: 2, 2: 3, 3: 1}
         """
         return {element: self[(idx + 1) % len(self)] for idx, element in enumerate(self.elements)}
@@ -350,8 +349,9 @@ class Cycle(_Element):
         :rtype: Tuple[int]
 
         :example:
-            >>> cycle = Cycle(3, 1, 2)
-            >>> cycle.elements
+            >>> from symmetria import Cycle
+
+            >>> Cycle(3, 1, 2).elements
             (1, 2, 3)
         """
         return self._cycle
@@ -365,14 +365,13 @@ class Cycle(_Element):
         :rtype: CycleDecomposition
 
         :example:
-            >>> cycle = Cycle(1)
-            >>> cycle.cycle_decomposition()
+            >>> from symmetria import Cycle
+
+            >>> Cycle(1).cycle_decomposition()
             CycleDecomposition(Cycle(1))
-            >>> cycle = Cycle(3)
-            >>> cycle.cycle_decomposition()
+            >>> Cycle(3).cycle_decomposition()
             CycleDecomposition(Cycle(1), Cycle(2), Cycle(3))
-            >>> cycle = Cycle(3, 1, 2)
-            >>> cycle.cycle_decomposition()
+            >>> Cycle(3, 1, 2).cycle_decomposition()
             CycleDecomposition(Cycle(1, 2, 3))
         """
         return symmetria.elements.cycle_decomposition.CycleDecomposition(
@@ -389,12 +388,14 @@ class Cycle(_Element):
         :rtype: str
 
         :example:
+            >>> from symmetria import Cycle
+
             >>> Cycle(1).cycle_notation()
             '(1)'
             >>> Cycle(3, 1, 2).cycle_notation()
-            '(1 3 2)'
+            '(1 2 3)'
             >>> Cycle(3, 1, 2, 4, 5, 6).cycle_notation()
-            '(1 3 2 4 5 6)'
+            '(1 2 4 5 6 3)'
         """
         return str(self)
 
@@ -422,12 +423,14 @@ class Cycle(_Element):
         :rtype bool:
 
         :example:
+            >>> from symmetria import Cycle, Permutation, CycleDecomposition
+
             >>> Cycle(1, 2, 3).equivalent(Permutation(2, 3, 1))
             True
             >>> Cycle(1, 2, 3).equivalent(CycleDecomposition(Cycle(1, 2, 3)))
             True
-            >>> Cycle(1, 2, 3).equivalent(CycleDecomposition(Cycle(1, 2, 3)Cycle(4)))
-            False
+            >>> Cycle(1, 2, 3).equivalent(CycleDecomposition(Cycle(1, 2, 3), Cycle(4)))
+            True
         """
         if isinstance(other, Cycle):
             return self == other
@@ -460,12 +463,14 @@ class Cycle(_Element):
         :rtype: Cycle
 
         :example:
+            >>> from symmetria import Cycle
+
             >>> Cycle(1, 2, 3).inverse()
-            Cycle(3, 2, 1)
+            Cycle(1, 3, 2)
             >>> Cycle(1, 3, 4, 2).inverse()
-            Cycle(2, 4, 3, 1)
+            Cycle(1, 2, 4, 3)
             >>> Cycle(2, 3, 1, 5, 4).inverse()
-            Cycle(4, 5, 1, 3, 2)
+            Cycle(1, 3, 2, 4, 5)
         """
         return Cycle(*self.elements[::-1])
 
@@ -475,21 +480,20 @@ class Cycle(_Element):
         Recall that a permutation :math:`\sigma` is called a derangement if it has no fixed points, i.e.,
         :math:`\sigma(x) \neq x` for every :math:`x` in the permutation domain.
 
-        By definition, a cycle is a derangement if and only if it is the identity cycle.
+        By definition, a cycle is a derangement if and only if it is not the identity cycle.
 
         :return: True if the cycle is a derangement, False otherwise.
         :rtype: bool
 
         :example:
-            >>> cycle = cycle(1)
-            >>> cycle.is_derangement()
-            True
-            >>> cycle = cycle(13)
-            >>> cycle.is_derangement()
-            True
-            >>> cycle = cycle(1, 2, 3)
-            >>> cycle.is_derangement()
+            >>> from symmetria import Cycle
+
+            >>> Cycle(1).is_derangement()
             False
+            >>> Cycle(13).is_derangement()
+            False
+            >>> Cycle(1, 2, 3).is_derangement()
+            True
         """
         return len(self) > 1
 
@@ -503,6 +507,8 @@ class Cycle(_Element):
         :rtype: bool
 
         :example:
+            >>> from symmetria import Cycle
+
             >>> Cycle(1).is_even()
             True
             >>> Cycle(1, 2).is_even()
@@ -524,6 +530,8 @@ class Cycle(_Element):
         :rtype: bool
 
         :example:
+            >>> from symmetria import Cycle
+
             >>> Cycle(1).is_odd()
             False
             >>> Cycle(1, 2).is_odd()
@@ -548,21 +556,16 @@ class Cycle(_Element):
         :rtype: List[Any]
 
         :example:
-            >>> permutation = Permutation(3, 1, 2)
-            >>> permutation.orbit(1)
+            >>> from symmetria import Cycle, CycleDecomposition, Permutation
+
+            >>> Cycle(1, 3, 2).orbit(1)
             [1, 3, 2]
-            >>> permutation.orbit([1, 2, 3])
+            >>> Cycle(1, 3, 2).orbit([1, 2, 3])
             [[1, 2, 3], [2, 3, 1], [3, 1, 2]]
-            >>> permutation.orbit("abc")
+            >>> Cycle(1, 3, 2).orbit("abc")
             ['abc', 'bca', 'cab']
-            >>> permutation.orbit(Permutation(3, 1, 2))
+            >>> Cycle(1, 3, 2).orbit(Permutation(3, 1, 2))
             [Permutation(3, 1, 2), Permutation(2, 3, 1), Permutation(1, 2, 3)]
-            >>> permutation.orbit(Cycle(1, 2, 3))
-            [
-                CycleDecomposition(Cycle(1, 2, 3)),
-                CycleDecomposition(Cycle(1), Cycle(2), Cycle(3)),
-                CycleDecomposition(Cycle(1, 3, 2)),
-            ]
         """
         if isinstance(item, Cycle):
             item = item.cycle_decomposition()
@@ -584,15 +587,14 @@ class Cycle(_Element):
         :rtype: int
 
         :example:
-            >>> cycle = Cycle(3, 1, 2)
-            >>> cycle.order()
+            >>> from symmetria import Cycle
+
+            >>> Cycle(1).order()
             1
-            >>> cycle = Cycle(3, 1, 2)
-            >>> cycle.order()
+            >>> Cycle(3, 1, 2).order()
             3
-            >>> cycle = Cycle(1, 3, 4, 5, 2, 6)
-            >>> cycle.order()
-            4
+            >>> Cycle(1, 3, 4, 5, 2, 6).order()
+            6
         """
         return len(self)
 
@@ -608,6 +610,8 @@ class Cycle(_Element):
         :rtype: int
 
         :example:
+            >>> from symmetria import Cycle
+
             >>> Cycle(1).sgn()
             1
             >>> Cycle(1, 2).sgn()
@@ -630,17 +634,15 @@ class Cycle(_Element):
         :rtype: Set[int]
 
         :example:
-            >>> cycle = Cycle(1)
-            >>> cycle.support()
+            >>> from symmetria import Cycle
+
+            >>> Cycle(1).support()
             set()
-            >>> cycle = Cycle(13)
-            >>> cycle.support()
+            >>> Cycle(13).support()
             set()
-            >>> cycle = Cycle(3, 1, 2)
-            >>> cycle.support()
+            >>> Cycle(3, 1, 2).support()
             {1, 2, 3}
-            >>> cycle = Cycle(1, 3, 4, 5, 2, 6)
-            >>> cycle.support()
-            {2, 3, 4, 5}
+            >>> Cycle(1, 3, 4, 5, 2, 6).support()
+            {1, 2, 3, 4, 5, 6}
         """
         return set(self._cycle) if len(self) > 1 else set()

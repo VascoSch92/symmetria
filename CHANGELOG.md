@@ -39,7 +39,7 @@ FEATURE:
 MAINTENANCE:
 
 - `tests.tests_meta.test_order.py`: add test suite for order of methods
-
+- `.github.workflows.tests`: add doctest
 
 ## \[0.0.1\] - 2024-05-16
 

@@ -27,6 +27,8 @@ class CycleDecomposition(_Element):
     :raises ValueError: If there are missing cycles in the decomposition.
 
     :example:
+        >>> from symmetria import Cycle, CycleDecomposition
+
         >>> cycle = CycleDecomposition(Cycle(2, 1), Cycle(4, 3))
         >>> cycle = CycleDecomposition(*[Cycle(2, 1), Cycle(4, 3)])
         >>> cycle = CycleDecomposition(*(Cycle(2, 1), Cycle(4, 3)))
@@ -78,14 +80,13 @@ class CycleDecomposition(_Element):
         :rtype: bool
 
         :example:
-            >>> cycle_decomposition = CycleDecomposition(Cycle(1))
-            >>> bool(cycle_decomposition)
+            >>> from symmetria import Cycle, CycleDecomposition
+
+            >>> bool(CycleDecomposition(Cycle(1)))
             False
-            >>> cycle_decomposition = CycleDecomposition(Cycle(1), Cycle(2))
-            >>> bool(cycle_decomposition)
+            >>> bool(CycleDecomposition(Cycle(1), Cycle(2)))
             False
-            >>> cycle_decomposition = CycleDecomposition(Cycle(2, 1, 3))
-            >>> bool(cycle_decomposition)
+            >>> bool(CycleDecomposition(Cycle(2, 1, 3)))
             True
 
         :note: Every cycle of the form ``CycleDecomposition(Cycle(n))`` is considered empty for every
@@ -197,8 +198,9 @@ class CycleDecomposition(_Element):
         :raises IndexError: If the index is out of range.
 
         :example:
-            >>> cycle_decomposition = CycleDecomposition(Cycle(1, 2), Cycle(3, 4))
-            >>> cycle_decomposition[0]
+            >>> from symmetria import Cycle, CycleDecomposition
+
+            >>> CycleDecomposition(Cycle(1, 2), Cycle(3, 4))[0]
             Cycle(1, 2)
         """
         return self._cycles[idx]
@@ -222,11 +224,12 @@ class CycleDecomposition(_Element):
         :rtype: Iterable[Cycle]
 
         :example:
-            >>> cycle_decomposition = CycleDecomposition(Cycle(1, 2), Cycle(3, 4))
-            >>> for cycle in cycle_decomposition:
-            >>>     print(cycle)
-            Cycle(1, 2)
-            Cycle(3, 4)
+            >>> from symmetria import Cycle, CycleDecomposition
+
+            >>> for cycle in CycleDecomposition(Cycle(1, 2), Cycle(3, 4)):
+            ...     print(cycle)
+            (1 2)
+            (3 4)
         """
         return iter(self._cycles)
 
@@ -237,15 +240,14 @@ class CycleDecomposition(_Element):
         :rtype: int
 
         :example:
-            >>> cycle_decomposition = CycleDecomposition(Cycle(1))
-            >>> len(cycle_decomposition)
+            >>> from symmetria import Cycle, CycleDecomposition
+
+            >>> len(CycleDecomposition(Cycle(1)))
             1
-            >>> cycle_decomposition = CycleDecomposition(Cycle(1, 3), Cycle(2))
-            >>> len(cycle_decomposition)
+            >>> len(CycleDecomposition(Cycle(1, 3), Cycle(2)))
+            2
+            >>> len(CycleDecomposition(Cycle(1, 3), Cycle(4, 5), Cycle(2, 6)))
             3
-            >>> cycle_decomposition = CycleDecomposition(Cycle(1, 3), Cycle(4, 5), Cycle(2, 6))
-            >>> len(cycle_decomposition)
-            6
         """
         return len(self._cycles)
 
@@ -282,15 +284,14 @@ class CycleDecomposition(_Element):
         :rtype: str
 
         :example:
-            >>> cycle_decomposition = CycleDecomposition(Cycle(1))
-            >>> cycle_decomposition.__repr__()
-            CycleDecomposition(Cycle(1))
-            >>> cycle_decomposition = CycleDecomposition(Cycle(1, 3), Cycle(2))
-            >>> cycle_decomposition.__repr__()
-            CycleDecomposition(Cycle(1, 3), Cycle(2))
-            >>> cycle_decomposition = CycleDecomposition(Cycle(1, 3), Cycle(4, 5, 2, 6))
-            >>> cycle_decomposition.__repr__()
-            CycleDecomposition(Cycle(1, 3), Cycle(4, 5, 2, 6))
+            >>> from symmetria import Cycle, CycleDecomposition
+
+            >>> CycleDecomposition(Cycle(1)).__repr__()
+            'CycleDecomposition(Cycle(1))'
+            >>> CycleDecomposition(Cycle(1, 3), Cycle(2)).__repr__()
+            'CycleDecomposition(Cycle(1, 3), Cycle(2))'
+            >>> CycleDecomposition(Cycle(1, 3), Cycle(4, 5, 2, 6)).__repr__()
+            'CycleDecomposition(Cycle(1, 3), Cycle(2, 6, 4, 5))'
         """
         return f"CycleDecomposition({', '.join([cycle.__repr__() for cycle in self])})"
 
@@ -301,15 +302,14 @@ class CycleDecomposition(_Element):
         :rtype: str
 
         :example:
-            >>> cycle_decomposition = CycleDecomposition(Cycle(1))
-            >>> str(cycle_decomposition)
-            (1)
-            >>> cycle_decomposition = CycleDecomposition(Cycle(1, 3), Cycle(2))
-            >>> str(cycle_decomposition)
-            (1 3)(2)
-            >>> cycle_decomposition = CycleDecomposition(Cycle(1, 3), Cycle(4, 5, 2, 6))
-            >>> str(cycle_decomposition)
-            (1 3)(4 5 2 6)
+            >>> from symmetria import Cycle, CycleDecomposition
+
+            >>> str(CycleDecomposition(Cycle(1)))
+            '(1)'
+            >>> str(CycleDecomposition(Cycle(1, 3), Cycle(2)))
+            '(1 3)(2)'
+            >>> str(CycleDecomposition(Cycle(1, 3), Cycle(4, 5, 2, 6)))
+            '(1 3)(2 6 4 5)'
         """
         return "".join([str(c) for c in self])
 
@@ -323,14 +323,13 @@ class CycleDecomposition(_Element):
         :rtype: Iterable[int]
 
         :example:
-            >>> cycle_decomposition = CycleDecomposition(Cycle(1))
-            >>> cycle_decomposition.domain()
+            >>> from symmetria import Cycle, CycleDecomposition
+
+            >>> CycleDecomposition(Cycle(1)).domain
             range(1, 2)
-            >>> cycle_decomposition = CycleDecomposition(Cycle(3, 1, 2))
-            >>> cycle_decomposition.domain()
+            >>> CycleDecomposition(Cycle(3, 1, 2)).domain
             range(1, 4)
-            >>> cycle_decomposition = CycleDecomposition(Cycle(1), Cycle(3, 4, 5, 2, 6))
-            >>> cycle_decomposition.domain()
+            >>> CycleDecomposition(Cycle(1), Cycle(3, 4, 5, 2, 6)).domain
             range(1, 7)
         """
         return self._domain
@@ -344,11 +343,11 @@ class CycleDecomposition(_Element):
         :rtype: Dict[int, int]
 
         :example:
-            >>> cycle_decomposition = CycleDecomposition(Cycle(1))
-            >>> cycle_decomposition.map()
+            >>> from symmetria import Cycle, CycleDecomposition
+
+            >>> CycleDecomposition(Cycle(1)).map
             {1: 1}
-            >>> cycle_decomposition = CycleDecomposition(Cycle(1, 2), Cycle(3, 4))
-            >>> cycle_decomposition.map()
+            >>> CycleDecomposition(Cycle(1, 2), Cycle(3, 4)).map
             {1: 2, 2: 1, 3: 4, 4: 3}
         """
         _map = {}
@@ -374,14 +373,13 @@ class CycleDecomposition(_Element):
         :rtype: str
 
         :example:
-            >>> cycle_decomposition = CycleDecomposition(Cycle(1))
-            >>> cycle_decomposition.cycle_notation()
+            >>> from symmetria import Cycle, CycleDecomposition
+
+            >>> CycleDecomposition(Cycle(1)).cycle_notation()
             '(1)'
-            >>> cycle_decomposition = CycleDecomposition(Cycle(1, 3, 2))
-            >>> cycle_decomposition.cycle_notation()
+            >>> CycleDecomposition(Cycle(1, 3, 2)).cycle_notation()
             '(1 3 2)'
-            >>> cycle_decomposition = CycleDecomposition(Cycle(1, 3, 2), Cycle(4))
-            >>> cycle_decomposition.cycle_notation()
+            >>> CycleDecomposition(Cycle(1, 3, 2), Cycle(4)).cycle_notation()
             '(1 3 2)(4)'
         """
         return str(self)
@@ -398,10 +396,12 @@ class CycleDecomposition(_Element):
         :rtype: Tuple[int]
 
         :example:
+            >>> from symmetria import Cycle, CycleDecomposition
+
             >>> CycleDecomposition(Cycle(1)).cycle_type()
-            (1)
+            (1,)
             >>> CycleDecomposition(Cycle(3, 1, 2)).cycle_type()
-            (3)
+            (3,)
             >>> CycleDecomposition(Cycle(1, 3, 2), Cycle(4)).cycle_type()
             (1, 3)
             >>> CycleDecomposition(Cycle(1, 2), Cycle(3, 4)).cycle_type()
@@ -422,7 +422,9 @@ class CycleDecomposition(_Element):
         :rtype: bool
 
         :example:
-            >>> cycle_decomposition = CycleDecomposition(Cycle(1, 2, 3)))
+            >>> from symmetria import Cycle, CycleDecomposition, Permutation
+
+            >>> cycle_decomposition = CycleDecomposition(Cycle(1, 2, 3))
             >>> cycle_decomposition.equivalent(cycle_decomposition)
             True
             >>> cycle = Cycle(1, 2, 3)
@@ -454,13 +456,15 @@ class CycleDecomposition(_Element):
         where :math:`id` is the identity permutation.
 
         :return: The inverse of the cycle decomposition.
-        :rtype: Cycle
+        :rtype: CycleDecomposition
 
         :example:
+            >>> from symmetria import Cycle, CycleDecomposition
+
             >>> CycleDecomposition(Cycle(1, 2, 3)).inverse()
-            CycleDecomposition(Cycle(3, 2, 1))
+            CycleDecomposition(Cycle(1, 3, 2))
             >>> CycleDecomposition(Cycle(1, 2), Cycle(3, 4)).inverse()
-            CycleDecomposition(Cycle(2, 1), Cycle(4, 3))
+            CycleDecomposition(Cycle(1, 2), Cycle(3, 4))
         """
         return CycleDecomposition(*[cycle.inverse() for cycle in self])
 
@@ -474,14 +478,13 @@ class CycleDecomposition(_Element):
         :rtype: bool
 
         :example:
-            >>> cycle_permutation = CycleDecomposition(Cycle(1))
-            >>> cycle_permutation.is_derangement()
+            >>> from symmetria import Cycle, CycleDecomposition
+
+            >>> CycleDecomposition(Cycle(1)).is_derangement()
             False
-            >>> cycle_decomposition = CycleDecomposition(Cycle(1, 2, 3))
-            >>> cycle_decomposition.is_derangement()
+            >>> CycleDecomposition(Cycle(1, 2, 3)).is_derangement()
             True
-            >>> cycle_decomposition = CycleDecomposition(Cycle(1), Cycle(2, 3))
-            >>> cycle_decomposition.is_derangement()
+            >>> CycleDecomposition(Cycle(1), Cycle(2, 3)).is_derangement()
             False
         """
         for cycle in self:
@@ -499,6 +502,8 @@ class CycleDecomposition(_Element):
         :rtype: bool
 
         :example:
+            >>> from symmetria import Cycle, CycleDecomposition
+
             >>> CycleDecomposition(Cycle(1)).is_even()
             True
             >>> CycleDecomposition(Cycle(1, 2), Cycle(3)).is_even()
@@ -518,6 +523,8 @@ class CycleDecomposition(_Element):
         :rtype: bool
 
         :example:
+            >>> from symmetria import Cycle, CycleDecomposition
+
             >>> CycleDecomposition(Cycle(1)).is_odd()
             False
             >>> CycleDecomposition(Cycle(1, 2), Cycle(3)).is_odd()
@@ -557,14 +564,13 @@ class CycleDecomposition(_Element):
         :rtype: int
 
         :example:
-            >>> cycle_decomposition = CycleDecomposition(Cycle(1))
-            >>> cycle_decomposition.order()
+            >>> from symmetria import Cycle, CycleDecomposition
+
+            >>> CycleDecomposition(Cycle(1)).order()
             1
-            >>> cycle_decomposition = CycleDecomposition(Cycle(1, 3, 2))
-            >>> cycle_decomposition.order()
+            >>> CycleDecomposition(Cycle(1, 3, 2)).order()
             3
-            >>> cycle_decomposition = CycleDecomposition(Cycle(1, 3, 2), Cycle(4, 5))
-            >>> cycle_decomposition.order()
+            >>> CycleDecomposition(Cycle(1, 3, 2), Cycle(4, 5)).order()
             6
         """
         return lcm(*[len(cycle) for cycle in self])
@@ -582,6 +588,8 @@ class CycleDecomposition(_Element):
         :rtype: int
 
         :example:
+            >>> from symmetria import Cycle, CycleDecomposition
+
             >>> CycleDecomposition(Cycle(1)).sgn()
             1
             >>> CycleDecomposition(Cycle(1, 2), Cycle(3)).sgn()
@@ -599,11 +607,11 @@ class CycleDecomposition(_Element):
         :rtype: Set[int]
 
         :example:
-            >>> cycle_decomposition = CycleDecomposition(Cycle(1))
-            >>> cycle_decomposition.support()
+            >>> from symmetria import Cycle, CycleDecomposition
+
+            >>> CycleDecomposition(Cycle(1)).support()
             set()
-            >>> cycle_decomposition = CycleDecomposition(Cycle(1), Cycle(2, 3))
-            >>> cycle_decomposition.support()
+            >>> CycleDecomposition(Cycle(1), Cycle(2, 3)).support()
             {2, 3}
         """
         return {element for cycle in self if len(cycle) != 1 for element in cycle.elements}
