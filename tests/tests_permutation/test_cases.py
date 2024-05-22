@@ -58,6 +58,12 @@ TEST_CYCLE_DECOMPOSITION = [
         CycleDecomposition(Cycle(1, 6, 2, 4, 7), Cycle(3, 5)),
     ),
 ]
+TEST_CYCLE_TYPE = [
+    (Permutation(1), (1,)),
+    (Permutation(3, 1, 2), (3,)),
+    (Permutation(3, 1, 2, 4, 5, 6), (1, 1, 1, 3)),
+    (Permutation(1, 4, 5, 7, 3, 2, 6), (1, 2, 4)),
+]
 TEST_CYCLE_NOTATION = [
     (Permutation(1), "(1)"),
     (Permutation(3, 1, 2), "(1 3 2)"),

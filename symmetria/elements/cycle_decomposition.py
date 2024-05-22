@@ -386,6 +386,29 @@ class CycleDecomposition(_Element):
         """
         return str(self)
 
+    def cycle_type(self) -> Tuple[int]:
+        r"""Return the cycle type of the cycle decomposition.
+
+        Recall that the cycle type of the permutation :math:`\sigma` is a sequence of integer, where
+        There is a 1 for every fixed point of :math:`\sigma`, a 2 for every transposition, and so on.
+
+        ..note:: Note that the resulting tuple is sorted in ascending order.
+
+        :return: The cycle type of the cycle decomposition.
+        :rtype: Tuple[int]
+
+        :example:
+            >>> CycleDecomposition(Cycle(1)).cycle_type()
+            (1)
+            >>> CycleDecomposition(Cycle(3, 1, 2)).cycle_type()
+            (3)
+            >>> CycleDecomposition(Cycle(1, 3, 2), Cycle(4)).cycle_type()
+            (1, 3)
+            >>> CycleDecomposition(Cycle(1, 2), Cycle(3, 4)).cycle_type()
+            (2, 2)
+        """
+        return tuple(sorted(len(cycle) for cycle in self))
+
     def equivalent(self, other: Any) -> bool:
         """Check if the cycle decomposition is equivalent to another object.
 

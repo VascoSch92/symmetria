@@ -10,6 +10,7 @@ from tests.test_factory import (
     validate_inverse,
     validate_is_even,
     validate_support,
+    validate_cycle_type,
     validate_equivalent,
     validate_cycle_notation,
     validate_is_derangement,
@@ -25,6 +26,7 @@ from tests.tests_permutation.test_cases import (
     TEST_INVERSE,
     TEST_IS_EVEN,
     TEST_SUPPORT,
+    TEST_CYCLE_TYPE,
     TEST_EQUIVALENT,
     TEST_CYCLE_NOTATION,
     TEST_IS_DERANGEMENT,
@@ -41,6 +43,16 @@ from tests.tests_permutation.test_cases import (
 def test_cycle_decomposition(permutation, expected_value) -> None:
     """Tests for the method `cycle_decomposition()`."""
     validate_cycle_decomposition(item=permutation, expected_value=expected_value)
+
+
+@pytest.mark.parametrize(
+    argnames="permutation, expected_value",
+    argvalues=TEST_CYCLE_TYPE,
+    ids=[f"{p.__repr__()}.cycle_type()={c}" for p, c in TEST_CYCLE_TYPE],
+)
+def test_cycle_type(permutation, expected_value) -> None:
+    """Tests for the method `cycle_type()`."""
+    validate_cycle_type(item=permutation, expected_value=expected_value)
 
 
 @pytest.mark.parametrize(

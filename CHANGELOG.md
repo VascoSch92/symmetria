@@ -32,6 +32,9 @@ FEATURE:
 - `symmetria.Permutation`: add `is_even` and `is_odd` methods
 - `symmetria.Cycle`: add `is_even` and `is_odd` methods
 - `symmetria.CyclePermutation`: add `is_even` and `is_odd` methods
+- `symmetria.Permutation`: add `cycle_type` method
+- `symmetria.Cycle`: add `cycle_type` method
+- `symmetria.CyclePermutation`: add `cycle_type` method
 
 MAINTENANCE:
 
