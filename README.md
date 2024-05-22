@@ -1,3 +1,6 @@
+<a href="https://skpro.readthedocs.io/en/latest"><img src="../symmetria/docs/source/_static/symmetria.png" width="70" align="right" /></a>
+
+
 # Welcome to symmetria
 
 ______________________________________________________________________

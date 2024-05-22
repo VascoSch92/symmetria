@@ -57,7 +57,7 @@ exclude_patterns = ["_build", "Thumbs.db", ".DS_Store"]
 html_title = f'symmetria <span class="project-version">{version}</span>'
 
 # don't use html_logo here
-# html_favicon = "_static/favicon.png"
+html_favicon = "_static/symmetria.png"
 html_last_updated_fmt = "%b %d, %Y"
 html_copy_source = True
 
