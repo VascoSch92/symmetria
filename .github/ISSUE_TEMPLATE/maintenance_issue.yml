@@ -1,0 +1,5 @@
+name: 🛠️ Maintenance issue
+description: Suggest a maintenance update
+title: "\[MAINTENANCE\]"
+labels:
+  - maintenance
