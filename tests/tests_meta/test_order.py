@@ -26,7 +26,7 @@ class OrderTestSuite:
 
         for leaf in module.body:
             if isinstance(leaf, ast.ClassDef):
-                return [item for item in leaf.body if isinstance(item, ast.FunctionDef)]
+                return [item.name for item in leaf.body if isinstance(item, ast.FunctionDef)]
 
     @pytest.fixture
     def magic_methods(self, script_methods) -> List[str]:
@@ -43,6 +43,13 @@ class OrderTestSuite:
         """Return list of generic methods, i.e., without decorators and not starting with `_`, in the class."""
         undecorated_methods = [item for item in script_methods if not item.decorator_list]
         return [item.name for item in undecorated_methods if item.name.startswith("_") is False]
+
+    def test_init_first_method(self, script_methods) -> None:
+        if "__init__" in script_methods:
+            assert script_methods.index("__init__") == 0, "The `__init__` method is not in first position."
+
+    def test_order(self, script_methods) -> None:
+        pass
 
     def test_order_magic_methods(self, magic_methods) -> None:
         """Test order magic methods."""
