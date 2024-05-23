@@ -5,14 +5,6 @@ from typing import Any, Set, Dict, List, Tuple, Iterable
 class _Element(ABC):
     """Abstract class which exposes methods to implement in class representing permutations."""
 
-    def name(self) -> str:
-        """Shortcut for the class name. Used for the tests."""
-        return self.__class__.__name__
-
-    def rep(self) -> str:
-        """Shortcut for `__repr__()`. Used for tests."""
-        return self.__repr__()
-
     @abstractmethod
     def __bool__(self) -> bool:
         """Implement method `bool( )`."""
@@ -48,18 +40,6 @@ class _Element(ABC):
         """Implement method `__str__( )`."""
         raise NotImplementedError
 
-    @property
-    @abstractmethod
-    def domain(self) -> Iterable[int]:
-        """Return the domain on which the element is defined."""
-        raise NotImplementedError
-
-    @property
-    @abstractmethod
-    def map(self) -> Dict[int, int]:
-        """Return a dictionary representing the map defining the element."""
-        raise NotImplementedError
-
     # TODO: decide if we want to implement this method also for the classes Cycle and CycleDecomposition
     # @staticmethod
     # @abstractmethod
@@ -79,6 +59,12 @@ class _Element(ABC):
     @abstractmethod
     def cycle_type(self) -> Tuple[int]:
         """Return the cycle type of the permutation."""
+        raise NotImplementedError
+
+    @property
+    @abstractmethod
+    def domain(self) -> Iterable[int]:
+        """Return the domain on which the element is defined."""
         raise NotImplementedError
 
     @abstractmethod
@@ -106,6 +92,16 @@ class _Element(ABC):
         """Return if the element is odd or not."""
         raise NotImplementedError
 
+    @property
+    @abstractmethod
+    def map(self) -> Dict[int, int]:
+        """Return a dictionary representing the map defining the element."""
+        raise NotImplementedError
+
+    def name(self) -> str:
+        """Shortcut for the class name. Used for the tests."""
+        return self.__class__.__name__
+
     @abstractmethod
     def orbit(self, item: Any) -> List[Any]:
         """Return the orbit created from the action of the element on the item."""
@@ -115,6 +111,10 @@ class _Element(ABC):
     def order(self) -> int:
         """Return the order of the element."""
         raise NotImplementedError
+
+    def rep(self) -> str:
+        """Shortcut for `__repr__()`. Used for tests."""
+        return self.__repr__()
 
     @abstractmethod
     def sgn(self) -> int:

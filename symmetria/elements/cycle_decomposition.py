@@ -28,7 +28,7 @@ class CycleDecomposition(_Element):
 
     :example:
         >>> from symmetria import Cycle, CycleDecomposition
-
+        ...
         >>> cycle = CycleDecomposition(Cycle(2, 1), Cycle(4, 3))
         >>> cycle = CycleDecomposition(*[Cycle(2, 1), Cycle(4, 3)])
         >>> cycle = CycleDecomposition(*(Cycle(2, 1), Cycle(4, 3)))
@@ -81,7 +81,7 @@ class CycleDecomposition(_Element):
 
         :example:
             >>> from symmetria import Cycle, CycleDecomposition
-
+            ...
             >>> bool(CycleDecomposition(Cycle(1)))
             False
             >>> bool(CycleDecomposition(Cycle(1), Cycle(2)))
@@ -199,7 +199,7 @@ class CycleDecomposition(_Element):
 
         :example:
             >>> from symmetria import Cycle, CycleDecomposition
-
+            ...
             >>> CycleDecomposition(Cycle(1, 2), Cycle(3, 4))[0]
             Cycle(1, 2)
         """
@@ -225,7 +225,7 @@ class CycleDecomposition(_Element):
 
         :example:
             >>> from symmetria import Cycle, CycleDecomposition
-
+            ...
             >>> for cycle in CycleDecomposition(Cycle(1, 2), Cycle(3, 4)):
             ...     print(cycle)
             (1 2)
@@ -241,7 +241,7 @@ class CycleDecomposition(_Element):
 
         :example:
             >>> from symmetria import Cycle, CycleDecomposition
-
+            ...
             >>> len(CycleDecomposition(Cycle(1)))
             1
             >>> len(CycleDecomposition(Cycle(1, 3), Cycle(2)))
@@ -285,7 +285,7 @@ class CycleDecomposition(_Element):
 
         :example:
             >>> from symmetria import Cycle, CycleDecomposition
-
+            ...
             >>> CycleDecomposition(Cycle(1)).__repr__()
             'CycleDecomposition(Cycle(1))'
             >>> CycleDecomposition(Cycle(1, 3), Cycle(2)).__repr__()
@@ -303,7 +303,7 @@ class CycleDecomposition(_Element):
 
         :example:
             >>> from symmetria import Cycle, CycleDecomposition
-
+            ...
             >>> str(CycleDecomposition(Cycle(1)))
             '(1)'
             >>> str(CycleDecomposition(Cycle(1, 3), Cycle(2)))
@@ -312,48 +312,6 @@ class CycleDecomposition(_Element):
             '(1 3)(2 6 4 5)'
         """
         return "".join([str(c) for c in self])
-
-    @property
-    def domain(self) -> Iterable[int]:
-        """Return an iterable containing the elements of the domain of the cycle decomposition.
-
-        The domain of a cycle decomposition is the set of indices for which the cycle decomposition is defined.
-
-        :return: The domain of the cycle decomposition.
-        :rtype: Iterable[int]
-
-        :example:
-            >>> from symmetria import Cycle, CycleDecomposition
-
-            >>> CycleDecomposition(Cycle(1)).domain
-            range(1, 2)
-            >>> CycleDecomposition(Cycle(3, 1, 2)).domain
-            range(1, 4)
-            >>> CycleDecomposition(Cycle(1), Cycle(3, 4, 5, 2, 6)).domain
-            range(1, 7)
-        """
-        return self._domain
-
-    @property
-    def map(self) -> Dict[int, int]:
-        """Return a dictionary representing the mapping of the cycle decomposition,
-        where keys are indices and values are the corresponding elements after permutation.
-
-        :return: The mapping of the cycle decompostiion.
-        :rtype: Dict[int, int]
-
-        :example:
-            >>> from symmetria import Cycle, CycleDecomposition
-
-            >>> CycleDecomposition(Cycle(1)).map
-            {1: 1}
-            >>> CycleDecomposition(Cycle(1, 2), Cycle(3, 4)).map
-            {1: 2, 2: 1, 3: 4, 4: 3}
-        """
-        _map = {}
-        for cycle in self:
-            _map.update(cycle.map)
-        return _map
 
     def cycle_decomposition(self) -> "CycleDecomposition":
         """Return the cycle decomposition of the permutation.
@@ -374,7 +332,7 @@ class CycleDecomposition(_Element):
 
         :example:
             >>> from symmetria import Cycle, CycleDecomposition
-
+            ...
             >>> CycleDecomposition(Cycle(1)).cycle_notation()
             '(1)'
             >>> CycleDecomposition(Cycle(1, 3, 2)).cycle_notation()
@@ -397,7 +355,7 @@ class CycleDecomposition(_Element):
 
         :example:
             >>> from symmetria import Cycle, CycleDecomposition
-
+            ...
             >>> CycleDecomposition(Cycle(1)).cycle_type()
             (1,)
             >>> CycleDecomposition(Cycle(3, 1, 2)).cycle_type()
@@ -408,6 +366,27 @@ class CycleDecomposition(_Element):
             (2, 2)
         """
         return tuple(sorted(len(cycle) for cycle in self))
+
+    @property
+    def domain(self) -> Iterable[int]:
+        """Return an iterable containing the elements of the domain of the cycle decomposition.
+
+        The domain of a cycle decomposition is the set of indices for which the cycle decomposition is defined.
+
+        :return: The domain of the cycle decomposition.
+        :rtype: Iterable[int]
+
+        :example:
+            >>> from symmetria import Cycle, CycleDecomposition
+            ...
+            >>> CycleDecomposition(Cycle(1)).domain
+            range(1, 2)
+            >>> CycleDecomposition(Cycle(3, 1, 2)).domain
+            range(1, 4)
+            >>> CycleDecomposition(Cycle(1), Cycle(3, 4, 5, 2, 6)).domain
+            range(1, 7)
+        """
+        return self._domain
 
     def equivalent(self, other: Any) -> bool:
         """Check if the cycle decomposition is equivalent to another object.
@@ -423,7 +402,7 @@ class CycleDecomposition(_Element):
 
         :example:
             >>> from symmetria import Cycle, CycleDecomposition, Permutation
-
+            ...
             >>> cycle_decomposition = CycleDecomposition(Cycle(1, 2, 3))
             >>> cycle_decomposition.equivalent(cycle_decomposition)
             True
@@ -460,7 +439,7 @@ class CycleDecomposition(_Element):
 
         :example:
             >>> from symmetria import Cycle, CycleDecomposition
-
+            ...
             >>> CycleDecomposition(Cycle(1, 2, 3)).inverse()
             CycleDecomposition(Cycle(1, 3, 2))
             >>> CycleDecomposition(Cycle(1, 2), Cycle(3, 4)).inverse()
@@ -479,7 +458,7 @@ class CycleDecomposition(_Element):
 
         :example:
             >>> from symmetria import Cycle, CycleDecomposition
-
+            ...
             >>> CycleDecomposition(Cycle(1)).is_derangement()
             False
             >>> CycleDecomposition(Cycle(1, 2, 3)).is_derangement()
@@ -503,7 +482,7 @@ class CycleDecomposition(_Element):
 
         :example:
             >>> from symmetria import Cycle, CycleDecomposition
-
+            ...
             >>> CycleDecomposition(Cycle(1)).is_even()
             True
             >>> CycleDecomposition(Cycle(1, 2), Cycle(3)).is_even()
@@ -524,7 +503,7 @@ class CycleDecomposition(_Element):
 
         :example:
             >>> from symmetria import Cycle, CycleDecomposition
-
+            ...
             >>> CycleDecomposition(Cycle(1)).is_odd()
             False
             >>> CycleDecomposition(Cycle(1, 2), Cycle(3)).is_odd()
@@ -533,6 +512,27 @@ class CycleDecomposition(_Element):
             False
         """
         return self.sgn() == -1
+
+    @property
+    def map(self) -> Dict[int, int]:
+        """Return a dictionary representing the mapping of the cycle decomposition,
+        where keys are indices and values are the corresponding elements after permutation.
+
+        :return: The mapping of the cycle decompostiion.
+        :rtype: Dict[int, int]
+
+        :example:
+            >>> from symmetria import Cycle, CycleDecomposition
+            ...
+            >>> CycleDecomposition(Cycle(1)).map
+            {1: 1}
+            >>> CycleDecomposition(Cycle(1, 2), Cycle(3, 4)).map
+            {1: 2, 2: 1, 3: 4, 4: 3}
+        """
+        _map = {}
+        for cycle in self:
+            _map.update(cycle.map)
+        return _map
 
     def orbit(self, item: Any) -> List[Any]:
         r"""Compute the orbit of `item` object under the action of the cycle decomposition.
@@ -565,7 +565,7 @@ class CycleDecomposition(_Element):
 
         :example:
             >>> from symmetria import Cycle, CycleDecomposition
-
+            ...
             >>> CycleDecomposition(Cycle(1)).order()
             1
             >>> CycleDecomposition(Cycle(1, 3, 2)).order()
@@ -589,7 +589,7 @@ class CycleDecomposition(_Element):
 
         :example:
             >>> from symmetria import Cycle, CycleDecomposition
-
+            ...
             >>> CycleDecomposition(Cycle(1)).sgn()
             1
             >>> CycleDecomposition(Cycle(1, 2), Cycle(3)).sgn()
@@ -608,7 +608,7 @@ class CycleDecomposition(_Element):
 
         :example:
             >>> from symmetria import Cycle, CycleDecomposition
-
+            ...
             >>> CycleDecomposition(Cycle(1)).support()
             set()
             >>> CycleDecomposition(Cycle(1), Cycle(2, 3)).support()
