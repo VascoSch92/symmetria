@@ -3,8 +3,6 @@
 
 # Welcome to symmetria
 
-______________________________________________________________________
-
 Symmetria provides an intuitive, thorough, and comprehensive framework for interacting
 with the symmetric group and its elements.
 
