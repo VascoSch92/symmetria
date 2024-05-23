@@ -298,64 +298,6 @@ class Cycle(_Element):
         """
         return "(" + " ".join([str(element) for element in self.elements]) + ")"
 
-    @property
-    def domain(self) -> Iterable[int]:
-        """Return an iterable containing the elements of the domain of the cycle.
-
-        Here, the domain of a cycle is the set of indices for which the cycle is defined.
-
-        :return: The domain of the cycle.
-        :rtype: Iterable[int]
-
-        :example:
-            >>> from symmetria import Cycle
-
-            >>> Cycle(1).domain
-            range(1, 2)
-            >>> Cycle(13).domain
-            range(1, 14)
-            >>> Cycle(3, 1, 2).domain
-            range(1, 4)
-            >>> Cycle(1, 3, 4, 5, 2, 6).domain
-            range(1, 7)
-        """
-        return self._domain
-
-    @property
-    def map(self) -> Dict[int, int]:
-        """Return a dictionary representing the mapping of the cycle,
-        where keys are indices and values are the corresponding elements after the permutation.
-
-        :return: The mapping of the cycle.
-        :rtype: Dict[int, int]
-
-        :example:
-            >>> from symmetria import Cycle
-
-            >>> Cycle(1).map
-            {1: 1}
-            >>> Cycle(3).map
-            {3: 3}
-            >>> Cycle(3, 1, 2).map
-            {1: 2, 2: 3, 3: 1}
-        """
-        return {element: self[(idx + 1) % len(self)] for idx, element in enumerate(self.elements)}
-
-    @property
-    def elements(self) -> Tuple[int]:
-        """Return a tuple containing the elements of the cycle.
-
-        :return: The elements of the cycle.
-        :rtype: Tuple[int]
-
-        :example:
-            >>> from symmetria import Cycle
-
-            >>> Cycle(3, 1, 2).elements
-            (1, 2, 3)
-        """
-        return self._cycle
-
     def cycle_decomposition(self) -> "CycleDecomposition":
         """Convert the cycle into its cycle decomposition, representing it as a product of disjoint cycles.
 
@@ -408,6 +350,44 @@ class Cycle(_Element):
             "The method `cycle_type` is not implemented for cycles, as cycles are building blocks to construct \n"
             "permutations and not proper ones."
         )
+
+    @property
+    def domain(self) -> Iterable[int]:
+        """Return an iterable containing the elements of the domain of the cycle.
+
+        Here, the domain of a cycle is the set of indices for which the cycle is defined.
+
+        :return: The domain of the cycle.
+        :rtype: Iterable[int]
+
+        :example:
+            >>> from symmetria import Cycle
+
+            >>> Cycle(1).domain
+            range(1, 2)
+            >>> Cycle(13).domain
+            range(1, 14)
+            >>> Cycle(3, 1, 2).domain
+            range(1, 4)
+            >>> Cycle(1, 3, 4, 5, 2, 6).domain
+            range(1, 7)
+        """
+        return self._domain
+
+    @property
+    def elements(self) -> Tuple[int]:
+        """Return a tuple containing the elements of the cycle.
+
+        :return: The elements of the cycle.
+        :rtype: Tuple[int]
+
+        :example:
+            >>> from symmetria import Cycle
+
+            >>> Cycle(3, 1, 2).elements
+            (1, 2, 3)
+        """
+        return self._cycle
 
     def equivalent(self, other: Any) -> bool:
         """Check if the cycle is equivalent to the `other` object.
@@ -542,6 +522,26 @@ class Cycle(_Element):
             False
         """
         return self.sgn() == -1
+
+    @property
+    def map(self) -> Dict[int, int]:
+        """Return a dictionary representing the mapping of the cycle,
+        where keys are indices and values are the corresponding elements after the permutation.
+
+        :return: The mapping of the cycle.
+        :rtype: Dict[int, int]
+
+        :example:
+            >>> from symmetria import Cycle
+
+            >>> Cycle(1).map
+            {1: 1}
+            >>> Cycle(3).map
+            {3: 3}
+            >>> Cycle(3, 1, 2).map
+            {1: 2, 2: 3, 3: 1}
+        """
+        return {element: self[(idx + 1) % len(self)] for idx, element in enumerate(self.elements)}
 
     def orbit(self, item: Any) -> List[Any]:
         r"""Compute the orbit of `item` object under the action of the cycle.

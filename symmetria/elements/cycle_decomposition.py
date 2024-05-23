@@ -313,48 +313,6 @@ class CycleDecomposition(_Element):
         """
         return "".join([str(c) for c in self])
 
-    @property
-    def domain(self) -> Iterable[int]:
-        """Return an iterable containing the elements of the domain of the cycle decomposition.
-
-        The domain of a cycle decomposition is the set of indices for which the cycle decomposition is defined.
-
-        :return: The domain of the cycle decomposition.
-        :rtype: Iterable[int]
-
-        :example:
-            >>> from symmetria import Cycle, CycleDecomposition
-
-            >>> CycleDecomposition(Cycle(1)).domain
-            range(1, 2)
-            >>> CycleDecomposition(Cycle(3, 1, 2)).domain
-            range(1, 4)
-            >>> CycleDecomposition(Cycle(1), Cycle(3, 4, 5, 2, 6)).domain
-            range(1, 7)
-        """
-        return self._domain
-
-    @property
-    def map(self) -> Dict[int, int]:
-        """Return a dictionary representing the mapping of the cycle decomposition,
-        where keys are indices and values are the corresponding elements after permutation.
-
-        :return: The mapping of the cycle decompostiion.
-        :rtype: Dict[int, int]
-
-        :example:
-            >>> from symmetria import Cycle, CycleDecomposition
-
-            >>> CycleDecomposition(Cycle(1)).map
-            {1: 1}
-            >>> CycleDecomposition(Cycle(1, 2), Cycle(3, 4)).map
-            {1: 2, 2: 1, 3: 4, 4: 3}
-        """
-        _map = {}
-        for cycle in self:
-            _map.update(cycle.map)
-        return _map
-
     def cycle_decomposition(self) -> "CycleDecomposition":
         """Return the cycle decomposition of the permutation.
 
@@ -408,6 +366,27 @@ class CycleDecomposition(_Element):
             (2, 2)
         """
         return tuple(sorted(len(cycle) for cycle in self))
+
+    @property
+    def domain(self) -> Iterable[int]:
+        """Return an iterable containing the elements of the domain of the cycle decomposition.
+
+        The domain of a cycle decomposition is the set of indices for which the cycle decomposition is defined.
+
+        :return: The domain of the cycle decomposition.
+        :rtype: Iterable[int]
+
+        :example:
+            >>> from symmetria import Cycle, CycleDecomposition
+
+            >>> CycleDecomposition(Cycle(1)).domain
+            range(1, 2)
+            >>> CycleDecomposition(Cycle(3, 1, 2)).domain
+            range(1, 4)
+            >>> CycleDecomposition(Cycle(1), Cycle(3, 4, 5, 2, 6)).domain
+            range(1, 7)
+        """
+        return self._domain
 
     def equivalent(self, other: Any) -> bool:
         """Check if the cycle decomposition is equivalent to another object.
@@ -533,6 +512,27 @@ class CycleDecomposition(_Element):
             False
         """
         return self.sgn() == -1
+
+    @property
+    def map(self) -> Dict[int, int]:
+        """Return a dictionary representing the mapping of the cycle decomposition,
+        where keys are indices and values are the corresponding elements after permutation.
+
+        :return: The mapping of the cycle decompostiion.
+        :rtype: Dict[int, int]
+
+        :example:
+            >>> from symmetria import Cycle, CycleDecomposition
+
+            >>> CycleDecomposition(Cycle(1)).map
+            {1: 1}
+            >>> CycleDecomposition(Cycle(1, 2), Cycle(3, 4)).map
+            {1: 2, 2: 1, 3: 4, 4: 3}
+        """
+        _map = {}
+        for cycle in self:
+            _map.update(cycle.map)
+        return _map
 
     def orbit(self, item: Any) -> List[Any]:
         r"""Compute the orbit of `item` object under the action of the cycle decomposition.

@@ -25,7 +25,7 @@ class Permutation(_Element):
 
     :example:
         >>> from symmetria import Permutation
-
+        ...
         >>> permutation = Permutation(3, 1, 2)
         >>> permutation = Permutation(*[3, 1, 2])
         >>> permutation = Permutation(*(3, 1, 2))
@@ -295,117 +295,6 @@ class Permutation(_Element):
         """
         return "(" + ", ".join([str(self[idx]) for idx in self.domain]) + ")"
 
-    @classmethod
-    def from_dict(cls, p: Dict[int, int]) -> "Permutation":
-        """Create a permutation object from a dictionary where keys represent indices and values represent the
-        images of the indeces.
-
-        :param p: A dictionary representing the permutation.
-        :type p: Dict[int, int]
-
-        :return: A permutation created from the dictionary.
-        :rtype: Permutation
-
-        :example:
-            >>> from symmetria import Permutation
-
-            >>> Permutation.from_dict({1: 3, 2: 1, 3: 2})
-            Permutation(3, 1, 2)
-        """
-        return Permutation(*[p[idx] for idx in range(1, len(p) + 1)])
-
-    @classmethod
-    def from_cycle(cls, cycle: "Cycle") -> "Permutation":
-        """Return a permutation from a cycle.
-
-        In other word, it converts a cycle into a permutation.
-
-        :param cycle: A cycle.
-        :type cycle: Cycle
-
-        :return: A permutation equivalent to the given cycle.
-        :rtype: Permutation
-
-        :example:
-            >>> from symmetria import Cycle, Permutation
-
-            >>> Permutation.from_cycle(Cycle(1))
-            Permutation(1)
-            >>> Permutation.from_cycle(Cycle(1, 2, 3))
-            Permutation(2, 3, 1)
-            >>> Permutation.from_cycle(Cycle(3))
-            Permutation(1, 2, 3)
-        """
-        image = []
-        cycle_length = len(cycle)
-        for element in range(1, max(cycle.domain) + 1):
-            if element in cycle:
-                idx = cycle.elements.index(element)
-                image.append(cycle[(idx + 1) % cycle_length])
-            else:
-                image.append(element)
-        return Permutation(*image)
-
-    @classmethod
-    def from_cycle_decomposition(cls, cycle_decomposition: "CycleDecomposition") -> "Permutation":
-        """Return a permutation from a cycle decomposition.
-
-        In other word, it converts a cycle decomposition into a permutation.
-
-        :param cycle_decomposition: A cycle decomposition.
-        :type cycle_decomposition: CycleDecomposition
-
-        :return: A permutation equivalent to the given cycle.
-        :rtype: Permutation
-
-        :example:
-            >>> from symmetria import Cycle, CycleDecomposition, Permutation
-
-            >>> Permutation.from_cycle_decomposition(CycleDecomposition(Cycle(1)))
-            Permutation(1)
-            >>> Permutation.from_cycle_decomposition(CycleDecomposition(Cycle(4, 3), Cycle(1, 2)))
-            Permutation(2, 1, 4, 3)
-        """
-        return Permutation.from_dict(p=cycle_decomposition.map)
-
-    @property
-    def domain(self) -> Iterable[int]:
-        """Return an iterable containing the elements of the domain of the permutation.
-
-        The domain of a permutation is the set of indices for which the permutation is defined.
-
-        :return: The domain of the permutation.
-        :rtype: Iterable[int]
-
-        :example:
-            >>> from symmetria import Permutation
-
-            >>> Permutation(1).domain
-            range(1, 2)
-            >>> Permutation(3, 1, 2).domain
-            range(1, 4)
-            >>> Permutation(1, 3, 4, 5, 2, 6).domain
-            range(1, 7)
-        """
-        return self._domain
-
-    @property
-    def map(self) -> Dict[int, int]:
-        """Return a dictionary representing the mapping of the permutation.
-
-        The keys of the dictionary are indices, while the values are the corresponding elements after permutation.
-
-        :return: The mapping of the permutation.
-        :rtype: Dict[int, int]
-
-        :example:
-            >>> Permutation(1).map
-            {1: 1}
-            >>> Permutation(3, 1, 2).map
-            {1: 3, 2: 1, 3: 2}
-        """
-        return self._map
-
     def cycle_decomposition(self) -> "CycleDecomposition":
         """Decompose the permutation into its cycle decomposition.
 
@@ -473,6 +362,27 @@ class Permutation(_Element):
         """
         return tuple(sorted(len(cycle) for cycle in self.cycle_decomposition()))
 
+    @property
+    def domain(self) -> Iterable[int]:
+        """Return an iterable containing the elements of the domain of the permutation.
+
+        The domain of a permutation is the set of indices for which the permutation is defined.
+
+        :return: The domain of the permutation.
+        :rtype: Iterable[int]
+
+        :example:
+            >>> from symmetria import Permutation
+
+            >>> Permutation(1).domain
+            range(1, 2)
+            >>> Permutation(3, 1, 2).domain
+            range(1, 4)
+            >>> Permutation(1, 3, 4, 5, 2, 6).domain
+            range(1, 7)
+        """
+        return self._domain
+
     def equivalent(self, other: Any) -> bool:
         """Check if the permutation is equivalent to another object.
 
@@ -502,6 +412,79 @@ class Permutation(_Element):
         elif isinstance(other, symmetria.elements.cycle_decomposition.CycleDecomposition):
             return self == Permutation.from_cycle_decomposition(other)
         return False
+
+    @classmethod
+    def from_cycle(cls, cycle: "Cycle") -> "Permutation":
+        """Return a permutation from a cycle.
+
+        In other word, it converts a cycle into a permutation.
+
+        :param cycle: A cycle.
+        :type cycle: Cycle
+
+        :return: A permutation equivalent to the given cycle.
+        :rtype: Permutation
+
+        :example:
+            >>> from symmetria import Cycle, Permutation
+
+            >>> Permutation.from_cycle(Cycle(1))
+            Permutation(1)
+            >>> Permutation.from_cycle(Cycle(1, 2, 3))
+            Permutation(2, 3, 1)
+            >>> Permutation.from_cycle(Cycle(3))
+            Permutation(1, 2, 3)
+        """
+        image = []
+        cycle_length = len(cycle)
+        for element in range(1, max(cycle.domain) + 1):
+            if element in cycle:
+                idx = cycle.elements.index(element)
+                image.append(cycle[(idx + 1) % cycle_length])
+            else:
+                image.append(element)
+        return Permutation(*image)
+
+    @classmethod
+    def from_cycle_decomposition(cls, cycle_decomposition: "CycleDecomposition") -> "Permutation":
+        """Return a permutation from a cycle decomposition.
+
+        In other word, it converts a cycle decomposition into a permutation.
+
+        :param cycle_decomposition: A cycle decomposition.
+        :type cycle_decomposition: CycleDecomposition
+
+        :return: A permutation equivalent to the given cycle.
+        :rtype: Permutation
+
+        :example:
+            >>> from symmetria import Cycle, CycleDecomposition, Permutation
+
+            >>> Permutation.from_cycle_decomposition(CycleDecomposition(Cycle(1)))
+            Permutation(1)
+            >>> Permutation.from_cycle_decomposition(CycleDecomposition(Cycle(4, 3), Cycle(1, 2)))
+            Permutation(2, 1, 4, 3)
+        """
+        return Permutation.from_dict(p=cycle_decomposition.map)
+
+    @classmethod
+    def from_dict(cls, p: Dict[int, int]) -> "Permutation":
+        """Create a permutation object from a dictionary where keys represent indices and values represent the
+        images of the indeces.
+
+        :param p: A dictionary representing the permutation.
+        :type p: Dict[int, int]
+
+        :return: A permutation created from the dictionary.
+        :rtype: Permutation
+
+        :example:
+            >>> from symmetria import Permutation
+
+            >>> Permutation.from_dict({1: 3, 2: 1, 3: 2})
+            Permutation(3, 1, 2)
+        """
+        return Permutation(*[p[idx] for idx in range(1, len(p) + 1)])
 
     def inverse(self) -> "Permutation":
         r"""Return the inverse of the permutation.
@@ -594,6 +577,23 @@ class Permutation(_Element):
             True
         """
         return self.sgn() == -1
+
+    @property
+    def map(self) -> Dict[int, int]:
+        """Return a dictionary representing the mapping of the permutation.
+
+        The keys of the dictionary are indices, while the values are the corresponding elements after permutation.
+
+        :return: The mapping of the permutation.
+        :rtype: Dict[int, int]
+
+        :example:
+            >>> Permutation(1).map
+            {1: 1}
+            >>> Permutation(3, 1, 2).map
+            {1: 3, 2: 1, 3: 2}
+        """
+        return self._map
 
     def one_line_notation(self) -> str:
         r"""Return a string representation of the permutation in the one-line notation, i.e., in the form
