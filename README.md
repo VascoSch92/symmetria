@@ -1,6 +1,7 @@
-# Welcome to symmetria
+<a href="https://symmetria.readthedocs.io/en/latest/"><img src="https://github.com/VascoSch92/symmetria/tree/main/docs/source/_static/symmetria.png" width="70" align="right" /></a>
 
-______________________________________________________________________
+
+# Welcome to symmetria
 
 Symmetria provides an intuitive, thorough, and comprehensive framework for interacting
 with the symmetric group and its elements.

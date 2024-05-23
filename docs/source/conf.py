@@ -54,10 +54,11 @@ exclude_patterns = ["_build", "Thumbs.db", ".DS_Store"]
 # -- Options for HTML output -------------------------------------------------
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#options-for-html-output
 
-html_title = f'symmetria <span class="project-version">{version}</span>'
+# deactivate as not going good with the logo
+# html_title = f'symmetria <span class="project-version">{version}</span>'
 
-# don't use html_logo here
-# html_favicon = "_static/favicon.png"
+html_favicon = "_static/symmetria.png"
+html_logo = "_static/symmetria.png"
 html_last_updated_fmt = "%b %d, %Y"
 html_copy_source = True
 
