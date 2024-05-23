@@ -1,4 +1,4 @@
-<a href="https://symmetria.readthedocs.io/en/latest/"><img src="https://github.com/VascoSch92/symmetria/tree/main/docs/source/_static/symmetria.png" width="70" align="right" /></a>
+<a href="https://symmetria.readthedocs.io/en/latest/"><img src="https://github.com/VascoSch92/symmetria/blob/main/docs/source/_static/symmetria.png" width="72" align="right" /></a>
 
 
 # Welcome to symmetria
