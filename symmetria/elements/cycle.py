@@ -37,7 +37,7 @@ class Cycle(_Element):
 
     :example:
         >>> from symmetria import Cycle
-
+        ...
         >>> cycle = Cycle(1, 3, 2)
         >>> cycle = Cycle(*[1, 3, 2])
         >>> cycle = Cycle(*(1, 3, 2))
@@ -75,7 +75,7 @@ class Cycle(_Element):
 
         :example:
             >>> from symmetria import Cycle
-
+            ...
             >>> bool(Cycle(1))
             False
             >>> bool(Cycle(2, 1, 3))
@@ -107,7 +107,7 @@ class Cycle(_Element):
 
         :example:
             >>> from symmetria import Cycle, Permutation
-
+            ...
             >>> cycle = Cycle(3, 1, 2)
             >>> cycle(2)
             3
@@ -228,7 +228,7 @@ class Cycle(_Element):
 
         :example:
             >>> from symmetria import Cycle
-
+            ...
             >>> int(Cycle(1))
             1
             >>> int(Cycle(13))
@@ -248,7 +248,7 @@ class Cycle(_Element):
 
         :example:
             >>> from symmetria import Cycle
-
+            ...
             >>> len(Cycle(3, 1, 2))
             3
             >>> len(Cycle(1, 3, 4, 5, 2, 6))
@@ -271,7 +271,7 @@ class Cycle(_Element):
 
         :example:
             >>> from symmetria import Cycle
-
+            ...
             >>> Cycle(3, 1, 2).__repr__()
             'Cycle(1, 2, 3)'
             >>> Cycle(1, 3, 4, 5, 2, 6).__repr__()
@@ -290,7 +290,7 @@ class Cycle(_Element):
 
         :example:
             >>> from symmetria import Cycle
-
+            ...
             >>> print(Cycle(3, 1, 2))
             (1 2 3)
             >>> print(Cycle(1, 3, 4, 5, 2, 6))
@@ -308,7 +308,7 @@ class Cycle(_Element):
 
         :example:
             >>> from symmetria import Cycle
-
+            ...
             >>> Cycle(1).cycle_decomposition()
             CycleDecomposition(Cycle(1))
             >>> Cycle(3).cycle_decomposition()
@@ -331,7 +331,7 @@ class Cycle(_Element):
 
         :example:
             >>> from symmetria import Cycle
-
+            ...
             >>> Cycle(1).cycle_notation()
             '(1)'
             >>> Cycle(3, 1, 2).cycle_notation()
@@ -362,7 +362,7 @@ class Cycle(_Element):
 
         :example:
             >>> from symmetria import Cycle
-
+            ...
             >>> Cycle(1).domain
             range(1, 2)
             >>> Cycle(13).domain
@@ -383,7 +383,7 @@ class Cycle(_Element):
 
         :example:
             >>> from symmetria import Cycle
-
+            ...
             >>> Cycle(3, 1, 2).elements
             (1, 2, 3)
         """
@@ -404,7 +404,7 @@ class Cycle(_Element):
 
         :example:
             >>> from symmetria import Cycle, Permutation, CycleDecomposition
-
+            ...
             >>> Cycle(1, 2, 3).equivalent(Permutation(2, 3, 1))
             True
             >>> Cycle(1, 2, 3).equivalent(CycleDecomposition(Cycle(1, 2, 3)))
@@ -444,7 +444,7 @@ class Cycle(_Element):
 
         :example:
             >>> from symmetria import Cycle
-
+            ...
             >>> Cycle(1, 2, 3).inverse()
             Cycle(1, 3, 2)
             >>> Cycle(1, 3, 4, 2).inverse()
@@ -467,7 +467,7 @@ class Cycle(_Element):
 
         :example:
             >>> from symmetria import Cycle
-
+            ...
             >>> Cycle(1).is_derangement()
             False
             >>> Cycle(13).is_derangement()
@@ -488,7 +488,7 @@ class Cycle(_Element):
 
         :example:
             >>> from symmetria import Cycle
-
+            ...
             >>> Cycle(1).is_even()
             True
             >>> Cycle(1, 2).is_even()
@@ -511,7 +511,7 @@ class Cycle(_Element):
 
         :example:
             >>> from symmetria import Cycle
-
+            ...
             >>> Cycle(1).is_odd()
             False
             >>> Cycle(1, 2).is_odd()
@@ -533,7 +533,7 @@ class Cycle(_Element):
 
         :example:
             >>> from symmetria import Cycle
-
+            ...
             >>> Cycle(1).map
             {1: 1}
             >>> Cycle(3).map
@@ -557,7 +557,7 @@ class Cycle(_Element):
 
         :example:
             >>> from symmetria import Cycle, CycleDecomposition, Permutation
-
+            ...
             >>> Cycle(1, 3, 2).orbit(1)
             [1, 3, 2]
             >>> Cycle(1, 3, 2).orbit([1, 2, 3])
@@ -588,7 +588,7 @@ class Cycle(_Element):
 
         :example:
             >>> from symmetria import Cycle
-
+            ...
             >>> Cycle(1).order()
             1
             >>> Cycle(3, 1, 2).order()
@@ -611,7 +611,7 @@ class Cycle(_Element):
 
         :example:
             >>> from symmetria import Cycle
-
+            ...
             >>> Cycle(1).sgn()
             1
             >>> Cycle(1, 2).sgn()
@@ -635,7 +635,7 @@ class Cycle(_Element):
 
         :example:
             >>> from symmetria import Cycle
-
+            ...
             >>> Cycle(1).support()
             set()
             >>> Cycle(13).support()
