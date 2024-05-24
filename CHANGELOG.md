@@ -20,6 +20,7 @@ The version is represented by three digits: a.b.c.
 
 ## Unreleased
 
+## \[0.0.2\] - 2024-05-24
 
 FEATURE:
 
