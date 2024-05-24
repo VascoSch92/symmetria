@@ -59,8 +59,7 @@ docs = [
 [project.urls]
 Homepage = "https://github.com/VascoSch92/symmetria"
 Repository = "https://github.com/VascoSch92/symmetria"
-# Documentation = "https://github.com/VascoSch92/symmetria" # change when there is documentation
-# Download = "https://github.com/VascoSch92/symmetria"
+Documentation = "https://symmetria.readthedocs.io/en/latest/"
 
 [project.license]
 file = "LICENSE"

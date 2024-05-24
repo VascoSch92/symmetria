@@ -9,7 +9,7 @@ If you would like to contribute to the project, please take a moment to read the
    [issue](https://github.com/VascoSch92/symmetria/issues) section.
    There are plenty of ideas we would like to implement here.
 
-1. Time to code. Once you have finished coding your implementation, open a pull-request (PR) to the `main` branch.
+2. Time to code. Once you have finished coding your implementation, open a pull-request (PR) to the `main` branch.
    Note that the PR title should start with one of the following (included parentheses):
 
    - \[API_CHANGE\]: If there is a change to the project's API.
@@ -27,7 +27,7 @@ If you would like to contribute to the project, please take a moment to read the
    [FEATURE] Add method AAA to class BBB
    ```
 
-1. However, before opening a PR, it is a good practice to have pre-commit installed.
+3. However, before opening a PR, it is a good practice to have pre-commit installed.
    To use the pre-commit hook, you first need to install `pre-commit` using the command:
 
    ```bash
@@ -48,6 +48,6 @@ If you would like to contribute to the project, please take a moment to read the
    pre-commit run --all-files
    ```
 
-1. Now your PR is ready for review!
+4. Now your PR is ready for review!
 
 Thanks for your contribution ❤️
