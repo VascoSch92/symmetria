@@ -12,7 +12,7 @@ with the symmetric group and its elements.
 - 📦 - installable via **pip**
 - 🐍 - compatible with Python **3.9**, **3.10**, **3.11** and **3.12**
 - 👍 - intuitive API
-- 🔢 - mathematically corrected
+- 🧮 - a lot of functionalities already implemented
 - ✅ - 100% tested
 
 

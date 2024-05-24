@@ -402,7 +402,8 @@ class Permutation(_Element):
             True
             >>> Permutation(3, 1, 2).equivalent(Cycle(1, 3, 2))
             True
-            >>> Permutation(2, 1, 4, 3).equivalent(CycleDecomposition(Cycle(1, 2), Cycle(3, 4)))
+            >>> cycle_decomp = CycleDecomposition(Cycle(1, 2), Cycle(3, 4))
+            >>> Permutation(2, 1, 4, 3).equivalent(cycle_decomp)
             True
         """
         if isinstance(other, Permutation):
