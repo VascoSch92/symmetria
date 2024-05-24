@@ -14,11 +14,18 @@
 The version is represented by three digits: a.b.c.
 
 - Bump the first digit (a) for an API_CHANGE.
-- Bump the second digit (b) for a FEATURE or a critical FIX.
-- Bump the third digit (c) for an ENHANCEMENT or a small FIX.
+- Bump the second digit (b) for a big new FEATURE or a critical FIX.
+- Bump the third digit (c) for a small new FEATURE, an ENHANCEMENT or a small FIX.
 - Once a digit is bumped, set all the digits to its right to zero.
 
 ## Unreleased
+
+FEATURE:
+
+- `symmetria.Permutation`: add `is_conjugate` method
+- `symmetria.Cycle`: add `is_conjugate` method
+- `symmetria.CyclePermutation`: add `is_conjugate` method
+
 
 ## \[0.0.2\] - 2024-05-24
 

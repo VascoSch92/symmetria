@@ -46,6 +46,18 @@ TEST_INVERSE = [
     (CycleDecomposition(Cycle(1, 2, 3)), CycleDecomposition(Cycle(3, 2, 1))),
     (CycleDecomposition(Cycle(1, 2), Cycle(3, 4)), CycleDecomposition(Cycle(2, 1), Cycle(4, 3))),
 ]
+TEST_IS_CONJUGATE = [
+    (CycleDecomposition(Cycle(1, 2, 3)), CycleDecomposition(Cycle(1, 2, 3)), True),
+    (CycleDecomposition(Cycle(1, 3, 2, 5, 4)), CycleDecomposition(Cycle(1, 4, 3, 5, 2)), True),
+    (CycleDecomposition(Cycle(1, 4, 3, 5, 2)), CycleDecomposition(Cycle(1, 3, 2, 5, 4)), True),
+    (CycleDecomposition(Cycle(1, 2), Cycle(3, 4)), CycleDecomposition(Cycle(1), Cycle(3, 2, 4)), False),
+    (CycleDecomposition(Cycle(1), Cycle(3, 2, 4)), CycleDecomposition(Cycle(1, 2), Cycle(3, 4)), False),
+]
+TEST_IS_CONJUGATE_ERROR = [
+    (CycleDecomposition(Cycle(1, 2, 3)), "abc", TypeError, "Method"),
+    (CycleDecomposition(Cycle(1, 2, 3)), Permutation(1, 2, 3), TypeError, "Method"),
+    (CycleDecomposition(Cycle(1, 2, 3)), Cycle(3, 4), TypeError, "Method"),
+]
 TEST_IS_DERANGEMENT = [
     (CycleDecomposition(Cycle(1)), False),
     (CycleDecomposition(Cycle(1), Cycle(2, 4, 7, 6), Cycle(3, 5)), False),

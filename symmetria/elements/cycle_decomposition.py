@@ -447,6 +447,37 @@ class CycleDecomposition(_Element):
         """
         return CycleDecomposition(*[cycle.inverse() for cycle in self])
 
+    def is_conjugate(self, other: "CycleDecomposition") -> bool:
+        r"""Check if two cycle decompositions are conjugated.
+
+        Recall that two permutations :math:`\sigma, \quad \tau \in S_n`, for some :math:`n \in \mathbb{N}`, are said to
+        be conjugated if there is :math:`\gamma \in S_n` such that :math:`\gamma\sigma\gamma^{-1} = \tau`.
+
+        :param other: a cycle decomposition
+        :type other: CycleDecomposition
+
+        :return: True if self and other are conjugated, False otherwise.
+        :rtype: bool
+
+        :example:
+            >>> from symmetria import Cycle, CycleDecomposition
+            ...
+            >>> cycle_dec = CycleDecomposition(Cycle(1, 2, 3))
+            >>> cycle_dec.is_conjugate(cycle_dec)
+            True
+            >>> cycle_dec_a = CycleDecomposition(Cycle(1, 3, 2, 5, 4))
+            >>> cycle_dec_b = CycleDecomposition(Cycle(1, 4, 3, 5, 2))
+            >>> cycle_dec_a.is_conjugate(cycle_dec_b)
+            True
+            >>> cycle_dec_a = CycleDecomposition(Cycle(1, 2), Cycle(3, 4))
+            >>> cycle_dec_b = CycleDecomposition(Cycle(1), Cycle(3, 2, 4))
+            >>> cycle_dec_a.is_conjugate(cycle_dec_b)
+            False
+        """
+        if isinstance(other, CycleDecomposition) is False:
+            raise TypeError(f"Method `is_conjugate` not implemented for type {type}.")
+        return self.cycle_type() == other.cycle_type()
+
     def is_derangement(self) -> bool:
         r"""Check if the cycle decomposition is a derangement.
 

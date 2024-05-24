@@ -29,6 +29,7 @@ from tests.tests_cycle.test_cases import (
     TEST_EQUIVALENT,
     TEST_CYCLE_NOTATION,
     TEST_IS_DERANGEMENT,
+    TEST_IS_CONJUGATE_ERROR,
 )
 
 
@@ -90,6 +91,17 @@ def test_domain(cycle, expected_value) -> None:
 def test_inverse(cycle, expected_value) -> None:
     """Tests for the method `inverse()`."""
     validate_inverse(item=cycle, expected_value=expected_value)
+
+
+@pytest.mark.parametrize(
+    argnames="cycle, other, error, msg",
+    argvalues=TEST_IS_CONJUGATE_ERROR,
+    ids=[f"{p}.is_conjugate({o})" for p, o, _, _ in TEST_IS_CONJUGATE_ERROR],
+)
+def test_is_conjugate_error(cycle, other, error, msg) -> None:
+    """Tests for errors in the method `is_derangement()`."""
+    with pytest.raises(error, match=msg):
+        _ = cycle.is_conjugate(other)
 
 
 @pytest.mark.parametrize(
