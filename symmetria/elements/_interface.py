@@ -78,6 +78,10 @@ class _Element(ABC):
         raise NotImplementedError
 
     @abstractmethod
+    def is_conjugate(self, other: "_Element") -> bool:
+        """Return True if self and other are conjugate."""
+
+    @abstractmethod
     def is_derangement(self) -> bool:
         """Return if the element is a derangement or not."""
         raise NotImplementedError

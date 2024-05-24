@@ -91,6 +91,18 @@ TEST_INVERSE = [
     (Permutation(1, 3, 4, 2), Permutation(1, 4, 2, 3)),
     (Permutation(2, 3, 1, 5, 4), Permutation(3, 1, 2, 5, 4)),
 ]
+TEST_IS_CONJUGATE = [
+    (Permutation(1, 2, 3), Permutation(1, 2, 3), True),
+    (Permutation(3, 2, 5, 4, 1), Permutation(5, 2, 1, 4, 3), True),
+    (Permutation(5, 2, 1, 4, 3), Permutation(3, 2, 5, 4, 1), True),
+    (Permutation(1, 2, 3), Permutation(3, 2, 1), False),
+    (Permutation(3, 2, 1), Permutation(1, 2, 3), False),
+]
+TEST_IS_CONJUGATE_ERROR = [
+    (Permutation(1, 2, 3), "abc", TypeError, "Method"),
+    (Permutation(1, 2, 3), Cycle(1, 2, 3), TypeError, "Method"),
+    (Permutation(1, 2, 3), CycleDecomposition(Cycle(1, 2), Cycle(3, 4)), TypeError, "Method"),
+]
 TEST_IS_DERANGEMENT = [
     (Permutation(1), False),
     (Permutation(2, 1), True),

@@ -68,6 +68,14 @@ def validate_inverse(item: Any, expected_value: Any) -> None:
         )
 
 
+def validate_is_conjugate(item: Any, other: Any, expected_value: bool) -> None:
+    if item.is_conjugate(other) is not expected_value:
+        raise ValueError(
+            f"The expression `{item.rep()}.is_conjugate({other.rep()})` must evaluate {expected_value}, "
+            f"but got {item.is_conjugate(other)}."
+        )
+
+
 def validate_is_derangement(item: Any, expected_value: bool) -> None:
     if item.is_derangement() is not expected_value:
         raise ValueError(

@@ -11,6 +11,7 @@ TESTSDIR        = tests
 # It is first such that "make" without argument is like "make help".
 help:
 	@echo "[HELP] Makefile commands:"
+	@echo " * all-test: run test-suite."
 	@echo " * build: build and check dist."
 	@echo " * build-docs: build documentation."
 	@echo " * build-docs-open: build documentation and open it."
@@ -29,6 +30,11 @@ help:
 	@echo " * test-report-missing-html: run tests with coverage and open it."
 
 .PHONY: help Makefile
+
+all-test:
+	@echo "[INFO] Run test-suite"
+	@make tests
+	@make doctest
 
 build:
 	@echo "[INFO] Build the dist"

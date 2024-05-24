@@ -454,6 +454,16 @@ class Cycle(_Element):
         """
         return Cycle(*self.elements[::-1])
 
+    def is_conjugate(self, other: "Cycle") -> bool:
+        """
+        :raise NotImplementedError: The method `is_conjugate` is not implemented for cycles.
+            This is because cycles are just building blocks for permutations.
+        """
+        raise NotImplementedError(
+            "Method `is_conjugate` is not implemented for cycles. \n"
+            "Convert the cycle into a `Permutation` or a `CycleDecomposition`."
+        )
+
     def is_derangement(self) -> bool:
         r"""Check if the cycle is a derangement.
 

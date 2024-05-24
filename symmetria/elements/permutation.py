@@ -509,6 +509,34 @@ class Permutation(_Element):
         """
         return Permutation.from_dict({item: key for key, item in self.map.items()})
 
+    def is_conjugate(self, other: "Permutation") -> bool:
+        r"""Check if two permutations are conjugated.
+
+        Recall that two permutations :math:`\sigma, \quad \tau \in S_n`, for some :math:`n \in \mathbb{N}`, are said to
+        be conjugated if there is :math:`\gamma \in S_n` such that :math:`\gamma\sigma\gamma^{-1} = \tau`.
+
+        :param other: a permutation
+        :type other: Permutation
+
+        :return: True if self and other are conjugated, False otherwise.
+        :rtype: bool
+
+        :example:
+            >>> from symmetria import Permutation
+            ...
+            >>> Permutation(1, 2, 3).is_conjugate(Permutation(1, 2, 3))
+            True
+            >>> Permutation(1, 2, 3).is_conjugate(Permutation(3, 2, 1))
+            False
+            >>> permutation_a = Permutation(3, 2, 5, 4, 1)
+            >>> permutation_b = Permutation(5, 2, 1, 4, 3)
+            >>> permutation_a.is_conjugate(permutation_b)
+            True
+        """
+        if isinstance(other, Permutation) is False:
+            raise TypeError(f"Method `is_conjugate` not implemented for type {type}.")
+        return self.cycle_type() == other.cycle_type()
+
     def is_derangement(self) -> bool:
         r"""Check if the permutation is a derangement.
 

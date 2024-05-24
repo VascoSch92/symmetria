@@ -12,6 +12,7 @@ from tests.test_factory import (
     validate_support,
     validate_cycle_type,
     validate_equivalent,
+    validate_is_conjugate,
     validate_cycle_notation,
     validate_is_derangement,
     validate_cycle_decomposition,
@@ -28,9 +29,11 @@ from tests.tests_permutation.test_cases import (
     TEST_SUPPORT,
     TEST_CYCLE_TYPE,
     TEST_EQUIVALENT,
+    TEST_IS_CONJUGATE,
     TEST_CYCLE_NOTATION,
     TEST_IS_DERANGEMENT,
     TEST_ONE_LINE_NOTATION,
+    TEST_IS_CONJUGATE_ERROR,
     TEST_CYCLE_DECOMPOSITION,
 )
 
@@ -93,6 +96,27 @@ def test_equivalent(lhs, rhs, expected_value) -> None:
 def test_inverse(permutation, expected_value) -> None:
     """Tests for the method `inverse()`."""
     validate_inverse(item=permutation, expected_value=expected_value)
+
+
+@pytest.mark.parametrize(
+    argnames="permutation, other, expected_value",
+    argvalues=TEST_IS_CONJUGATE,
+    ids=[f"{p}.is_conjugate({o})={e}" for p, o, e in TEST_IS_CONJUGATE],
+)
+def test_is_conjugate(permutation, other, expected_value) -> None:
+    """Tests for the method `is_derangement()`."""
+    validate_is_conjugate(item=permutation, other=other, expected_value=expected_value)
+
+
+@pytest.mark.parametrize(
+    argnames="permutation, other, error, msg",
+    argvalues=TEST_IS_CONJUGATE_ERROR,
+    ids=[f"{p}.is_conjugate({o})" for p, o, _, _ in TEST_IS_CONJUGATE_ERROR],
+)
+def test_is_conjugate_error(permutation, other, error, msg) -> None:
+    """Tests for errors in the method `is_derangement()`."""
+    with pytest.raises(error, match=msg):
+        _ = permutation.is_conjugate(other)
 
 
 @pytest.mark.parametrize(
