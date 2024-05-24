@@ -20,6 +20,13 @@ class CycleDecomposition(_Element):
     For example, to define the permutation given by the cycles: ``Cycle(2, 1)`` and ``Cycle(4, 3)``, you should write
     ``CycleDecomposition(Cycle(2, 1), Cycle(4, 3))``.
 
+    .. note::
+        By convention, a cycle decomposition starts always with the
+        smaller cycle, i.e., the cycle with the smallest element, and is increasing.
+
+        This is because a cycle decomposition can have different representations. Don't panic, you can write the
+        cycle decomposition in the way you like the most, but then it will be stored following the above convention.
+
     :param cycle: Cycle factors of the permutation.
     :type cycle: Cycle
 
