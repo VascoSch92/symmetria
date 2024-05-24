@@ -63,7 +63,7 @@ You can now represent your permutation in various formats:
 ```python
 print(permutation)                      # (1, 3, 4, 5, 2, 6)
 print(permutation.cycle_notation())     # (1)(2 3 4 5)(6)
-print(permutation.one_line_notation()   # 134526
+print(permutation.one_line_notation())  # 134526
 ```
 
 Permutations can be compared between them and are easy to manipulate.
@@ -82,7 +82,7 @@ Furthermore, we can decompose a permutation into its cycle decomposition
 (`CycleDecomposition`) and compute its order and support.
 
 ```python
-permuttation.cycle_decomposition()
+permutation.cycle_decomposition()
 # returns CycleDecomposition(Cycle(1), Cycle(2, 3, 4, 5), Cycle(6))
 permutation.order()  # 4
 permutation.support()  # {2, 3, 4, 5}
