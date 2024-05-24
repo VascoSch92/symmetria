@@ -1,20 +1,22 @@
-<a href="https://symmetria.readthedocs.io/en/latest/"><img src="https://github.com/VascoSch92/symmetria/blob/main/docs/source/_static/symmetria.png" width="72" align="right" /></a>
+<a href="https://symmetria.readthedocs.io/en/latest/"><img src="./docs/source/_static/symmetria.png" width="200" align="right" /></a>
 
-
-# Welcome to symmetria
+**Welcome to symmetria**
+------------------------
 
 Symmetria provides an intuitive, thorough, and comprehensive framework for interacting
 with the symmetric group and its elements.
 
 - 📦 - installable via pip
 - 🐍 - compatible with Python **3.9**, **3.10**, **3.11** and **3.12**
-- 👍 - intuitive API
-- 🔢 - mathematically corrected
+- 👍 - intuitive **API**
+- 🧮 - a lot of functionalities already implemented
 - ✅ - 100% of test coverage
 
 You can give a look at how to work with symmetria in the section [quickstart](#quickstart),
-or you can check (almost) all the functionality implemented
-[here](#list-of-implemented-functionality).
+or you can directly visit the [docs](https://symmetria.readthedocs.io/en/latest/).
+
+An interesting list of all the functionalities implemented by symmetria can be found
+[here](https://symmetria.readthedocs.io/en/latest/pages/API_reference/elements/index.html).
 
 Pull requests are welcome. For major changes, please open an issue first
 to discuss what you would like to change, and give a look to the
@@ -88,20 +90,11 @@ permutation.support()  # {2, 3, 4, 5}
 permutation.is_derangement()  # True
 ```
 
-## List of implemented functionality
+## Overview
 
-A list of (some) of the functionality implemented for the various classes representing permutation.
-Here, `P` is for `Permutation`, `C`for `Cycle`, and `CD` for `CycleDecomposition`.
-
-| Feature               | Description                                            | P   | C   | CD  |
-| --------------------- |--------------------------------------------------------| --- | --- | --- |
-| `__call__`            | Call a permutation on an object                        | ✅   | ✅   | ✅   |
-| `__mul__`             | Multiplication (composition) between permutations      | ✅   | ❌   | ✅   |
-| `cycle_decomposition` | Cycle decomposition of the permutation                 | ✅   | ✅   | ✅   |
-| `cycle_notation`      | Return the cycle notation of the permutation           | ✅   | ✅   | ✅   |
-| `is_derangement`      | Check if the permutation is a derangement              | ✅   | ✅   | ✅   |
-| `map`                 | Return the map defining the permutation                | ✅   | ✅   | ✅   |
-| `one_line_notation`   | Return the one line notation of the permutation        | ✅   | ❌   | ❌   |
-| `support`             | Return the support of the permutation                  | ✅   | ✅   | ✅   |
-| `orbit`               | Compute image of a given element under the permutation | ✅   | ✅   | ✅   |
-| `order`               | Return the order of the permutation                    | ✅   | ✅   | ✅   |
+| Overview |                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  |
+|---|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| **Open Source** | [![MIT](https://img.shields.io/badge/License-MIT-blue.svg)](https://github.com/VascSch92/symmetria/blob/main/LICENSE)                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            |
+| **CI/CD** | ![tests](https://github.com/VascSch92/symmetria/actions/workflows/tests.yml/badge.svg) [![Documentation Status](https://readthedocs.org/projects/symmetria/badge/?version=latest)](https://symmetria.readthedocs.io/en/latest/?badge=latest)                                                                                                                                                                                                        |
+| **Code** | [![!pypi](https://img.shields.io/pypi/v/symmetria?color=orange)](https://pypi.org/project/symmetria/) [![!python-versions](https://img.shields.io/pypi/pyversions/symmetria)](https://www.python.org/) [![!black](https://img.shields.io/badge/code%20style-ruff-8A2BE2.svg)](https://github.com/ashtral/ruff)                                                                                                                                                                                                                                                                                                                   |
+| **Downloads** | [![Downloads](https://static.pepy.tech/personalized-badge/symmetria?period=week&units=international_system&left_color=grey&right_color=blue&left_text=weekly%20(pypi))](https://pepy.tech/project/skpro) [![Downloads](https://static.pepy.tech/personalized-badge/symmetria?period=month&units=international_system&left_color=grey&right_color=blue&left_text=monthly%20(pypi))](https://pepy.tech/project/skpro) [![Downloads](https://static.pepy.tech/personalized-badge/symmetria?period=total&units=international_system&left_color=grey&right_color=blue&left_text=cumulative%20(pypi))](https://pepy.tech/project/skpro) |
