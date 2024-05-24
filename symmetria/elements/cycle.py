@@ -16,7 +16,7 @@ __all__ = ["Cycle"]
 
 
 class Cycle(_Element):
-    r"""The ``Cycle`` class represents the cycles element of a symmetric group.
+    r"""The ``Cycle`` class represents the cycle elements of a symmetric group.
 
     Recall that a cycle is a permutation that rearranges the elements of a finite set in a circular fashion, i.e.,
     moves each element to the position of the next element in a cycle manner, with the last element being moved to the
@@ -24,11 +24,14 @@ class Cycle(_Element):
 
     To define a cycle, you need to provide its cycle notation.
 
-    For example, to define the cycle :math:`\sigma \in S_3` given by :math:`\sigma(1)=3, \sigma(2)=1`, and
-    :math:`\sigma (3)=2`, you should write ``Cycle(1, 3, 2)``.
+    For example, to define the cycle :math:`\sigma \in S_3` given by :math:`\sigma(1)=3`, :math:`\sigma(2)=1` and
+    :math:`\sigma(3)=2`, you should write ``Cycle(1, 3, 2)``
 
     .. note:: A cycle can have different representations. For example, the cycle ``Cycle(1, 3, 2)`` can be also
-        written ``Cycle(2, 1, 3)``. By convention here, a cycle start always with the smaller number.
+        written ``Cycle(2, 1, 3)``.
+
+        By convention, a cycle start always with the smaller number. Don't panic, you can define a
+        cycle in the way you like the most, but then it will be stored following the above convention.
 
     :param cycle: Set of integers representing the cycle notation of the cycle.
     :type cycle: int
