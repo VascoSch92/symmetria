@@ -55,6 +55,11 @@ Here, **P** denotes the class ``Permutation``, **C** the class ``Cycle``, and **
      - ✅
      - ✅
      - ✅
+   * - ``inversions``
+     - Return the inversions of the permutation
+     - ✅
+     - ✅
+     - ✅
    * - ``is_conjugate``
      - Check if two permutations are conjugate
      - ✅

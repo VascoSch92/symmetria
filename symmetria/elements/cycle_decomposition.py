@@ -454,6 +454,26 @@ class CycleDecomposition(_Element):
         """
         return CycleDecomposition(*[cycle.inverse() for cycle in self])
 
+    def inversions(self) -> List[Tuple[int, int]]:
+        r"""Return the inversions of the cycle decomposition.
+
+        Recall that an inversion of a permutation :math:`\sigma \in S_n`, for :math:`n \in \mathbb{N}`, is a pair
+        :math:`(i, j)` of positions (indexes), where the entries of the permutation are in the opposite order, i.e.,
+        :math:`i<j` but :math:`\sigma(i)>\sigma(j)`.
+
+        :return: The inversions of the ycle decomposition.
+        :rtype: List[Tuple[int, int]]
+
+        :example:
+            >>> from symmetria import Cycle, CycleDecomposition
+            ...
+            >>> CycleDecomposition(Cycle(1), Cycle(2), Cycle(3)).inversions()
+            []
+            >>> CycleDecomposition(Cycle(1, 2, 3)).inversions()
+            [(1, 3), (2, 3)]
+        """
+        return symmetria.elements.permutation.Permutation.from_cycle_decomposition(self).inversions()
+
     def is_conjugate(self, other: "CycleDecomposition") -> bool:
         r"""Check if two cycle decompositions are conjugated.
 

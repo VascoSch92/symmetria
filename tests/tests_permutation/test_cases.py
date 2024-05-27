@@ -86,10 +86,22 @@ TEST_EQUIVALENT = [
     (Permutation(1, 2, 3), 123, False),
     (Permutation(1, 3, 2, 4), "hello-world", False),
 ]
+TEST_IMAGE = [
+    (Permutation(1, 2, 3), (1, 2, 3)),
+    (Permutation(1, 2, 3), (1, 2, 3)),
+    (Permutation(3, 2, 1), (3, 2, 1)),
+    (Permutation(3, 2, 5, 4, 1), (3, 2, 5, 4, 1)),
+    (Permutation(5, 2, 1, 4, 3), (5, 2, 1, 4, 3)),
+]
 TEST_INVERSE = [
     (Permutation(1, 2, 3), Permutation(1, 2, 3)),
     (Permutation(1, 3, 4, 2), Permutation(1, 4, 2, 3)),
     (Permutation(2, 3, 1, 5, 4), Permutation(3, 1, 2, 5, 4)),
+]
+TEST_INVERSIONS = [
+    (Permutation(1, 2, 3), []),
+    (Permutation(1, 3, 4, 2), [(2, 4), (3, 4)]),
+    (Permutation(3, 1, 2, 5, 4), [(1, 2), (1, 3), (4, 5)]),
 ]
 TEST_IS_CONJUGATE = [
     (Permutation(1, 2, 3), Permutation(1, 2, 3), True),

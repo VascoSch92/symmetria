@@ -1,4 +1,11 @@
-from typing import Any, Set, Dict, Type, Tuple
+from typing import (
+    Any,
+    Set,
+    Dict,
+    List,
+    Type,
+    Tuple,
+)
 
 import pytest
 
@@ -65,6 +72,13 @@ def validate_inverse(item: Any, expected_value: Any) -> None:
     if item.inverse() != expected_value:
         raise ValueError(
             f"The expression `{item.rep()}.inverse()` must evaluate {expected_value}, but got {item.inverse()}."
+        )
+
+
+def validate_inversions(item: Any, expected_value: List[Tuple[int, int]]) -> None:
+    if item.inversions() != expected_value:
+        raise ValueError(
+            f"The expression `{item.rep()}.inversions()` must evaluate {expected_value}, but got {item.inversions()}."
         )
 
 

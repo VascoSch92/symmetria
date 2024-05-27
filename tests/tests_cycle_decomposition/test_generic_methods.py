@@ -11,6 +11,7 @@ from tests.test_factory import (
     validate_support,
     validate_cycle_type,
     validate_equivalent,
+    validate_inversions,
     validate_is_regular,
     validate_is_conjugate,
     validate_cycle_notation,
@@ -28,6 +29,7 @@ from tests.tests_cycle_decomposition.test_cases import (
     TEST_SUPPORT,
     TEST_CYCLE_TYPE,
     TEST_EQUIVALENT,
+    TEST_INVERSIONS,
     TEST_IS_REGULAR,
     TEST_IS_CONJUGATE,
     TEST_CYCLE_NOTATION,
@@ -75,6 +77,16 @@ def test_cycle_type(cycle_decomposition, expected_value) -> None:
 def test_inverse(cycle_decomposition, expected_value) -> None:
     """Tests for the method `inverse()`."""
     validate_inverse(item=cycle_decomposition, expected_value=expected_value)
+
+
+@pytest.mark.parametrize(
+    argnames="cycle_decomposition, expected_value",
+    argvalues=TEST_INVERSIONS,
+    ids=[f"{cycle}.inversions()={s}" for cycle, s in TEST_INVERSIONS],
+)
+def test_inversions(cycle_decomposition, expected_value) -> None:
+    """Tests for the method `inversions()`."""
+    validate_inversions(item=cycle_decomposition, expected_value=expected_value)
 
 
 @pytest.mark.parametrize(

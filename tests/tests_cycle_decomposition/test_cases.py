@@ -46,6 +46,10 @@ TEST_INVERSE = [
     (CycleDecomposition(Cycle(1, 2, 3)), CycleDecomposition(Cycle(3, 2, 1))),
     (CycleDecomposition(Cycle(1, 2), Cycle(3, 4)), CycleDecomposition(Cycle(2, 1), Cycle(4, 3))),
 ]
+TEST_INVERSIONS = [
+    (CycleDecomposition(Cycle(1), Cycle(2), Cycle(3)), []),
+    (CycleDecomposition(Cycle(1, 2, 3)), [(1, 3), (2, 3)]),
+]
 TEST_IS_CONJUGATE = [
     (CycleDecomposition(Cycle(1, 2, 3)), CycleDecomposition(Cycle(1, 2, 3)), True),
     (CycleDecomposition(Cycle(1, 3, 2, 5, 4)), CycleDecomposition(Cycle(1, 4, 3, 5, 2)), True),
