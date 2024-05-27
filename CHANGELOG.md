@@ -20,6 +20,13 @@ The version is represented by three digits: a.b.c.
 
 ## Unreleased
 
+FEATURE:
+
+- `symmetria.Permutation`: add `is_regular` method
+- `symmetria.Cycle`: add `is_regular` method
+- `symmetria.CyclePermutation`: add `is_regular` method
+
+
 ## \[0.0.3\] - 2024-05-25
 
 FEATURE:

@@ -73,6 +73,11 @@ TEST_IS_ODD = [
     (CycleDecomposition(Cycle(1, 2), Cycle(3)), True),
     (CycleDecomposition(Cycle(1), Cycle(2, 4, 7, 6), Cycle(3, 5)), False),
 ]
+TEST_IS_REGULAR = [
+    (CycleDecomposition(Cycle(1)), True),
+    (CycleDecomposition(Cycle(2, 1)), True),
+    (CycleDecomposition(Cycle(2, 1), Cycle(3)), False),
+]
 TEST_EQUIVALENT = [
     (CycleDecomposition(Cycle(1)), CycleDecomposition(Cycle(1)), True),
     (CycleDecomposition(Cycle(1)), Cycle(1), True),

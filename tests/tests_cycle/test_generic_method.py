@@ -29,6 +29,7 @@ from tests.tests_cycle.test_cases import (
     TEST_EQUIVALENT,
     TEST_CYCLE_NOTATION,
     TEST_IS_DERANGEMENT,
+    TEST_IS_REGULAR_ERROR,
     TEST_IS_CONJUGATE_ERROR,
 )
 
@@ -132,6 +133,17 @@ def test_is_even(cycle, expected_value) -> None:
 def test_is_odd(cycle, expected_value) -> None:
     """Tests for the method `is_odd()`."""
     validate_is_odd(item=cycle, expected_value=expected_value)
+
+
+@pytest.mark.parametrize(
+    argnames="cycle, error, msg",
+    argvalues=TEST_IS_REGULAR_ERROR,
+    ids=[f"{p}.is_regular({o})" for p, o, _ in TEST_IS_REGULAR_ERROR],
+)
+def test_is_regular_error(cycle, error, msg) -> None:
+    """Tests for errors in the method `is_regular()`."""
+    with pytest.raises(error, match=msg):
+        _ = cycle.is_regular()
 
 
 @pytest.mark.parametrize(

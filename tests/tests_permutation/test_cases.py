@@ -123,6 +123,11 @@ TEST_IS_ODD = [
     (Permutation(2, 1, 3), True),
     (Permutation(2, 3, 4, 5, 6, 1), True),
 ]
+TEST_IS_REGULAR = [
+    (Permutation(1, 2, 3), True),
+    (Permutation(2, 1), True),
+    (Permutation(2, 1, 3), False),
+]
 TEST_MAP = [
     (Permutation(1), {1: 1}),
     (Permutation(2, 1), {1: 2, 2: 1}),

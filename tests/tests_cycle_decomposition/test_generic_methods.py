@@ -11,6 +11,7 @@ from tests.test_factory import (
     validate_support,
     validate_cycle_type,
     validate_equivalent,
+    validate_is_regular,
     validate_is_conjugate,
     validate_cycle_notation,
     validate_is_derangement,
@@ -27,6 +28,7 @@ from tests.tests_cycle_decomposition.test_cases import (
     TEST_SUPPORT,
     TEST_CYCLE_TYPE,
     TEST_EQUIVALENT,
+    TEST_IS_REGULAR,
     TEST_IS_CONJUGATE,
     TEST_CYCLE_NOTATION,
     TEST_IS_DERANGEMENT,
@@ -124,6 +126,16 @@ def test_is_even(cycle_decomposition, expected_value) -> None:
 def test_is_odd(cycle_decomposition, expected_value) -> None:
     """Tests for the method `is_odd()`."""
     validate_is_odd(item=cycle_decomposition, expected_value=expected_value)
+
+
+@pytest.mark.parametrize(
+    argnames="cycle_decomposition, expected_value",
+    argvalues=TEST_IS_REGULAR,
+    ids=[f"{cycle}.is_regular()={s}" for cycle, s in TEST_IS_REGULAR],
+)
+def test_is_regular(cycle_decomposition, expected_value) -> None:
+    """Tests for the method `is_regular()`."""
+    validate_is_regular(item=cycle_decomposition, expected_value=expected_value)
 
 
 @pytest.mark.parametrize(

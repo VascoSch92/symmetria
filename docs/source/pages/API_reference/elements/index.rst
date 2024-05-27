@@ -75,6 +75,11 @@ Here, **P** denotes the class ``Permutation``, **C** the class ``Cycle``, and **
      - ✅
      - ✅
      - ✅
+   * - ``is_regular``
+     - Check if the permutation is regular
+     - ✅
+     - ❌
+     - ✅
    * - ``map``
      - Return the map defining the permutation
      - ✅
