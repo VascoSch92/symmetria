@@ -607,6 +607,27 @@ class Permutation(_Element):
         """
         return self.sgn() == -1
 
+    def is_regular(self) -> bool:
+        """Check if the permutation is regular.
+
+        Recall that a permutation is said regular if all cycles in its cycle decomposition have the same length.
+
+        :return: True if the permutation is regular, False otherwise.
+        :rtype: bool
+
+        :example:
+            >>> from symmetria import Permutation
+            ...
+            >>> Permutation(1, 2, 3).is_regular()
+            True
+            >>> Permutation(2, 1).is_regular()
+            True
+            >>> Permutation(2, 1, 3).is_regular()
+            False
+        """
+        cycle_decomposition = self.cycle_decomposition()
+        return all(len(cycle) == len(cycle_decomposition[0]) for cycle in cycle_decomposition)
+
     @property
     def map(self) -> Dict[int, int]:
         """Return a dictionary representing the mapping of the permutation.

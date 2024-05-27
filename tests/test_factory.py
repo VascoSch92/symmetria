@@ -98,6 +98,13 @@ def validate_is_odd(item: Any, expected_value: bool) -> None:
         )
 
 
+def validate_is_regular(item: Any, expected_value: bool) -> None:
+    if item.is_regular() is not expected_value:
+        raise ValueError(
+            f"The expression `{item.rep()}.is_regular()` must evaluate {expected_value}, but got {item.is_regular()}."
+        )
+
+
 def validate_equivalent(lhs: Any, rhs: Any, expected_value: bool) -> None:
     if lhs.equivalent(other=rhs) != expected_value:
         raise ValueError(

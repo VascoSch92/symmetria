@@ -96,6 +96,11 @@ class _Element(ABC):
         """Return if the element is odd or not."""
         raise NotImplementedError
 
+    @abstractmethod
+    def is_regular(self) -> bool:
+        """Return if the element is regular or not."""
+        raise NotImplementedError
+
     @property
     @abstractmethod
     def map(self) -> Dict[int, int]:

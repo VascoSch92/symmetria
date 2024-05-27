@@ -536,6 +536,16 @@ class Cycle(_Element):
         """
         return self.sgn() == -1
 
+    def is_regular(self) -> bool:
+        """
+        :raise NotImplementedError: The method `is_regular` is not implemented for cycles.
+            This is because cycles are just building blocks for permutations, and don't have a cycle decomposition.
+        """
+        raise NotImplementedError(
+            "Method `is_regular` is not implemented for cycles. \n"
+            "Convert the cycle into a `Permutation` or a `CycleDecomposition`."
+        )
+
     @property
     def map(self) -> Dict[int, int]:
         """Return a dictionary representing the mapping of the cycle,

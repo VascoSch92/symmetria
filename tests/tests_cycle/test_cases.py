@@ -71,6 +71,7 @@ TEST_IS_ODD = [
     (Cycle(1, 2, 3, 4, 5, 6), True),
     (Cycle(1, 2, 3, 4, 5, 6, 7), False),
 ]
+TEST_IS_REGULAR_ERROR = [(Cycle(1, 2, 3), NotImplementedError, "Method")]
 TEST_MAP = [
     (Cycle(1), {1: 1}),
     (Cycle(13), {13: 13}),

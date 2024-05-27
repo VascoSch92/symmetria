@@ -12,6 +12,7 @@ from tests.test_factory import (
     validate_support,
     validate_cycle_type,
     validate_equivalent,
+    validate_is_regular,
     validate_is_conjugate,
     validate_cycle_notation,
     validate_is_derangement,
@@ -29,6 +30,7 @@ from tests.tests_permutation.test_cases import (
     TEST_SUPPORT,
     TEST_CYCLE_TYPE,
     TEST_EQUIVALENT,
+    TEST_IS_REGULAR,
     TEST_IS_CONJUGATE,
     TEST_CYCLE_NOTATION,
     TEST_IS_DERANGEMENT,
@@ -147,6 +149,16 @@ def test_is_even(permutation, expected_value) -> None:
 def test_is_odd(permutation, expected_value) -> None:
     """Tests for the method `is_odd()`."""
     validate_is_odd(item=permutation, expected_value=expected_value)
+
+
+@pytest.mark.parametrize(
+    argnames="permutation, expected_value",
+    argvalues=TEST_IS_REGULAR,
+    ids=[f"{p}.is_regular()={e}" for p, e in TEST_IS_REGULAR],
+)
+def test_is_regular(permutation, expected_value) -> None:
+    """Tests for the method `is_regular()`."""
+    validate_is_regular(item=permutation, expected_value=expected_value)
 
 
 @pytest.mark.parametrize(
