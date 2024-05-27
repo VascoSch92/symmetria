@@ -25,6 +25,10 @@ FEATURE:
 - `symmetria.Permutation`: add `is_regular` method
 - `symmetria.Cycle`: add `is_regular` method
 - `symmetria.CyclePermutation`: add `is_regular` method
+- `symmetria.Permutation`: add `inversions` method
+- `symmetria.Cycle`: add `inversions` method
+- `symmetria.CyclePermutation`: add `inversions` method
+- `symmetria.Permutation`: add `image` property
 
 
 ## \[0.0.3\] - 2024-05-25

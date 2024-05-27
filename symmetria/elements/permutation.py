@@ -36,6 +36,7 @@ class Permutation(_Element):
     def __init__(self, *image: int) -> None:
         self._map: Dict[int, int] = self._validate_image(image)
         self._domain: Iterable[int] = range(1, len(self._map) + 1)
+        self._image: Tuple[int] = tuple(image)
 
     @staticmethod
     def _validate_image(image: Tuple[int, ...]) -> Dict[int, int]:
@@ -487,6 +488,28 @@ class Permutation(_Element):
         """
         return Permutation(*[p[idx] for idx in range(1, len(p) + 1)])
 
+    @property
+    def image(self) -> Tuple[int]:
+        r"""Return the image of the permutation.
+
+        For example, to define the permutation :math:`\sigma \in S_3` given by :math:`\sigma(1)=3, \sigma(2)=1`, and
+        :math:`\sigma (3)=2`, then the image of :math:`\sigma` is :math:`(3, 1, 2)` .
+
+        :return: The image of the permutation.
+        :rtype: Tuple[int]
+
+        :example:
+            >>> from symmetria import Permutation
+            ...
+            >>> Permutation(1, 2, 3).image
+            (1, 2, 3)
+            >>> Permutation(1, 3, 4, 2).image
+            (1, 3, 4, 2)
+            >>> Permutation(2, 3, 1, 5, 4).image
+            (2, 3, 1, 5, 4)
+        """
+        return self._image
+
     def inverse(self) -> "Permutation":
         r"""Return the inverse of the permutation.
 
@@ -508,6 +531,37 @@ class Permutation(_Element):
             Permutation(3, 1, 2, 5, 4)
         """
         return Permutation.from_dict({item: key for key, item in self.map.items()})
+
+    def inversions(self) -> List[Tuple[int, int]]:
+        r"""Return the inversions of the permutation.
+
+        Recall that an inversion of a permutation :math:`\sigma \in S_n`, for :math:`n \in \mathbb{N}`, is a pair
+        :math:`(i, j)` of positions (indexes), where the entries of the permutation are in the opposite order, i.e.,
+        :math:`i<j` but :math:`\sigma(i)>\sigma(j)`.
+
+        :return: The inversions of the permutation
+        :rtype: List[Tuple[int, int]]
+
+        :example:
+            >>> from symmetria import Permutation
+            ...
+            >>> Permutation(1, 2, 3).inversions()
+            []
+            >>> Permutation(1, 3, 4, 2).inversions()
+            [(2, 4), (3, 4)]
+            >>> Permutation(3, 1, 2, 5, 4).inversions()
+            [(1, 2), (1, 3), (4, 5)]
+        """
+        inversions, image = [], list(self.image)
+        min_element = 1
+        for i, p in enumerate(image, 1):
+            if p == min_element:
+                min_element += 1
+            else:
+                for j, q in enumerate(image[i:], 1):
+                    if p > q:
+                        inversions.append((i, i + j))
+        return inversions
 
     def is_conjugate(self, other: "Permutation") -> bool:
         r"""Check if two permutations are conjugated.

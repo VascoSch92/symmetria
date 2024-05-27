@@ -78,6 +78,11 @@ class _Element(ABC):
         raise NotImplementedError
 
     @abstractmethod
+    def inversions(self) -> List[Tuple[int, int]]:
+        """Return the inversions of the permutation object."""
+        raise NotImplementedError
+
+    @abstractmethod
     def is_conjugate(self, other: "_Element") -> bool:
         """Return True if self and other are conjugate."""
 

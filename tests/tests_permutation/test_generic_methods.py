@@ -12,6 +12,7 @@ from tests.test_factory import (
     validate_support,
     validate_cycle_type,
     validate_equivalent,
+    validate_inversions,
     validate_is_regular,
     validate_is_conjugate,
     validate_cycle_notation,
@@ -21,6 +22,7 @@ from tests.test_factory import (
 from tests.tests_permutation.test_cases import (
     TEST_MAP,
     TEST_SGN,
+    TEST_IMAGE,
     TEST_ORBIT,
     TEST_ORDER,
     TEST_DOMAIN,
@@ -30,6 +32,7 @@ from tests.tests_permutation.test_cases import (
     TEST_SUPPORT,
     TEST_CYCLE_TYPE,
     TEST_EQUIVALENT,
+    TEST_INVERSIONS,
     TEST_IS_REGULAR,
     TEST_IS_CONJUGATE,
     TEST_CYCLE_NOTATION,
@@ -92,12 +95,36 @@ def test_equivalent(lhs, rhs, expected_value) -> None:
 
 @pytest.mark.parametrize(
     argnames="permutation, expected_value",
+    argvalues=TEST_IMAGE,
+    ids=[f"{p}.image={i}" for p, i in TEST_IMAGE],
+)
+def test_image(permutation, expected_value) -> None:
+    """Tests the property `image`."""
+    if permutation.image != expected_value:
+        raise ValueError(
+            f"The expression `{permutation.rep()}.image` must evaluate {expected_value}, "
+            f"but got {permutation.image}."
+        )
+
+
+@pytest.mark.parametrize(
+    argnames="permutation, expected_value",
     argvalues=TEST_INVERSE,
     ids=[f"{p}.inverse()={e}" for p, e in TEST_INVERSE],
 )
 def test_inverse(permutation, expected_value) -> None:
     """Tests for the method `inverse()`."""
     validate_inverse(item=permutation, expected_value=expected_value)
+
+
+@pytest.mark.parametrize(
+    argnames="permutation, expected_value",
+    argvalues=TEST_INVERSIONS,
+    ids=[f"{p}.inversions()={e}" for p, e in TEST_INVERSIONS],
+)
+def test_inversions(permutation, expected_value) -> None:
+    """Tests for the method `inversions()`."""
+    validate_inversions(item=permutation, expected_value=expected_value)
 
 
 @pytest.mark.parametrize(

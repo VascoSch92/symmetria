@@ -12,6 +12,7 @@ from tests.test_factory import (
     validate_is_even,
     validate_support,
     validate_equivalent,
+    validate_inversions,
     validate_cycle_notation,
     validate_is_derangement,
 )
@@ -27,6 +28,7 @@ from tests.tests_cycle.test_cases import (
     TEST_SUPPORT,
     TEST_ELEMENTS,
     TEST_EQUIVALENT,
+    TEST_INVERSIONS,
     TEST_CYCLE_NOTATION,
     TEST_IS_DERANGEMENT,
     TEST_IS_REGULAR_ERROR,
@@ -92,6 +94,16 @@ def test_domain(cycle, expected_value) -> None:
 def test_inverse(cycle, expected_value) -> None:
     """Tests for the method `inverse()`."""
     validate_inverse(item=cycle, expected_value=expected_value)
+
+
+@pytest.mark.parametrize(
+    argnames="cycle, expected_value",
+    argvalues=TEST_INVERSIONS,
+    ids=[f"{cycle}.inversions()={s}" for cycle, s in TEST_INVERSIONS],
+)
+def test_inversions(cycle, expected_value) -> None:
+    """Tests for the method `inversions()`."""
+    validate_inversions(item=cycle, expected_value=expected_value)
 
 
 @pytest.mark.parametrize(

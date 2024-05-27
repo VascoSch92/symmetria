@@ -457,6 +457,40 @@ class Cycle(_Element):
         """
         return Cycle(*self.elements[::-1])
 
+    def inversions(self) -> List[Tuple[int, int]]:
+        r"""Return the inversions of the cycle.
+
+        Recall that an inversion of a permutation :math:`\sigma \in S_n`, for :math:`n \in \mathbb{N}`, is a pair
+        :math:`(i, j)` of positions (indexes), where the entries of the permutation are in the opposite order, i.e.,
+        :math:`i<j` but :math:`\sigma(i)>\sigma(j)`.
+
+        .. note:: The inversions of the cycle are computed after the cycle is standardized in its normal form, i.e.,
+            :math:`c_1 < c_j` for every :math:`c_j \neq c_1` in the cycle :math:`c = (c_1, ..., c_n)`.
+
+        :return: The inversions of the cycle.
+        :rtype: List[Tuple[int, int]]
+
+        :example:
+            >>> from symmetria import Cycle
+            ...
+            >>> Cycle(1, 2, 3).inversions()
+            []
+            >>> Cycle(1, 3, 4, 2).inversions()
+            [(2, 4), (3, 4)]
+            >>> Cycle(1, 2, 5, 4, 3).inversions()
+            [(3, 4), (3, 5), (4, 5)]
+        """
+        inversions, elements = [], list(self.elements)
+        min_element = 1
+        for i, p in enumerate(elements, 1):
+            if p == min_element:
+                min_element += 1
+            else:
+                for j, q in enumerate(elements[i:], 1):
+                    if p > q:
+                        inversions.append((i, i + j))
+        return inversions
+
     def is_conjugate(self, other: "Cycle") -> bool:
         """
         :raise NotImplementedError: The method `is_conjugate` is not implemented for cycles.
