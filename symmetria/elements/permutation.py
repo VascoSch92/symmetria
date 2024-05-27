@@ -31,7 +31,7 @@ class Permutation(_Element):
         >>> permutation = Permutation(*(3, 1, 2))
     """
 
-    __slots__ = ["_map", "_domain"]
+    __slots__ = ["_map", "_domain", "_image"]
 
     def __init__(self, *image: int) -> None:
         self._map: Dict[int, int] = self._validate_image(image)
