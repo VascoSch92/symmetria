@@ -3,20 +3,24 @@ import pytest
 from symmetria import Cycle, CycleDecomposition
 from tests.test_factory import (
     validate_eq,
+    validate_pow,
     validate_bool,
     validate_call,
     validate_repr,
     validate_getitem,
     validate_mul_error,
+    validate_pow_error,
     validate_call_error,
 )
 from tests.tests_cycle_decomposition.test_cases import (
     TEST_EQ,
+    TEST_POW,
     TEST_BOOL,
     TEST_CALL,
     TEST_REPR,
     TEST_GETITEM,
     TEST_MUL_ERROR,
+    TEST_POW_ERROR,
     TEST_CALL_ERROR,
 )
 
@@ -85,6 +89,26 @@ def test_int() -> None:
 def test_multiplication_error(lhs, rhs, error, msg) -> None:
     """Tests for exceptions to the method `__mul__()`."""
     validate_mul_error(lhs=lhs, rhs=rhs, error=error, msg=msg)
+
+
+@pytest.mark.parametrize(
+    argnames="cycle_decomposition, power, expected_value",
+    argvalues=TEST_POW,
+    ids=[f"{p}**{q}={r}" for p, q, r in TEST_POW],
+)
+def test_pow(cycle_decomposition, power, expected_value) -> None:
+    """Tests for the method `__pow__()`."""
+    validate_pow(item=cycle_decomposition, power=power, expected_value=expected_value)
+
+
+@pytest.mark.parametrize(
+    argnames="cycle_decomposition, power, error, msg",
+    argvalues=TEST_POW_ERROR,
+    ids=[f"{p}**{q}" for p, q, _, _ in TEST_POW_ERROR],
+)
+def test_pow_error(cycle_decomposition, power, error, msg) -> None:
+    """Tests for exceptions to the method `__pow__()`."""
+    validate_pow_error(item=cycle_decomposition, power=power, error=error, msg=msg)
 
 
 @pytest.mark.parametrize(

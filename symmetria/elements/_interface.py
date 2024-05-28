@@ -31,6 +31,11 @@ class _Element(ABC):
         raise NotImplementedError
 
     @abstractmethod
+    def __pow__(self, power: int) -> "_Element":
+        """Implement method `__pow__()`."""
+        raise NotImplementedError
+
+    @abstractmethod
     def __repr__(self) -> str:
         """Implement method `__repr__( )`."""
         raise NotImplementedError

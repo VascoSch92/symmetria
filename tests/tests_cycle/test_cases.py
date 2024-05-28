@@ -197,6 +197,17 @@ TEST_LEN = [
     (Cycle(1, 2), 2),
     (Cycle(1, 3, 2), 3),
 ]
+TEST_POW = [
+    (Cycle(1, 3, 2), 0, Cycle(1, 2, 3)),
+    (Cycle(1, 3, 2), 1, Cycle(1, 3, 2)),
+    (Cycle(1, 3, 2), -1, Cycle(1, 2, 3)),
+    (Cycle(1, 3, 2), 2, Cycle(1, 3, 2)(Cycle(1, 3, 2))),
+    (Cycle(1, 3, 2), -2, Cycle(1, 3, 2).inverse()(Cycle(1, 3, 2).inverse())),
+]
+TEST_POW_ERROR = [
+    (Cycle(1, 2, 3), "asd", TypeError, "Power"),
+    (Cycle(1, 2, 3), 0.9, TypeError, "Power"),
+]
 TEST_REPR = [
     (Cycle(1), "Cycle(1)"),
     (Cycle(1, 2), "Cycle(1, 2)"),

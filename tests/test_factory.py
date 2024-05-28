@@ -221,6 +221,18 @@ def validate_mul_error(lhs: Any, rhs: Any, error: Type[Exception], msg: str) -> 
         _ = lhs * rhs
 
 
+def validate_pow(item: Any, power: int, expected_value: Any) -> None:
+    if item**power != expected_value:
+        raise ValueError(
+            f"The expression `{item.rep()} ** {power}` must evaluate {expected_value}, but got {item ** power}."
+        )
+
+
+def validate_pow_error(item: Any, power: Any, error: Type[Exception], msg: str) -> None:
+    with pytest.raises(error, match=msg):
+        _ = item**power
+
+
 def validate_repr(item: Any, expected_value: str) -> None:
     if item.__repr__() != expected_value:
         raise ValueError(

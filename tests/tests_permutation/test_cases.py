@@ -270,6 +270,17 @@ TEST_MUL_ERROR = [
         "Product between",
     ),
 ]
+TEST_POW = [
+    (Permutation(3, 1, 2), 0, Permutation(1, 2, 3)),
+    (Permutation(3, 1, 2), 1, Permutation(3, 1, 2)),
+    (Permutation(3, 1, 2), -1, Permutation(2, 3, 1)),
+    (Permutation(3, 1, 2), 2, Permutation(3, 1, 2) * Permutation(3, 1, 2)),
+    (Permutation(3, 1, 2), -2, Permutation(3, 1, 2).inverse() * Permutation(3, 1, 2).inverse()),
+]
+TEST_POW_ERROR = [
+    (Permutation(1, 2, 3), "abs", TypeError, "Power"),
+    (Permutation(1, 2, 3), 9.3, TypeError, "Power"),
+]
 TEST_REPR = [
     (Permutation(1), "Permutation(1)"),
     (Permutation(1, 2), "Permutation(1, 2)"),
