@@ -29,7 +29,9 @@ FEATURE:
 - `symmetria.Cycle`: add `inversions` method
 - `symmetria.CyclePermutation`: add `inversions` method
 - `symmetria.Permutation`: add `image` property
-
+- `symmetria.Permutation`: add `__pow__` method
+- `symmetria.Cycle`: add `__pow__` method
+- `symmetria.CyclePermutation`: add `__pow__` method
 
 ## \[0.0.3\] - 2024-05-25
 
