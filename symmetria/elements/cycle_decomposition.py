@@ -282,6 +282,36 @@ class CycleDecomposition(_Element):
             ).cycle_decomposition()
         raise TypeError(f"Product between types `CycleDecomposition` and {type(other)} is not implemented.")
 
+    def __pow__(self, power: int) -> "CycleDecomposition":
+        """Return the permutation object to the chosen power.
+
+        :param power: the exponent for the power operation.
+        :type power: int
+
+        :return: the power of the cycle decomposition.
+        :rtype: Permutation
+
+        :example:
+            >>> from symmetria import Cycle, CycleDecomposition
+            ...
+            >>> CycleDecomposition(Cycle(3), Cycle(1), Cycle(2)) ** 0
+            CycleDecomposition(Cycle(1), Cycle(2), Cycle(3))
+            >>> CycleDecomposition(Cycle(1, 2), Cycle(3)) ** 1
+            CycleDecomposition(Cycle(1, 2), Cycle(3))
+            >>> CycleDecomposition(Cycle(1, 2), Cycle(3)) ** -1
+            CycleDecomposition(Cycle(1, 2), Cycle(3))
+        """
+        if isinstance(power, int) is False:
+            raise TypeError(f"Power operation for type {type(power)} not supported.")
+        elif self is False or power == 0:
+            return CycleDecomposition(*[symmetria.elements.cycle.Cycle(i) for i in self.domain])
+        elif power == 1:
+            return self
+        elif power <= -1:
+            return self.inverse() ** abs(power)
+        else:
+            return self * (self ** (power - 1))
+
     def __repr__(self) -> str:
         r"""Return a string representation of the cycle decomposition in the format
         'CycleDecomposition(Cycle(x, ...), Cycle(y, ...), ...)', where :math:`x, y, ... \in \mathbb{N}` are

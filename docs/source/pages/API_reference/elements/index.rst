@@ -35,6 +35,11 @@ Here, **P** denotes the class ``Permutation``, **C** the class ``Cycle``, and **
      - ✅
      - ❌
      - ✅
+   * - ``__pow__``
+     - Power of a permutation
+     - ✅
+     - ✅
+     - ✅
    * - ``cycle_decomposition``
      - Cycle decomposition of the permutation
      - ✅

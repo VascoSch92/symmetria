@@ -263,6 +263,36 @@ class Permutation(_Element):
             return Permutation.from_dict(p={idx: self._map[other._map[idx]] for idx in self.domain})
         raise TypeError(f"Product between types `Permutation` and {type(other)} is not implemented.")
 
+    def __pow__(self, power: int) -> "Permutation":
+        """Return the permutation object to the chosen power.
+
+        :param power: the exponent for the power operation.
+        :type power: int
+
+        :return: the power of the permutation.
+        :rtype: Permutation
+
+        :example:
+            >>> from symmetria import Permutation
+            ...
+            >>> Permutation(3, 1, 2) ** 0
+            Permutation(1, 2, 3)
+            >>> Permutation(3, 1, 2) ** 1
+            Permutation(3, 1, 2)
+            >>> Permutation(3, 1, 2) ** -1
+            Permutation(2, 3, 1)
+        """
+        if isinstance(power, int) is False:
+            raise TypeError(f"Power operation for type {type(power)} not supported.")
+        elif self is False or power == 0:
+            return Permutation(*list(self.domain))
+        elif power == 1:
+            return self
+        elif power <= -1:
+            return self.inverse() ** abs(power)
+        else:
+            return self * (self ** (power - 1))
+
     def __repr__(self) -> str:
         r"""Return a string representation of the permutation in the format "Permutation(x, y, z, ...)",
         where :math:`x, y, z, ... \in \mathbb{N}` are the elements of the permutation.

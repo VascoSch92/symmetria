@@ -33,7 +33,7 @@ help:
 
 all-test:
 	@echo "[INFO] Run test-suite"
-	@make tests
+	@make test
 	@make doctest
 
 build:

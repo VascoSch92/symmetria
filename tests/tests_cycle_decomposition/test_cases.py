@@ -228,6 +228,20 @@ TEST_MUL_ERROR = [
     ),
     (CycleDecomposition(Cycle(1, 2, 3)), "Hello world", TypeError, "Product"),
 ]
+TEST_POW = [
+    (CycleDecomposition(Cycle(3), Cycle(1), Cycle(2)), 0, CycleDecomposition(Cycle(3), Cycle(1), Cycle(2))),
+    (CycleDecomposition(Cycle(1, 2), Cycle(3)), 1, CycleDecomposition(Cycle(1, 2), Cycle(3))),
+    (CycleDecomposition(Cycle(1, 2), Cycle(3)), -1, CycleDecomposition(Cycle(1, 2), Cycle(3))),
+    (
+        CycleDecomposition(Cycle(1, 3), Cycle(2, 4)),
+        2,
+        CycleDecomposition(Cycle(1, 3), Cycle(2, 4)) * CycleDecomposition(Cycle(1, 3), Cycle(2, 4)),
+    ),
+]
+TEST_POW_ERROR = [
+    (CycleDecomposition(Cycle(1, 3), Cycle(2, 4)), "abc", TypeError, "Power"),
+    (CycleDecomposition(Cycle(1, 3), Cycle(2, 4)), 0.9, TypeError, "Power"),
+]
 TEST_REPR = [
     (CycleDecomposition(Cycle(1)), "CycleDecomposition(Cycle(1))"),
     (CycleDecomposition(Cycle(1, 2)), "CycleDecomposition(Cycle(1, 2))"),
