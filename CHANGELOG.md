@@ -20,6 +20,9 @@ The version is represented by three digits: a.b.c.
 
 ## Unreleased
 
+
+## \[0.0.4\] - 2024-05-28
+
 FEATURE:
 
 - `symmetria.Permutation`: add `is_regular` method
@@ -32,6 +35,7 @@ FEATURE:
 - `symmetria.Permutation`: add `__pow__` method
 - `symmetria.Cycle`: add `__pow__` method
 - `symmetria.CyclePermutation`: add `__pow__` method
+
 
 ## \[0.0.3\] - 2024-05-25
 
