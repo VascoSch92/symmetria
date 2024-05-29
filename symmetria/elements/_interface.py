@@ -7,12 +7,12 @@ class _Element(ABC):
 
     @abstractmethod
     def __bool__(self) -> bool:
-        """Implement method `bool( )`."""
+        """Implement method `bool()`."""
         raise NotImplementedError
 
     @abstractmethod
     def __call__(self, item: Any) -> Any:
-        """Implement method `self( )`."""
+        """Implement call on an item."""
         raise NotImplementedError
 
     @abstractmethod
@@ -32,17 +32,17 @@ class _Element(ABC):
 
     @abstractmethod
     def __pow__(self, power: int) -> "_Element":
-        """Implement method `__pow__()`."""
+        """Implement power of an element."""
         raise NotImplementedError
 
     @abstractmethod
     def __repr__(self) -> str:
-        """Implement method `__repr__( )`."""
+        """Implement representaiton method."""
         raise NotImplementedError
 
     @abstractmethod
     def __str__(self) -> str:
-        """Implement method `__str__( )`."""
+        """Implement method `str()`."""
         raise NotImplementedError
 
     # TODO: decide if we want to implement this method also for the classes Cycle and CycleDecomposition
@@ -114,7 +114,7 @@ class _Element(ABC):
     @property
     @abstractmethod
     def map(self) -> Dict[int, int]:
-        """Return a dictionary representing the map defining the element."""
+        """Return a dictionary representing the map defined the element."""
         raise NotImplementedError
 
     def name(self) -> str:

@@ -176,6 +176,16 @@ class Permutation(_Element):
 
         :return: True if the permutation is equal to `other`, i.e., they define the same map. Otherwise, False.
         :rtype: bool
+
+        :example:
+            >>> from symmetria import Permutation
+            ...
+            >>> Permutation(1, 2, 3) == Permutation(1, 2, 3)
+            True
+            >>> Permutation(1, 2, 3) == Permutation(3, 2, 1)
+            False
+            >>> Permutation(1, 2, 3) == 12
+            False
         """
         if isinstance(other, Permutation):
             return self.map == other.map
@@ -185,7 +195,9 @@ class Permutation(_Element):
         """Return the value of the permutation at the given index `item`.
 
         In other words, it returns the image of the permutation at point `item`.
-        The index corresponds to the position in the permutation, starting from 0.
+
+        .. note:: The index corresponds to the element in the domain of the permutation, i.e.,
+            the index is a number between 1 and the length of the permutation.
 
         :param item: The index of the permutation.
         :type item: int
@@ -194,6 +206,16 @@ class Permutation(_Element):
         :rtype: int
 
         :raises IndexError: If the index is out of range.
+
+        :example:
+            >>> from symmetria import Permutation
+            ...
+            >>> permutation = Permutation(2, 3, 1)
+            >>> for idx in range(1, len(permutation)+1):
+            ...     permutation[idx]
+            2
+            3
+            1
         """
         return self.map[item]
 
@@ -272,14 +294,18 @@ class Permutation(_Element):
         :return: the power of the permutation.
         :rtype: Permutation
 
+        :raises TypeError: If `power` is not an integer.
+
         :example:
             >>> from symmetria import Permutation
             ...
-            >>> Permutation(3, 1, 2) ** 0
+            >>> Permutation(3, 1, 2)**0
             Permutation(1, 2, 3)
-            >>> Permutation(3, 1, 2) ** 1
+            >>> Permutation(3, 1, 2)**1
             Permutation(3, 1, 2)
-            >>> Permutation(3, 1, 2) ** -1
+            >>> Permutation(3, 1, 2)**-1
+            Permutation(2, 3, 1)
+            >>> Permutation(3, 1, 2)**2
             Permutation(2, 3, 1)
         """
         if isinstance(power, int) is False:
@@ -294,7 +320,7 @@ class Permutation(_Element):
             return self * (self ** (power - 1))
 
     def __repr__(self) -> str:
-        r"""Return a string representation of the permutation in the format "Permutation(x, y, z, ...)",
+        r"""Return a string representation of the permutation in the format `Permutation(x, y, z, ...)`,
         where :math:`x, y, z, ... \in \mathbb{N}` are the elements of the permutation.
 
         :return: A string representation of the permutation.
@@ -311,7 +337,9 @@ class Permutation(_Element):
         return f"Permutation({', '.join([str(self._map[idx]) for idx in self.domain])})"
 
     def __str__(self) -> str:
-        """Return a string representation of the permutation in the form of tuples.
+        """Return a string representation of the permutation in the form of a tuple.
+
+        The string representation represents the image of the permutation.
 
         :return: A string representation of the permutation.
         :rtype: str
@@ -324,7 +352,7 @@ class Permutation(_Element):
             >>> print(Permutation(1, 3, 4, 5, 2, 6))
             (1, 3, 4, 5, 2, 6)
         """
-        return "(" + ", ".join([str(self[idx]) for idx in self.domain]) + ")"
+        return str(self.image) if len(self.image) > 1 else f"({self.image[0]})"
 
     def cycle_decomposition(self) -> "CycleDecomposition":
         """Decompose the permutation into its cycle decomposition.
@@ -374,7 +402,7 @@ class Permutation(_Element):
         Recall that the cycle type of the permutation :math:`\sigma` is a sequence of integer, where
         There is a 1 for every fixed point of :math:`\sigma`, a 2 for every transposition, and so on.
 
-        .. note:: Note that the resulting tuple is sorted in ascending order.
+        .. note:: The resulting tuple is sorted in ascending order.
 
         :return: The cycle type of the permutation.
         :rtype: Tuple[int]
@@ -515,6 +543,8 @@ class Permutation(_Element):
             ...
             >>> Permutation.from_dict({1: 3, 2: 1, 3: 2})
             Permutation(3, 1, 2)
+            >>> Permutation.from_dict({1: 5, 2: 3, 3: 1, 4: 2, 5:4})
+            Permutation(5, 3, 1, 2, 4)
         """
         return Permutation(*[p[idx] for idx in range(1, len(p) + 1)])
 
@@ -522,7 +552,7 @@ class Permutation(_Element):
     def image(self) -> Tuple[int]:
         r"""Return the image of the permutation.
 
-        For example, to define the permutation :math:`\sigma \in S_3` given by :math:`\sigma(1)=3, \sigma(2)=1`, and
+        For example, consider the permutation :math:`\sigma \in S_3` given by :math:`\sigma(1)=3, \sigma(2)=1`, and
         :math:`\sigma (3)=2`, then the image of :math:`\sigma` is :math:`(3, 1, 2)` .
 
         :return: The image of the permutation.
@@ -605,6 +635,8 @@ class Permutation(_Element):
         :return: True if self and other are conjugated, False otherwise.
         :rtype: bool
 
+        :raises TypeError: If `other` is not a permutation.
+
         :example:
             >>> from symmetria import Permutation
             ...
@@ -612,9 +644,7 @@ class Permutation(_Element):
             True
             >>> Permutation(1, 2, 3).is_conjugate(Permutation(3, 2, 1))
             False
-            >>> permutation_a = Permutation(3, 2, 5, 4, 1)
-            >>> permutation_b = Permutation(5, 2, 1, 4, 3)
-            >>> permutation_a.is_conjugate(permutation_b)
+            >>> Permutation(3, 2, 5, 4, 1).is_conjugate(Permutation(5, 2, 1, 4, 3))
             True
         """
         if isinstance(other, Permutation) is False:
@@ -755,7 +785,8 @@ class Permutation(_Element):
         r"""Compute the orbit of `item` object under the action of the cycle.
 
         Recall that the orbit of the action of a permutation :math:`\sigma` on an element x is given by the set
-        :math:`\{ \sigma^n(x): n \in \mathbb{N}\}`.
+
+        .. math:: \{ \sigma^n(x): n \in \mathbb{N}\}
 
         :param item: The initial element or iterable to compute the orbit for.
         :type item: Any

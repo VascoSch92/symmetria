@@ -173,13 +173,23 @@ class CycleDecomposition(_Element):
         return symmetria.elements.permutation.Permutation.from_cycle_decomposition(self) * original
 
     def __eq__(self, other: Any) -> bool:
-        """Check if the cycle decomposition is equal to the `another` object.
+        """Check if the cycle decomposition is equal to the `other` object.
 
         :param other: The object to compare with.
         :type other: Any
 
         :return: True if the cycle decomposition is equal to `other`, i.e., they define the same map. Otherwise, False.
         :rtype: bool
+
+        :example:
+            >>> from symmetria import Cycle, CycleDecomposition
+            ...
+            >>> CycleDecomposition(Cycle(1, 2)) == CycleDecomposition(Cycle(1, 2))
+            True
+            >>> CycleDecomposition(Cycle(1), Cycle(2)) == CycleDecomposition(Cycle(1), Cycle(2))
+            True
+            >>> CycleDecomposition(Cycle(1), Cycle(2, 3)) == CycleDecomposition(Cycle(1))
+            False
         """
         if isinstance(other, CycleDecomposition):
             if len(self) != len(other):
@@ -291,6 +301,8 @@ class CycleDecomposition(_Element):
         :return: the power of the cycle decomposition.
         :rtype: Permutation
 
+        :raises TypeError: If `power` is not an integer.
+
         :example:
             >>> from symmetria import Cycle, CycleDecomposition
             ...
@@ -300,6 +312,8 @@ class CycleDecomposition(_Element):
             CycleDecomposition(Cycle(1, 2), Cycle(3))
             >>> CycleDecomposition(Cycle(1, 2), Cycle(3)) ** -1
             CycleDecomposition(Cycle(1, 2), Cycle(3))
+            >>> CycleDecomposition(Cycle(1, 3), Cycle(2, 4))**2
+            CycleDecomposition(Cycle(1), Cycle(2), Cycle(3), Cycle(4))
         """
         if isinstance(power, int) is False:
             raise TypeError(f"Power operation for type {type(power)} not supported.")
@@ -313,9 +327,13 @@ class CycleDecomposition(_Element):
             return self * (self ** (power - 1))
 
     def __repr__(self) -> str:
-        r"""Return a string representation of the cycle decomposition in the format
-        'CycleDecomposition(Cycle(x, ...), Cycle(y, ...), ...)', where :math:`x, y, ... \in \mathbb{N}` are
-        the elements of the cycles.
+        r"""Return a string representation of the cycle decomposition.
+
+         The string representation is in the following format:
+
+        .. math:: 'CycleDecomposition(Cycle(x, ...), Cycle(y, ...), ...)',
+
+        where :math:`x, y, ... \in \mathbb{N}` are the elements of the cycles.
 
         :return: A string representation of the cycle decomposition.
         :rtype: str
@@ -333,7 +351,7 @@ class CycleDecomposition(_Element):
         return f"CycleDecomposition({', '.join([cycle.__repr__() for cycle in self])})"
 
     def __str__(self) -> str:
-        """Return a string representation of the cycle decmposition in the cycle notation.
+        """Return a string representation of the cycle decomposition in the cycle notation.
 
         :return: A string representation of the cycle decomposition.
         :rtype: str
@@ -646,7 +664,8 @@ class CycleDecomposition(_Element):
         r"""Compute the orbit of `item` object under the action of the cycle decomposition.
 
         Recall that the orbit of the action of a cycle decomposition :math:`\sigma` on an element x is given by the set
-        :math:`\{ \sigma^n(x): n \in \mathbb{N}\}`.
+
+        ..math:: \{ \sigma^n(x): n \in \mathbb{N}\}.
 
         :param item: The initial element or iterable to compute the orbit for.
         :type item: Any
@@ -708,8 +727,9 @@ class CycleDecomposition(_Element):
         return prod([cycle.sgn() for cycle in self])
 
     def support(self) -> Set[int]:
-        """Return a set containing the indices in the domain of the permutation whose images are different from
-        their respective indices, i.e., the set of :math:`n` in the permutation domain which are not mapped to itself.
+        r"""Return a set containing the indices in the domain of the permutation whose images are different from
+        their respective indices, i.e., the set of :math:`n \in \mathbb{N}` in the permutation domain which are
+        not mapped to itself.
 
         :return: The support set of the cycle decomposition.
         :rtype: Set[int]
@@ -721,5 +741,7 @@ class CycleDecomposition(_Element):
             set()
             >>> CycleDecomposition(Cycle(1), Cycle(2, 3)).support()
             {2, 3}
+            >>> CycleDecomposition(Cycle(3, 4, 5, 6), Cycle(2, 1)).support()
+            {1, 2, 3, 4, 5, 6}
         """
         return {element for cycle in self if len(cycle) != 1 for element in cycle.elements}

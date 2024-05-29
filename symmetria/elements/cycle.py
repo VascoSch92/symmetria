@@ -194,6 +194,16 @@ class Cycle(_Element):
 
         :return: True if the cycle is equal to `other`, i.e., they define the same map. Otherwise, False.
         :rtype: bool
+
+        :example:
+            >>> from symmetria import Cycle
+            ...
+            >>> Cycle(1, 2, 3) == Cycle(3, 1, 2)
+            True
+            >>> Cycle(1, 3, 2) == Cycle(1, 2, 3)
+            False
+            >>> Cycle(1, 2, 3) == 13
+            False
         """
         if isinstance(other, Cycle):
             lhs_length, rhs_length = len(self), len(other)
@@ -209,7 +219,7 @@ class Cycle(_Element):
     def __getitem__(self, item: int) -> int:
         """Return the value of the cycle at the given index `item`.
 
-        The index corresponds to the position in the cycle, starting from 0.
+        The index corresponds to the position in the cycle in its standardize form, starting from 0.
 
         :param item: The index of the cycle.
         :type item: int
@@ -218,6 +228,16 @@ class Cycle(_Element):
         :rtype: int
 
         :raises IndexError: If the index is out of range.
+
+        :example:
+            >>> from symmetria import Cycle
+            ...
+            >>> cycle = Cycle(1, 3, 2)
+            >>> for idx in range(len(cycle)):
+            ...    cycle[idx]
+            1
+            3
+            2
         """
         return self._cycle[item]
 
@@ -260,6 +280,10 @@ class Cycle(_Element):
         return len(self._cycle)
 
     def __mul__(self, other: "Cycle") -> "Cycle":
+        """
+        :raise NotImplementedError: Multiplication between cycles is not supported. However, composition is supported.
+            Try to call your cycle on the cycle you would like to compose.
+        """
         raise NotImplementedError(
             "Multiplication between cycles is not supported. However, composition is supported. \n"
             "Try to call your cycle on the cycle you would like to compose."
@@ -274,14 +298,18 @@ class Cycle(_Element):
         :return: the power of the cycle.
         :rtype: Cycle
 
+        :raises TypeError: If `power` is not an integer.
+
         :example:
             >>> from symmetria import Cycle
             ...
-            >>> Cycle(1, 3, 2) ** 0
+            >>> Cycle(1, 3, 2)**0
             Cycle(1, 2, 3)
-            >>> Cycle(1, 3, 2) ** 1
+            >>> Cycle(1, 3, 2)**1
             Cycle(1, 3, 2)
-            >>> Cycle(1, 3, 2) ** -1
+            >>> Cycle(1, 3, 2)**-1
+            Cycle(1, 2, 3)
+            >>> Cycle(1, 3, 2)**2
             Cycle(1, 2, 3)
         """
         if isinstance(power, int) is False:
@@ -293,10 +321,10 @@ class Cycle(_Element):
         elif power <= -1:
             return self.inverse() ** abs(power)
         else:
-            return self(self ** (power - 1))
+            return Cycle(*[self.map[(self ** (power - 1)).map[idx]] for idx in self.domain])
 
     def __repr__(self) -> str:
-        r"""Return a string representation of the cycle in the format "Cycle(x, y, z, ...)",
+        r"""Return a string representation of the cycle in the format `Cycle(x, y, z, ...)`,
         where :math:`x, y, z, ... \in \mathbb{N}` are the elements of the cycle.
 
         :return: A string representation of the cycle.
@@ -316,7 +344,10 @@ class Cycle(_Element):
         r"""Return a string representation of the cycle in the form of cycle notation.
 
         Recall that for a cycle :math:`\sigma` of order n, its cycle notation is given by
-        :math:`(\sigma(x) \sigma^2(x), ..., \sigma^n(x))`, where x is an element in the support of the cycle.
+
+        .. math:: (\sigma(x)\quad\sigma^2(x)\quad...\quad\sigma^n(x)),
+
+        where x is an element in the support of the cycle, and :math:`n \in \mathbb{N}` is the cycle order.
 
         :return: A string representation of the cycle.
         :rtype: str
@@ -334,7 +365,7 @@ class Cycle(_Element):
     def cycle_decomposition(self) -> "CycleDecomposition":
         """Convert the cycle into its cycle decomposition, representing it as a product of disjoint cycles.
 
-        In the specific case of a cycle, it converts it from the class `Cycle` to the class `CycleDecomposition`.
+        In the specific case of a cycle, it converts it from the class ``Cycle`` to the class ``CycleDecomposition``.
 
         :return: The cycle decomposition of the permutation.
         :rtype: CycleDecomposition
@@ -357,7 +388,10 @@ class Cycle(_Element):
         r"""Return a string representing the cycle notation of the cycle.
 
         Recall that for a cycle :math:`\sigma` of order n, its cycle notation is given by
-        :math:`(\sigma(x) \sigma^2(x), ..., \sigma^n(x))`, where x is an element in the support of the cycle.
+
+        .. math:: (\sigma(x)\quad\sigma^2(x)\quad...\quad\sigma^n(x)),
+
+        where x is an element in the support of the cycle, and :math:`n \in \mathbb{N}` is the cycle order.
 
         :return: The cycle notation of the cycle.
         :rtype: str
@@ -409,7 +443,7 @@ class Cycle(_Element):
 
     @property
     def elements(self) -> Tuple[int]:
-        """Return a tuple containing the elements of the cycle.
+        """Return a tuple containing the elements of the cycle in its standard form.
 
         :return: The elements of the cycle.
         :rtype: Tuple[int]
@@ -417,8 +451,12 @@ class Cycle(_Element):
         :example:
             >>> from symmetria import Cycle
             ...
+            >>> Cycle(1).elements
+            (1,)
             >>> Cycle(3, 1, 2).elements
             (1, 2, 3)
+            >>> Cycle(3, 4, 7, 1, 2).elements
+            (1, 2, 3, 4, 7)
         """
         return self._cycle
 
@@ -470,7 +508,7 @@ class Cycle(_Element):
         the only permutation :math:`\tau \in S_n` such that :math:`\sigma * \tau = \tau * \sigma = id`,
         where :math:`id` is the identity permutation.
 
-        In the case of cycles, it suffices to consider the backward cycle.
+        Note that for a cycle, its inverse is just the backward cycle.
 
         :return: The inverse of the cycle.
         :rtype: Cycle
@@ -634,7 +672,8 @@ class Cycle(_Element):
         r"""Compute the orbit of `item` object under the action of the cycle.
 
         Recall that the orbit of the action of a cycle :math:`\sigma` on an element x is given by the set
-        :math:`\{ \sigma^n(x): n \in \mathbb{N}\}`.
+
+        .. math:: \{ \sigma^n(x): n \in \mathbb{N}\}.
 
         :param item: The initial element or iterable to compute the orbit for.
         :type item: Any
