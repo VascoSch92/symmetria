@@ -47,6 +47,11 @@ TEST_CYCLE_TYPE = [
     (CycleDecomposition(Cycle(1, 3, 2), Cycle(4)), (1, 3)),
     (CycleDecomposition(Cycle(1, 2), Cycle(3, 4)), (2, 2)),
 ]
+TEST_DESCENTS = [
+    (CycleDecomposition(Cycle(1, 2, 3)), [2]),
+    (CycleDecomposition(Cycle(1), Cycle(2), Cycle(3)), []),
+    (CycleDecomposition(Cycle(2, 3), Cycle(4, 5, 1)), [1, 2, 4]),
+]
 TEST_INVERSE = [
     (CycleDecomposition(Cycle(1, 2, 3)), CycleDecomposition(Cycle(3, 2, 1))),
     (CycleDecomposition(Cycle(1, 2), Cycle(3, 4)), CycleDecomposition(Cycle(2, 1), Cycle(4, 3))),

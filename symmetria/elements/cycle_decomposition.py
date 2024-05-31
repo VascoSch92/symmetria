@@ -388,7 +388,7 @@ class CycleDecomposition(_Element):
             [3]
         """
         permutation = symmetria.Permutation.from_cycle_decomposition(self)
-        return [idx + 1 for idx in range(len(permutation) - 1) if permutation.image[idx] < permutation.image[idx + 1]]
+        return permutation.ascents()
 
     def cycle_decomposition(self) -> "CycleDecomposition":
         """Return the cycle decomposition of the permutation.
@@ -443,6 +443,28 @@ class CycleDecomposition(_Element):
             (2, 2)
         """
         return tuple(sorted(len(cycle) for cycle in self))
+
+    def descents(self) -> List[int]:
+        r"""Return the descents of the cycle decomposition.
+
+        Recall that a descent of a permutation :math:`\sigma \in S_n`, where :math:`n \in \mathbb{N}`, is any position
+        :math:`i<n` such that :math:`\sigma(i) > \sigma(i+1)`.
+
+        :return: The descents of the cycle decomposition.
+        :rtype: List[int]
+
+        :example:
+            >>> from symmetria import Cycle, CycleDecomposition
+            ...
+            >>> CycleDecomposition(Cycle(1, 2, 3)).descents()
+            [2]
+            >>> CycleDecomposition(Cycle(1), Cycle(2), Cycle(3)).descents()
+            []
+            >>> CycleDecomposition(Cycle(2, 3), Cycle(4, 5, 1)).descents()
+            [1, 2, 4]
+        """
+        permutation = symmetria.Permutation.from_cycle_decomposition(self)
+        return permutation.descents()
 
     @property
     def domain(self) -> Iterable[int]:

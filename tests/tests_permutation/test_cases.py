@@ -75,6 +75,11 @@ TEST_CYCLE_NOTATION = [
     (Permutation(3, 1, 2), "(1 3 2)"),
     (Permutation(3, 1, 2, 4, 5, 6), "(1 3 2)(4)(5)(6)"),
 ]
+TEST_DESCENTS = [
+    (Permutation(1, 2, 3), []),
+    (Permutation(3, 4, 5, 2, 1, 6, 7), [3, 4]),
+    (Permutation(4, 3, 2, 1), [1, 2, 3]),
+]
 TEST_DOMAIN = [
     (Permutation(1), range(1, 2)),
     (Permutation(2, 1), range(1, 3)),
