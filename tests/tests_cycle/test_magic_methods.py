@@ -1,18 +1,6 @@
 import pytest
 
-from tests.test_factory import (
-    validate_eq,
-    validate_int,
-    validate_len,
-    validate_pow,
-    validate_bool,
-    validate_call,
-    validate_repr,
-    validate_getitem,
-    validate_mul_error,
-    validate_pow_error,
-    validate_call_error,
-)
+from tests.test_factory import _check_values
 from tests.tests_cycle.test_cases import (
     TEST_EQ,
     TEST_INT,
@@ -35,7 +23,7 @@ from tests.tests_cycle.test_cases import (
 )
 def test_bool(cycle, expected_value) -> None:
     """Tests for the method `__bool__()`."""
-    validate_bool(item=cycle, expected_value=expected_value)
+    _check_values(expression=f"bool({cycle.rep()})", evaluation=bool(cycle), expected=expected_value)
 
 
 @pytest.mark.parametrize(
@@ -45,7 +33,7 @@ def test_bool(cycle, expected_value) -> None:
 )
 def test_call(cycle, call_on, expected_value) -> None:
     """Tests for the method `__call__()`."""
-    validate_call(item=cycle, call_on=call_on, expected_value=expected_value)
+    _check_values(expression=f"{cycle.rep()}({call_on})", evaluation=cycle(call_on), expected=expected_value)
 
 
 @pytest.mark.parametrize(
@@ -55,7 +43,8 @@ def test_call(cycle, call_on, expected_value) -> None:
 )
 def test_call_error(cycle, call_on, error, msg) -> None:
     """Tests for exceptions to the method `__call__()`."""
-    validate_call_error(item=cycle, call_on=call_on, error=error, msg=msg)
+    with pytest.raises(error, match=msg):
+        _ = cycle(call_on)
 
 
 @pytest.mark.parametrize(
@@ -65,7 +54,7 @@ def test_call_error(cycle, call_on, error, msg) -> None:
 )
 def test_eq(lhs, rhs, expected_value) -> None:
     """Tests for the method `__eq__()`."""
-    validate_eq(lhs=lhs, rhs=rhs, expected_value=expected_value)
+    _check_values(expression=f"{lhs.__repr__()}=={rhs.__repr__()}", evaluation=(lhs == rhs), expected=expected_value)
 
 
 @pytest.mark.parametrize(
@@ -75,7 +64,7 @@ def test_eq(lhs, rhs, expected_value) -> None:
 )
 def test_getitem(cycle, idx, expected_value) -> None:
     """Tests for the method `__getitem__()`."""
-    validate_getitem(item=cycle, idx=idx, expected_value=expected_value)
+    _check_values(expression=f"{cycle.rep()}[{idx}]", evaluation=cycle[idx], expected=expected_value)
 
 
 @pytest.mark.parametrize(
@@ -85,7 +74,7 @@ def test_getitem(cycle, idx, expected_value) -> None:
 )
 def test_int(cycle, expected_value) -> None:
     """Tests for the method `__int__()`."""
-    validate_int(item=cycle, expected_value=expected_value)
+    _check_values(expression=f"int({cycle.rep()})", evaluation=int(cycle), expected=expected_value)
 
 
 @pytest.mark.parametrize(
@@ -95,7 +84,7 @@ def test_int(cycle, expected_value) -> None:
 )
 def test_len(cycle, expected_value) -> None:
     """Tests for the method `__len__()`."""
-    validate_len(item=cycle, expected_value=expected_value)
+    _check_values(expression=f"len({cycle.rep()})", evaluation=len(cycle), expected=expected_value)
 
 
 @pytest.mark.parametrize(
@@ -105,7 +94,8 @@ def test_len(cycle, expected_value) -> None:
 )
 def test_multiplication_error(lhs, rhs, error, msg) -> None:
     """Tests for exceptions to the method `__mul__()`."""
-    validate_mul_error(lhs=lhs, rhs=rhs, error=error, msg=msg)
+    with pytest.raises(error, match=msg):
+        _ = lhs * rhs
 
 
 @pytest.mark.parametrize(
@@ -115,7 +105,7 @@ def test_multiplication_error(lhs, rhs, error, msg) -> None:
 )
 def test_pow(cycle, power, expected_value) -> None:
     """Tests for the method `__pow__()`."""
-    validate_pow(item=cycle, power=power, expected_value=expected_value)
+    _check_values(expression=f"{cycle.rep()} ** {power}", evaluation=cycle**power, expected=expected_value)
 
 
 @pytest.mark.parametrize(
@@ -125,7 +115,8 @@ def test_pow(cycle, power, expected_value) -> None:
 )
 def test_pow_error(cycle, power, error, msg) -> None:
     """Tests for exceptions to the method `__pow__()`."""
-    validate_pow_error(item=cycle, power=power, error=error, msg=msg)
+    with pytest.raises(error, match=msg):
+        _ = cycle**power
 
 
 @pytest.mark.parametrize(
@@ -135,4 +126,4 @@ def test_pow_error(cycle, power, error, msg) -> None:
 )
 def test_repr(cycle, expected_value) -> None:
     """Tests for the method `__repr__()`."""
-    validate_repr(item=cycle, expected_value=expected_value)
+    _check_values(expression=f"{cycle.name}.__repr__()", evaluation=cycle.__repr__(), expected=expected_value)

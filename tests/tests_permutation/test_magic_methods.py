@@ -1,19 +1,6 @@
 import pytest
 
-from tests.test_factory import (
-    validate_eq,
-    validate_int,
-    validate_len,
-    validate_mul,
-    validate_pow,
-    validate_str,
-    validate_bool,
-    validate_call,
-    validate_repr,
-    validate_mul_error,
-    validate_pow_error,
-    validate_call_error,
-)
+from tests.test_factory import _check_values
 from tests.tests_permutation.test_cases import (
     TEST_EQ,
     TEST_INT,
@@ -37,7 +24,7 @@ from tests.tests_permutation.test_cases import (
 )
 def test_bool(permutation, expected_value) -> None:
     """Tests for the method `__bool__()`."""
-    validate_bool(item=permutation, expected_value=expected_value)
+    _check_values(expression=f"bool({permutation.rep()})", evaluation=bool(permutation), expected=expected_value)
 
 
 @pytest.mark.parametrize(
@@ -47,7 +34,7 @@ def test_bool(permutation, expected_value) -> None:
 )
 def test_call(permutation, call_on, expected_value) -> None:
     """Tests for the method `__call__()`."""
-    validate_call(item=permutation, call_on=call_on, expected_value=expected_value)
+    _check_values(expression=f"{permutation.rep()}({call_on})", evaluation=permutation(call_on), expected=expected_value)
 
 
 @pytest.mark.parametrize(
@@ -57,7 +44,8 @@ def test_call(permutation, call_on, expected_value) -> None:
 )
 def test_call_error(permutation, call_on, error, msg) -> None:
     """Tests for exceptions to the method `__call__()`."""
-    validate_call_error(item=permutation, call_on=call_on, error=error, msg=msg)
+    with pytest.raises(error, match=msg):
+        _ = permutation(call_on)
 
 
 @pytest.mark.parametrize(
@@ -67,7 +55,7 @@ def test_call_error(permutation, call_on, error, msg) -> None:
 )
 def test_equality(lhs, rhs, expected_value) -> None:
     """Tests for the method `__eq__()`."""
-    validate_eq(lhs=lhs, rhs=rhs, expected_value=expected_value)
+    _check_values(expression=f"{lhs.__repr__()}=={rhs.__repr__()}", evaluation=(lhs == rhs), expected=expected_value)
 
 
 @pytest.mark.parametrize(
@@ -77,7 +65,7 @@ def test_equality(lhs, rhs, expected_value) -> None:
 )
 def test_int(permutation, expected_value) -> None:
     """Tests for the method `__int__()`."""
-    validate_int(item=permutation, expected_value=expected_value)
+    _check_values(expression=f"int({permutation.rep()})", evaluation=int(permutation), expected=expected_value)
 
 
 @pytest.mark.parametrize(
@@ -87,7 +75,7 @@ def test_int(permutation, expected_value) -> None:
 )
 def test_len(permutation, expected_value) -> None:
     """Tests for the method `__len__()`."""
-    validate_len(item=permutation, expected_value=expected_value)
+    _check_values(expression=f"len({permutation.rep()})", evaluation=len(permutation), expected=expected_value)
 
 
 @pytest.mark.parametrize(
@@ -97,7 +85,7 @@ def test_len(permutation, expected_value) -> None:
 )
 def test_multiplication(lhs, rhs, expected_value) -> None:
     """Tests for the method `__mul__()`."""
-    validate_mul(lhs=lhs, rhs=rhs, expected_value=expected_value)
+    _check_values(expression=f"{lhs.rep()}*{rhs.rep()}", evaluation=lhs * rhs, expected=expected_value)
 
 
 @pytest.mark.parametrize(
@@ -107,7 +95,8 @@ def test_multiplication(lhs, rhs, expected_value) -> None:
 )
 def test_multiplication_error(lhs, rhs, error, msg) -> None:
     """Tests for exceptions to the method `__mul__()`."""
-    validate_mul_error(lhs=lhs, rhs=rhs, error=error, msg=msg)
+    with pytest.raises(error, match=msg):
+        _ = lhs * rhs
 
 
 @pytest.mark.parametrize(
@@ -117,7 +106,7 @@ def test_multiplication_error(lhs, rhs, error, msg) -> None:
 )
 def test_pow(permutation, power, expected_value) -> None:
     """Tests for the method `__pow__()`."""
-    validate_pow(item=permutation, power=power, expected_value=expected_value)
+    _check_values(expression=f"{permutation.rep()} ** {power}", evaluation=permutation**power, expected=expected_value)
 
 
 @pytest.mark.parametrize(
@@ -127,7 +116,8 @@ def test_pow(permutation, power, expected_value) -> None:
 )
 def test_pow_error(permutation, power, error, msg) -> None:
     """Tests for exceptions to the method `__pow__()`."""
-    validate_pow_error(item=permutation, power=power, error=error, msg=msg)
+    with pytest.raises(error, match=msg):
+        _ = permutation**power
 
 
 @pytest.mark.parametrize(
@@ -137,7 +127,9 @@ def test_pow_error(permutation, power, error, msg) -> None:
 )
 def test_repr(permutation, expected_value) -> None:
     """Tests for the method `__repr__()`."""
-    validate_repr(item=permutation, expected_value=expected_value)
+    _check_values(
+        expression=f"{permutation.name}.__repr__()", evaluation=permutation.__repr__(), expected=expected_value
+    )
 
 
 @pytest.mark.parametrize(
@@ -147,4 +139,4 @@ def test_repr(permutation, expected_value) -> None:
 )
 def test_str(permutation, expected_value) -> None:
     """Tests for the method `__str__()`."""
-    validate_str(item=permutation, expected_value=expected_value)
+    _check_values(expression=f"{permutation.rep()}.__str__()", evaluation=permutation.__str__(), expected=expected_value)

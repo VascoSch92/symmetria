@@ -1,26 +1,6 @@
 import pytest
 
-from tests.test_factory import (
-    validate_map,
-    validate_sgn,
-    validate_orbit,
-    validate_order,
-    validate_is_odd,
-    validate_ascents,
-    validate_inverse,
-    validate_is_even,
-    validate_support,
-    validate_descents,
-    validate_cycle_type,
-    validate_equivalent,
-    validate_inversions,
-    validate_is_regular,
-    validate_exceedances,
-    validate_is_conjugate,
-    validate_cycle_notation,
-    validate_is_derangement,
-    validate_cycle_decomposition,
-)
+from tests.test_factory import _check_values
 from tests.tests_cycle_decomposition.test_cases import (
     TEST_MAP,
     TEST_SGN,
@@ -52,7 +32,11 @@ from tests.tests_cycle_decomposition.test_cases import (
 )
 def test_ascents(cycle_decomposition, expected_value) -> None:
     """Tests for the method `ascents()`."""
-    validate_ascents(item=cycle_decomposition, expected_value=expected_value)
+    _check_values(
+        expression=f"{cycle_decomposition.rep()}.ascents()",
+        evaluation=cycle_decomposition.ascents(),
+        expected=expected_value,
+    )
 
 
 @pytest.mark.parametrize(
@@ -62,7 +46,11 @@ def test_ascents(cycle_decomposition, expected_value) -> None:
 )
 def test_cycle_decomposition(cycle_decomposition, expected_value) -> None:
     """Tests for the method `cycle_decomposition()`."""
-    validate_cycle_decomposition(item=cycle_decomposition, expected_value=expected_value)
+    _check_values(
+        expression=f"{cycle_decomposition.rep()}.cycle_notation()",
+        evaluation=cycle_decomposition.cycle_decomposition(),
+        expected=expected_value,
+    )
 
 
 @pytest.mark.parametrize(
@@ -72,7 +60,11 @@ def test_cycle_decomposition(cycle_decomposition, expected_value) -> None:
 )
 def test_cycle_notation(cycle_decomposition, expected_value) -> None:
     """Tests for the method `cycle_notation()`."""
-    validate_cycle_notation(item=cycle_decomposition, expected_value=expected_value)
+    _check_values(
+        expression=f"{cycle_decomposition.rep()}.cycle_notation()",
+        evaluation=cycle_decomposition.cycle_notation(),
+        expected=expected_value,
+    )
 
 
 @pytest.mark.parametrize(
@@ -82,7 +74,11 @@ def test_cycle_notation(cycle_decomposition, expected_value) -> None:
 )
 def test_cycle_type(cycle_decomposition, expected_value) -> None:
     """Tests for the method `cycle_type()`."""
-    validate_cycle_type(item=cycle_decomposition, expected_value=expected_value)
+    _check_values(
+        expression=f"{cycle_decomposition.rep()}.cycle_type()",
+        evaluation=cycle_decomposition.cycle_type(),
+        expected=expected_value,
+    )
 
 
 @pytest.mark.parametrize(
@@ -92,7 +88,11 @@ def test_cycle_type(cycle_decomposition, expected_value) -> None:
 )
 def test_descents(cycle_decomposition, expected_value) -> None:
     """Tests for the method `descents()`."""
-    validate_descents(item=cycle_decomposition, expected_value=expected_value)
+    _check_values(
+        expression=f"{cycle_decomposition.rep()}.descents()",
+        evaluation=cycle_decomposition.descents(),
+        expected=expected_value,
+    )
 
 
 @pytest.mark.parametrize(
@@ -102,7 +102,11 @@ def test_descents(cycle_decomposition, expected_value) -> None:
 )
 def test_exceedences(cycle_decomposition, weakly, expected_value) -> None:
     """Tests for the method `exceedences()`."""
-    validate_exceedances(item=cycle_decomposition, weakly=weakly, expected_value=expected_value)
+    _check_values(
+        expression=f"{cycle_decomposition.rep()}.exceedances(weakly={weakly})",
+        evaluation=cycle_decomposition.exceedances(weakly=weakly),
+        expected=expected_value,
+    )
 
 
 @pytest.mark.parametrize(
@@ -112,7 +116,11 @@ def test_exceedences(cycle_decomposition, weakly, expected_value) -> None:
 )
 def test_inverse(cycle_decomposition, expected_value) -> None:
     """Tests for the method `inverse()`."""
-    validate_inverse(item=cycle_decomposition, expected_value=expected_value)
+    _check_values(
+        expression=f"{cycle_decomposition.rep()}.inverse()",
+        evaluation=cycle_decomposition.inverse(),
+        expected=expected_value,
+    )
 
 
 @pytest.mark.parametrize(
@@ -122,7 +130,11 @@ def test_inverse(cycle_decomposition, expected_value) -> None:
 )
 def test_inversions(cycle_decomposition, expected_value) -> None:
     """Tests for the method `inversions()`."""
-    validate_inversions(item=cycle_decomposition, expected_value=expected_value)
+    _check_values(
+        expression=f"{cycle_decomposition.rep()}.inversions()",
+        evaluation=cycle_decomposition.inversions(),
+        expected=expected_value,
+    )
 
 
 @pytest.mark.parametrize(
@@ -132,7 +144,11 @@ def test_inversions(cycle_decomposition, expected_value) -> None:
 )
 def test_is_conjugate(cycle_decomposition, other, expected_value) -> None:
     """Tests for the method `is_derangement()`."""
-    validate_is_conjugate(item=cycle_decomposition, other=other, expected_value=expected_value)
+    _check_values(
+        expression=f"{cycle_decomposition.rep()}.is_conjugate({other.rep()})",
+        evaluation=cycle_decomposition.is_conjugate(other),
+        expected=expected_value,
+    )
 
 
 @pytest.mark.parametrize(
@@ -153,7 +169,11 @@ def test_is_conjugate_error(cycle_decomposition, other, error, msg) -> None:
 )
 def test_is_derangement(cycle_decomposition, expected_value) -> None:
     """Tests for the method `is_derangement()`."""
-    validate_is_derangement(item=cycle_decomposition, expected_value=expected_value)
+    _check_values(
+        expression=f"{cycle_decomposition.rep()}.is_derangement()",
+        evaluation=cycle_decomposition.is_derangement(),
+        expected=expected_value,
+    )
 
 
 @pytest.mark.parametrize(
@@ -163,7 +183,11 @@ def test_is_derangement(cycle_decomposition, expected_value) -> None:
 )
 def test_is_even(cycle_decomposition, expected_value) -> None:
     """Tests for the method `is_even()`."""
-    validate_is_even(item=cycle_decomposition, expected_value=expected_value)
+    _check_values(
+        expression=f"{cycle_decomposition.rep()}.is_even()",
+        evaluation=cycle_decomposition.is_even(),
+        expected=expected_value,
+    )
 
 
 @pytest.mark.parametrize(
@@ -173,7 +197,11 @@ def test_is_even(cycle_decomposition, expected_value) -> None:
 )
 def test_is_odd(cycle_decomposition, expected_value) -> None:
     """Tests for the method `is_odd()`."""
-    validate_is_odd(item=cycle_decomposition, expected_value=expected_value)
+    _check_values(
+        expression=f"{cycle_decomposition.rep()}.is_odd()",
+        evaluation=cycle_decomposition.is_odd(),
+        expected=expected_value,
+    )
 
 
 @pytest.mark.parametrize(
@@ -183,7 +211,11 @@ def test_is_odd(cycle_decomposition, expected_value) -> None:
 )
 def test_is_regular(cycle_decomposition, expected_value) -> None:
     """Tests for the method `is_regular()`."""
-    validate_is_regular(item=cycle_decomposition, expected_value=expected_value)
+    _check_values(
+        expression=f"{cycle_decomposition.rep()}.is_regular()",
+        evaluation=cycle_decomposition.is_regular(),
+        expected=expected_value,
+    )
 
 
 @pytest.mark.parametrize(
@@ -193,7 +225,11 @@ def test_is_regular(cycle_decomposition, expected_value) -> None:
 )
 def test_equivalent(lhs, rhs, expected_value) -> None:
     """Tests for the method `equivalent()`."""
-    validate_equivalent(lhs=lhs, rhs=rhs, expected_value=expected_value)
+    _check_values(
+        expression=f"{lhs.rep()}.equivalent({rhs.__repr__()})",
+        evaluation=lhs.equivalent(other=rhs),
+        expected=expected_value,
+    )
 
 
 @pytest.mark.parametrize(
@@ -203,7 +239,9 @@ def test_equivalent(lhs, rhs, expected_value) -> None:
 )
 def test_map(cycle_decomposition, expected_value) -> None:
     """Tests for the method `map()`."""
-    validate_map(item=cycle_decomposition, expected_value=expected_value)
+    _check_values(
+        expression=f"{cycle_decomposition.rep()}.map()", evaluation=cycle_decomposition.map, expected=expected_value
+    )
 
 
 @pytest.mark.parametrize(
@@ -213,7 +251,7 @@ def test_map(cycle_decomposition, expected_value) -> None:
 )
 def test_orbit(cycle, item, expected_value) -> None:
     """Tests for the method `orbit()`."""
-    validate_orbit(element=cycle, item=item, expected_value=expected_value)
+    _check_values(expression=f"{cycle.rep()}.orbit({item})", evaluation=cycle.orbit(item=item), expected=expected_value)
 
 
 @pytest.mark.parametrize(
@@ -223,7 +261,11 @@ def test_orbit(cycle, item, expected_value) -> None:
 )
 def test_order(cycle_decomposition, expected_value) -> None:
     """Tests for the method `order()`."""
-    validate_order(item=cycle_decomposition, expected_value=expected_value)
+    _check_values(
+        expression=f"{cycle_decomposition.rep()}.order()",
+        evaluation=cycle_decomposition.order(),
+        expected=expected_value,
+    )
 
 
 @pytest.mark.parametrize(
@@ -233,7 +275,9 @@ def test_order(cycle_decomposition, expected_value) -> None:
 )
 def test_sgn(cycle_decomposition, expected_value) -> None:
     """Tests for the method `sgn()`."""
-    validate_sgn(item=cycle_decomposition, expected_value=expected_value)
+    _check_values(
+        expression=f"{cycle_decomposition.rep()}.sgn()", evaluation=cycle_decomposition.sgn(), expected=expected_value
+    )
 
 
 @pytest.mark.parametrize(
@@ -243,4 +287,8 @@ def test_sgn(cycle_decomposition, expected_value) -> None:
 )
 def test_support(cycle_decomposition, expected_value) -> None:
     """Tests for the method `support()`."""
-    validate_support(item=cycle_decomposition, expected_value=expected_value)
+    _check_values(
+        expression=f"{cycle_decomposition.rep()}.support()",
+        evaluation=cycle_decomposition.support(),
+        expected=expected_value,
+    )
