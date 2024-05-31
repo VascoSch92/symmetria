@@ -24,6 +24,11 @@ TEST_CONSTRUCTOR_ERROR = [
 # TEST CASES GENERIC METHODS #
 ##############################
 
+TEST_ASCENTS = [
+    (CycleDecomposition(Cycle(1, 2, 3)), [1]),
+    (CycleDecomposition(Cycle(1), Cycle(2), Cycle(3)), [1, 2]),
+    (CycleDecomposition(Cycle(2, 3), Cycle(4, 5, 1)), [3]),
+]
 TEST_CYCLE_NOTATION = [
     (CycleDecomposition(Cycle(1)), "(1)"),
     (CycleDecomposition(Cycle(1), Cycle(2, 4, 7, 6), Cycle(3, 5)), "(1)(2 4 7 6)(3 5)"),

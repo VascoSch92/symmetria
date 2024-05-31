@@ -7,6 +7,7 @@ from tests.test_factory import (
     validate_order,
     validate_domain,
     validate_is_odd,
+    validate_ascents,
     validate_inverse,
     validate_is_even,
     validate_support,
@@ -27,6 +28,7 @@ from tests.tests_permutation.test_cases import (
     TEST_ORDER,
     TEST_DOMAIN,
     TEST_IS_ODD,
+    TEST_ASCENTS,
     TEST_INVERSE,
     TEST_IS_EVEN,
     TEST_SUPPORT,
@@ -41,6 +43,16 @@ from tests.tests_permutation.test_cases import (
     TEST_IS_CONJUGATE_ERROR,
     TEST_CYCLE_DECOMPOSITION,
 )
+
+
+@pytest.mark.parametrize(
+    argnames="permutation, expected_value",
+    argvalues=TEST_ASCENTS,
+    ids=[f"{p.__repr__()}.ascents()={c}" for p, c in TEST_ASCENTS],
+)
+def test_ascents(permutation, expected_value) -> None:
+    """Tests for the method `ascents()`."""
+    validate_ascents(item=permutation, expected_value=expected_value)
 
 
 @pytest.mark.parametrize(

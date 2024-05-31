@@ -20,6 +20,9 @@ The version is represented by three digits: a.b.c.
 
 ## Unreleased
 
+FEATURE:
+- `symmetria.Permutation`: add `ascents` method
+- `symmetria.CyclePermutation`: add `ascents` method
 
 ## \[0.0.4\] - 2024-05-28
 

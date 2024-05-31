@@ -354,6 +354,27 @@ class Permutation(_Element):
         """
         return str(self.image) if len(self.image) > 1 else f"({self.image[0]})"
 
+    def ascents(self) -> List[int]:
+        r"""Return the ascents of the permutation.
+
+        Recall that an ascent of a permutation :math:`\sigma \in S_n`, where :math:`n \in \mathbb{N}`, is any position
+        :math:`i<n` such that :math:`\sigma(i) < \sigma(i+1)`.
+
+        :return: The ascents of the permutation.
+        :rtype: List[int]
+
+        :example:
+            >>> from symmetria import Permutation
+            ...
+            >>> Permutation(1, 2, 3).ascents()
+            [1, 2]
+            >>> Permutation(3, 4, 5, 2, 1, 6, 7).ascents()
+            [1, 2, 5, 6]
+            >>> Permutation(4, 3, 2, 1).ascents()
+            []
+        """
+        return [idx + 1 for idx in range(len(self) - 1) if self.image[idx] < self.image[idx + 1]]
+
     def cycle_decomposition(self) -> "CycleDecomposition":
         """Decompose the permutation into its cycle decomposition.
 

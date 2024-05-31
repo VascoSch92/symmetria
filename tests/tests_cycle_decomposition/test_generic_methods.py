@@ -6,6 +6,7 @@ from tests.test_factory import (
     validate_orbit,
     validate_order,
     validate_is_odd,
+    validate_ascents,
     validate_inverse,
     validate_is_even,
     validate_support,
@@ -24,6 +25,7 @@ from tests.tests_cycle_decomposition.test_cases import (
     TEST_ORBIT,
     TEST_ORDER,
     TEST_IS_ODD,
+    TEST_ASCENTS,
     TEST_INVERSE,
     TEST_IS_EVEN,
     TEST_SUPPORT,
@@ -37,6 +39,16 @@ from tests.tests_cycle_decomposition.test_cases import (
     TEST_IS_CONJUGATE_ERROR,
     TEST_CYCLE_DECOMPOSITION,
 )
+
+
+@pytest.mark.parametrize(
+    argnames="cycle_decomposition, expected_value",
+    argvalues=TEST_ASCENTS,
+    ids=[f"{p.__repr__()}.cycle_notation()={c}" for p, c in TEST_ASCENTS],
+)
+def test_ascents(cycle_decomposition, expected_value) -> None:
+    """Tests for the method `ascents()`."""
+    validate_ascents(item=cycle_decomposition, expected_value=expected_value)
 
 
 @pytest.mark.parametrize(
