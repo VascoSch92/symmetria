@@ -1,27 +1,6 @@
 import pytest
 
-from tests.test_factory import (
-    validate_map,
-    validate_sgn,
-    validate_orbit,
-    validate_order,
-    validate_domain,
-    validate_is_odd,
-    validate_ascents,
-    validate_inverse,
-    validate_is_even,
-    validate_support,
-    validate_descents,
-    validate_cycle_type,
-    validate_equivalent,
-    validate_inversions,
-    validate_is_regular,
-    validate_exceedances,
-    validate_is_conjugate,
-    validate_cycle_notation,
-    validate_is_derangement,
-    validate_cycle_decomposition,
-)
+from tests.test_factory import _check_values
 from tests.tests_permutation.test_cases import (
     TEST_MAP,
     TEST_SGN,
@@ -56,7 +35,7 @@ from tests.tests_permutation.test_cases import (
 )
 def test_ascents(permutation, expected_value) -> None:
     """Tests for the method `ascents()`."""
-    validate_ascents(item=permutation, expected_value=expected_value)
+    _check_values(expression=f"{permutation.rep()}.ascents()", evaluation=permutation.ascents(), expected=expected_value)
 
 
 @pytest.mark.parametrize(
@@ -66,7 +45,11 @@ def test_ascents(permutation, expected_value) -> None:
 )
 def test_cycle_decomposition(permutation, expected_value) -> None:
     """Tests for the method `cycle_decomposition()`."""
-    validate_cycle_decomposition(item=permutation, expected_value=expected_value)
+    _check_values(
+        expression=f"{permutation.rep()}.cycle_notation()",
+        evaluation=permutation.cycle_decomposition(),
+        expected=expected_value,
+    )
 
 
 @pytest.mark.parametrize(
@@ -76,7 +59,9 @@ def test_cycle_decomposition(permutation, expected_value) -> None:
 )
 def test_cycle_type(permutation, expected_value) -> None:
     """Tests for the method `cycle_type()`."""
-    validate_cycle_type(item=permutation, expected_value=expected_value)
+    _check_values(
+        expression=f"{permutation.rep()}.cycle_type()", evaluation=permutation.cycle_type(), expected=expected_value
+    )
 
 
 @pytest.mark.parametrize(
@@ -86,7 +71,11 @@ def test_cycle_type(permutation, expected_value) -> None:
 )
 def test_cycle_notation(permutation, expected_value) -> None:
     """Tests for the method `cycle_notation()`."""
-    validate_cycle_notation(item=permutation, expected_value=expected_value)
+    _check_values(
+        expression=f"{permutation.rep()}.cycle_notation()",
+        evaluation=permutation.cycle_notation(),
+        expected=expected_value,
+    )
 
 
 @pytest.mark.parametrize(
@@ -96,7 +85,9 @@ def test_cycle_notation(permutation, expected_value) -> None:
 )
 def test_descents(permutation, expected_value) -> None:
     """Tests for the method `descents()`."""
-    validate_descents(item=permutation, expected_value=expected_value)
+    _check_values(
+        expression=f"{permutation.rep()}.descents()", evaluation=permutation.descents(), expected=expected_value
+    )
 
 
 @pytest.mark.parametrize(
@@ -106,7 +97,7 @@ def test_descents(permutation, expected_value) -> None:
 )
 def test_domain(permutation, expected_value) -> None:
     """Tests for the method `domain()`."""
-    validate_domain(item=permutation, expected_value=expected_value)
+    _check_values(expression=f"{permutation.rep()}.domain()", evaluation=permutation.domain, expected=expected_value)
 
 
 @pytest.mark.parametrize(
@@ -116,7 +107,11 @@ def test_domain(permutation, expected_value) -> None:
 )
 def test_equivalent(lhs, rhs, expected_value) -> None:
     """Tests for the method `equivalent()`."""
-    validate_equivalent(lhs=lhs, rhs=rhs, expected_value=expected_value)
+    _check_values(
+        expression=f"{lhs.rep()}.equivalent({rhs.__repr__()})",
+        evaluation=lhs.equivalent(other=rhs),
+        expected=expected_value,
+    )
 
 
 @pytest.mark.parametrize(
@@ -126,7 +121,11 @@ def test_equivalent(lhs, rhs, expected_value) -> None:
 )
 def test_exceedances(permutation, weakly, expected_value) -> None:
     """Tests the method `exceedances()`."""
-    validate_exceedances(item=permutation, weakly=weakly, expected_value=expected_value)
+    _check_values(
+        expression=f"{permutation.rep()}.exceedances(weakly={weakly})",
+        evaluation=permutation.exceedances(weakly=weakly),
+        expected=expected_value,
+    )
 
 
 @pytest.mark.parametrize(
@@ -136,11 +135,7 @@ def test_exceedances(permutation, weakly, expected_value) -> None:
 )
 def test_image(permutation, expected_value) -> None:
     """Tests the property `image`."""
-    if permutation.image != expected_value:
-        raise ValueError(
-            f"The expression `{permutation.rep()}.image` must evaluate {expected_value}, "
-            f"but got {permutation.image}."
-        )
+    _check_values(expression=f"{permutation.rep()}.image", evaluation=permutation.image, expected=expected_value)
 
 
 @pytest.mark.parametrize(
@@ -150,7 +145,7 @@ def test_image(permutation, expected_value) -> None:
 )
 def test_inverse(permutation, expected_value) -> None:
     """Tests for the method `inverse()`."""
-    validate_inverse(item=permutation, expected_value=expected_value)
+    _check_values(expression=f"{permutation.rep()}.inverse()", evaluation=permutation.inverse(), expected=expected_value)
 
 
 @pytest.mark.parametrize(
@@ -160,7 +155,9 @@ def test_inverse(permutation, expected_value) -> None:
 )
 def test_inversions(permutation, expected_value) -> None:
     """Tests for the method `inversions()`."""
-    validate_inversions(item=permutation, expected_value=expected_value)
+    _check_values(
+        expression=f"{permutation.rep()}.inversions()", evaluation=permutation.inversions(), expected=expected_value
+    )
 
 
 @pytest.mark.parametrize(
@@ -170,7 +167,11 @@ def test_inversions(permutation, expected_value) -> None:
 )
 def test_is_conjugate(permutation, other, expected_value) -> None:
     """Tests for the method `is_derangement()`."""
-    validate_is_conjugate(item=permutation, other=other, expected_value=expected_value)
+    _check_values(
+        expression=f"{permutation.rep()}.is_conjugate({other.rep()})",
+        evaluation=permutation.is_conjugate(other),
+        expected=expected_value,
+    )
 
 
 @pytest.mark.parametrize(
@@ -191,7 +192,11 @@ def test_is_conjugate_error(permutation, other, error, msg) -> None:
 )
 def test_is_derangement(permutation, expected_value) -> None:
     """Tests for the method `is_derangement()`."""
-    validate_is_derangement(item=permutation, expected_value=expected_value)
+    _check_values(
+        expression=f"{permutation.rep()}.is_derangement()",
+        evaluation=permutation.is_derangement(),
+        expected=expected_value,
+    )
 
 
 @pytest.mark.parametrize(
@@ -201,7 +206,7 @@ def test_is_derangement(permutation, expected_value) -> None:
 )
 def test_is_even(permutation, expected_value) -> None:
     """Tests for the method `is_even()`."""
-    validate_is_even(item=permutation, expected_value=expected_value)
+    _check_values(expression=f"{permutation.rep()}.is_even()", evaluation=permutation.is_even(), expected=expected_value)
 
 
 @pytest.mark.parametrize(
@@ -211,7 +216,7 @@ def test_is_even(permutation, expected_value) -> None:
 )
 def test_is_odd(permutation, expected_value) -> None:
     """Tests for the method `is_odd()`."""
-    validate_is_odd(item=permutation, expected_value=expected_value)
+    _check_values(expression=f"{permutation.rep()}.is_odd()", evaluation=permutation.is_odd(), expected=expected_value)
 
 
 @pytest.mark.parametrize(
@@ -221,7 +226,9 @@ def test_is_odd(permutation, expected_value) -> None:
 )
 def test_is_regular(permutation, expected_value) -> None:
     """Tests for the method `is_regular()`."""
-    validate_is_regular(item=permutation, expected_value=expected_value)
+    _check_values(
+        expression=f"{permutation.rep()}.is_regular()", evaluation=permutation.is_regular(), expected=expected_value
+    )
 
 
 @pytest.mark.parametrize(
@@ -231,7 +238,7 @@ def test_is_regular(permutation, expected_value) -> None:
 )
 def test_map(permutation, expected_value) -> None:
     """Tests for the method `map()`."""
-    validate_map(item=permutation, expected_value=expected_value)
+    _check_values(expression=f"{permutation.rep()}.map()", evaluation=permutation.map, expected=expected_value)
 
 
 @pytest.mark.parametrize(
@@ -241,7 +248,7 @@ def test_map(permutation, expected_value) -> None:
 )
 def test_support(permutation, expected_value) -> None:
     """Tests for the method `support()`."""
-    validate_support(item=permutation, expected_value=expected_value)
+    _check_values(expression=f"{permutation.rep()}.support()", evaluation=permutation.support(), expected=expected_value)
 
 
 @pytest.mark.parametrize(
@@ -251,7 +258,9 @@ def test_support(permutation, expected_value) -> None:
 )
 def test_orbit(permutation, item, expected_value) -> None:
     """Tests for the method `orbit()`."""
-    validate_orbit(element=permutation, item=item, expected_value=expected_value)
+    _check_values(
+        expression=f"{permutation.rep()}.orbit({item})", evaluation=permutation.orbit(item=item), expected=expected_value
+    )
 
 
 @pytest.mark.parametrize(
@@ -261,11 +270,11 @@ def test_orbit(permutation, item, expected_value) -> None:
 )
 def test_one_line_notation(permutation, expected_value) -> None:
     """Tests for the method `one_line_notation()`."""
-    if permutation.one_line_notation() != expected_value:
-        ValueError(
-            f"The expression `{permutation.__repr__()}.one_line_notation()` must evaluate {expected_value}, "
-            f"but got {permutation.one_line_notation()}."
-        )
+    _check_values(
+        expression=f"{permutation.__repr__()}.one_line_notation()",
+        evaluation=permutation.one_line_notation(),
+        expected=expected_value,
+    )
 
 
 @pytest.mark.parametrize(
@@ -275,7 +284,7 @@ def test_one_line_notation(permutation, expected_value) -> None:
 )
 def test_sgn(permutation, expected_value) -> None:
     """Tests for the method `sgn()`."""
-    validate_sgn(item=permutation, expected_value=expected_value)
+    _check_values(expression=f"{permutation.rep()}.sgn()", evaluation=permutation.sgn(), expected=expected_value)
 
 
 @pytest.mark.parametrize(
@@ -285,4 +294,4 @@ def test_sgn(permutation, expected_value) -> None:
 )
 def test_order(permutation, expected_value) -> None:
     """Tests for the method `order()`."""
-    validate_order(item=permutation, expected_value=expected_value)
+    _check_values(expression=f"{permutation.rep()}.order()", evaluation=permutation.order(), expected=expected_value)

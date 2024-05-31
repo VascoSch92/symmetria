@@ -7,6 +7,7 @@
 - ENHANCEMENT: Improvements to existing features that do not introduce new functionality
 - FEATURE: New features added to enhance functionality
 - FIX: Resolved issues, bugs, or unexpected behavior
+- MAINTENANCE: Something which has to do with CI/CD or setup.
 - REMOVED: Features or functionalities removed from the project
 
 ## Version Policy
@@ -28,6 +29,8 @@ FEATURE:
 - `symmetria.Permutation`: add `exceedances` method
 - `symmetria.CyclePermutation`: add `exceedances` method
 
+MAINTENANCE:
+- `tests`: Refactor. Now the code is more concise, and it is easier to add a new test.
 
 ## \[0.0.4\] - 2024-05-28
 

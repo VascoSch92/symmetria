@@ -1,21 +1,7 @@
 import pytest
 
 from symmetria import Cycle
-from tests.test_factory import (
-    validate_map,
-    validate_sgn,
-    validate_orbit,
-    validate_order,
-    validate_domain,
-    validate_is_odd,
-    validate_inverse,
-    validate_is_even,
-    validate_support,
-    validate_equivalent,
-    validate_inversions,
-    validate_cycle_notation,
-    validate_is_derangement,
-)
+from tests.test_factory import _check_values
 from tests.tests_cycle.test_cases import (
     TEST_MAP,
     TEST_SGN,
@@ -43,7 +29,9 @@ from tests.tests_cycle.test_cases import (
 )
 def test_cycle_notation(cycle, expected_value) -> None:
     """Tests for the method `cycle_notation()`."""
-    validate_cycle_notation(item=cycle, expected_value=expected_value)
+    _check_values(
+        expression=f"{cycle.rep()}.cycle_notation()", evaluation=cycle.cycle_notation(), expected=expected_value
+    )
 
 
 def test_cycle_type() -> None:
@@ -59,11 +47,11 @@ def test_cycle_type() -> None:
 )
 def test_elements(cycle, expected_value) -> None:
     """Tests for the property `elements`."""
-    if cycle.elements != expected_value:
-        raise ValueError(
-            f"The expression `{cycle.__repr__()}.elements()` must evaluate {expected_value}, "
-            f"but got {cycle.elements}."
-        )
+    _check_values(
+        expression=f"{cycle.__repr__()}.elements()",
+        evaluation=cycle.elements,
+        expected=expected_value,
+    )
 
 
 @pytest.mark.parametrize(
@@ -73,7 +61,11 @@ def test_elements(cycle, expected_value) -> None:
 )
 def test_equivalent(lhs, rhs, expected_value) -> None:
     """Tests for the method `equivalent()`."""
-    validate_equivalent(lhs=lhs, rhs=rhs, expected_value=expected_value)
+    _check_values(
+        expression=f"{lhs.rep()}.equivalent({rhs.__repr__()})",
+        evaluation=lhs.equivalent(other=rhs),
+        expected=expected_value,
+    )
 
 
 @pytest.mark.parametrize(
@@ -83,7 +75,7 @@ def test_equivalent(lhs, rhs, expected_value) -> None:
 )
 def test_domain(cycle, expected_value) -> None:
     """Tests for the property `domain`."""
-    validate_domain(item=cycle, expected_value=expected_value)
+    _check_values(expression=f"{cycle.rep()}.domain()", evaluation=cycle.domain, expected=expected_value)
 
 
 @pytest.mark.parametrize(
@@ -93,7 +85,7 @@ def test_domain(cycle, expected_value) -> None:
 )
 def test_inverse(cycle, expected_value) -> None:
     """Tests for the method `inverse()`."""
-    validate_inverse(item=cycle, expected_value=expected_value)
+    _check_values(expression=f"{cycle.rep()}.inverse()", evaluation=cycle.inverse(), expected=expected_value)
 
 
 @pytest.mark.parametrize(
@@ -103,7 +95,7 @@ def test_inverse(cycle, expected_value) -> None:
 )
 def test_inversions(cycle, expected_value) -> None:
     """Tests for the method `inversions()`."""
-    validate_inversions(item=cycle, expected_value=expected_value)
+    _check_values(expression=f"{cycle.rep()}.inversions()", evaluation=cycle.inversions(), expected=expected_value)
 
 
 @pytest.mark.parametrize(
@@ -124,7 +116,9 @@ def test_is_conjugate_error(cycle, other, error, msg) -> None:
 )
 def test_is_derangement(cycle, expected_value) -> None:
     """Tests for the method `is_derangement()`."""
-    validate_is_derangement(item=cycle, expected_value=expected_value)
+    _check_values(
+        expression=f"{cycle.rep()}.is_derangement()", evaluation=cycle.is_derangement(), expected=expected_value
+    )
 
 
 @pytest.mark.parametrize(
@@ -134,7 +128,7 @@ def test_is_derangement(cycle, expected_value) -> None:
 )
 def test_is_even(cycle, expected_value) -> None:
     """Tests for the method `is_even()`."""
-    validate_is_even(item=cycle, expected_value=expected_value)
+    _check_values(expression=f"{cycle.rep()}.is_even()", evaluation=cycle.is_even(), expected=expected_value)
 
 
 @pytest.mark.parametrize(
@@ -144,7 +138,7 @@ def test_is_even(cycle, expected_value) -> None:
 )
 def test_is_odd(cycle, expected_value) -> None:
     """Tests for the method `is_odd()`."""
-    validate_is_odd(item=cycle, expected_value=expected_value)
+    _check_values(expression=f"{cycle.rep()}.is_odd()", evaluation=cycle.is_odd(), expected=expected_value)
 
 
 @pytest.mark.parametrize(
@@ -165,7 +159,7 @@ def test_is_regular_error(cycle, error, msg) -> None:
 )
 def test_map(cycle, expected_value) -> None:
     """Tests for the property `map`."""
-    validate_map(item=cycle, expected_value=expected_value)
+    _check_values(expression=f"{cycle.rep()}.map()", evaluation=cycle.map, expected=expected_value)
 
 
 @pytest.mark.parametrize(
@@ -175,7 +169,7 @@ def test_map(cycle, expected_value) -> None:
 )
 def test_orbit(cycle, item, expected_value) -> None:
     """Tests for the method `orbit()`."""
-    validate_orbit(element=cycle, item=item, expected_value=expected_value)
+    _check_values(expression=f"{cycle.rep()}.orbit({item})", evaluation=cycle.orbit(item=item), expected=expected_value)
 
 
 @pytest.mark.parametrize(
@@ -185,7 +179,7 @@ def test_orbit(cycle, item, expected_value) -> None:
 )
 def test_order(cycle, expected_value) -> None:
     """Tests for the method `order()`."""
-    validate_order(item=cycle, expected_value=expected_value)
+    _check_values(expression=f"{cycle.rep()}.order()", evaluation=cycle.order(), expected=expected_value)
 
 
 @pytest.mark.parametrize(
@@ -195,7 +189,7 @@ def test_order(cycle, expected_value) -> None:
 )
 def test_sgn(cycle, expected_value) -> None:
     """Tests for the method `sgn()`."""
-    validate_sgn(item=cycle, expected_value=expected_value)
+    _check_values(expression=f"{cycle.rep()}.sgn()", evaluation=cycle.sgn(), expected=expected_value)
 
 
 @pytest.mark.parametrize(
@@ -205,4 +199,4 @@ def test_sgn(cycle, expected_value) -> None:
 )
 def test_support(cycle, expected_value) -> None:
     """Tests for the method `support()`."""
-    validate_support(item=cycle, expected_value=expected_value)
+    _check_values(expression=f"{cycle.rep()}.support()", evaluation=cycle.support(), expected=expected_value)
