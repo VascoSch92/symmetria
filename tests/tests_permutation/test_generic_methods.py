@@ -16,6 +16,7 @@ from tests.test_factory import (
     validate_equivalent,
     validate_inversions,
     validate_is_regular,
+    validate_exceedances,
     validate_is_conjugate,
     validate_cycle_notation,
     validate_is_derangement,
@@ -38,6 +39,7 @@ from tests.tests_permutation.test_cases import (
     TEST_EQUIVALENT,
     TEST_INVERSIONS,
     TEST_IS_REGULAR,
+    TEST_EXCEEDANCES,
     TEST_IS_CONJUGATE,
     TEST_CYCLE_NOTATION,
     TEST_IS_DERANGEMENT,
@@ -115,6 +117,16 @@ def test_domain(permutation, expected_value) -> None:
 def test_equivalent(lhs, rhs, expected_value) -> None:
     """Tests for the method `equivalent()`."""
     validate_equivalent(lhs=lhs, rhs=rhs, expected_value=expected_value)
+
+
+@pytest.mark.parametrize(
+    argnames="permutation, weakly, expected_value",
+    argvalues=TEST_EXCEEDANCES,
+    ids=[f"{p}.exceedances(weakly={w})={i}" for p, w, i in TEST_EXCEEDANCES],
+)
+def test_exceedances(permutation, weakly, expected_value) -> None:
+    """Tests the method `exceedances()`."""
+    validate_exceedances(item=permutation, weakly=weakly, expected_value=expected_value)
 
 
 @pytest.mark.parametrize(

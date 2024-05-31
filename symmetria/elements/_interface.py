@@ -45,12 +45,6 @@ class _Element(ABC):
         """Implement method `str()`."""
         raise NotImplementedError
 
-    # TODO: decide if we want to implement this method also for the classes Cycle and CycleDecomposition
-    # @staticmethod
-    # @abstractmethod
-    # def from_dict(permutation: Dict) -> "Element":
-    #     raise NotImplementedError
-
     @abstractmethod
     def cycle_decomposition(self) -> "CycleDecomposition":
         """Return the cycle decomposition of the element."""
@@ -117,9 +111,10 @@ class _Element(ABC):
         """Return a dictionary representing the map defined the element."""
         raise NotImplementedError
 
-    def name(self) -> str:
+    @staticmethod
+    def name() -> str:
         """Shortcut for the class name. Used for the tests."""
-        return self.__class__.__name__
+        return __class__.__name__
 
     @abstractmethod
     def orbit(self, item: Any) -> List[Any]:

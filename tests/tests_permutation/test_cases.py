@@ -97,6 +97,13 @@ TEST_EQUIVALENT = [
     (Permutation(1, 2, 3), 123, False),
     (Permutation(1, 3, 2, 4), "hello-world", False),
 ]
+TEST_EXCEEDANCES = [
+    (Permutation(1, 2, 3), False, []),
+    (Permutation(1, 2, 3), True, [1, 2, 3]),
+    (Permutation(4, 3, 2, 1), False, [1, 2]),
+    (Permutation(3, 4, 5, 2, 1, 6, 7), False, [1, 2, 3]),
+    (Permutation(3, 4, 5, 2, 1, 6, 7), True, [1, 2, 3, 6, 7]),
+]
 TEST_IMAGE = [
     (Permutation(1, 2, 3), (1, 2, 3)),
     (Permutation(1, 2, 3), (1, 2, 3)),

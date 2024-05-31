@@ -25,6 +25,8 @@ FEATURE:
 - `symmetria.CyclePermutation`: add `ascents` method
 - `symmetria.Permutation`: add `descents` method
 - `symmetria.CyclePermutation`: add `descents` method
+- `symmetria.Permutation`: add `exceedances` method
+- `symmetria.CyclePermutation`: add `exceedances` method
 
 
 ## \[0.0.4\] - 2024-05-28
