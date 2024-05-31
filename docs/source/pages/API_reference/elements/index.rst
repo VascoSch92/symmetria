@@ -40,6 +40,11 @@ Here, **P** denotes the class ``Permutation``, **C** the class ``Cycle``, and **
      - ✅
      - ✅
      - ✅
+   * - ``ascents``
+     - Return the ascents positions of the permutation
+     - ✅
+     - ❌
+     - ✅
    * - ``cycle_decomposition``
      - Cycle decomposition of the permutation
      - ✅

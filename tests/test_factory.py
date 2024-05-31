@@ -45,6 +45,13 @@ def validate_from_cycle_decomposition(class_: Any, constructor: Dict, expected_v
 ##############################
 
 
+def validate_ascents(item: Any, expected_value: List[int]) -> None:
+    if item.ascents() != expected_value:
+        raise ValueError(
+            f"The expression `{item.rep()}.ascents()` must evaluate {expected_value}, " f"but got {item.ascents()}."
+        )
+
+
 def validate_cycle_decomposition(item: Any, expected_value: CycleDecomposition) -> None:
     if item.cycle_decomposition() != expected_value:
         raise ValueError(

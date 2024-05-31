@@ -44,6 +44,12 @@ TEST_CONSTRUCTOR_FROM_CYCLE_DECOMPOSITION = [
 # TEST CASES GENERIC METHODS #
 ##############################
 
+TEST_ASCENTS = [
+    (Permutation(1, 2, 3), [1, 2]),
+    (Permutation(4, 3, 2, 1), []),
+    (Permutation(3, 4, 6, 2, 1, 5), [1, 2, 5]),
+    (Permutation(3, 4, 5, 2, 1, 6, 7), [1, 2, 5, 6]),
+]
 TEST_CYCLE_DECOMPOSITION = [
     (Permutation(1), CycleDecomposition(Cycle(1))),
     (Permutation(2, 1), CycleDecomposition(Cycle(1, 2))),

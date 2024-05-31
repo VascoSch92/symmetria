@@ -368,6 +368,28 @@ class CycleDecomposition(_Element):
         """
         return "".join([str(c) for c in self])
 
+    def ascents(self) -> List[int]:
+        r"""Return the ascents of the cycle decomposition.
+
+        Recall that an ascent of a permutation :math:`\sigma \in S_n`, where :math:`n \in \mathbb{N}`, is any position
+        :math:`i<n` such that :math:`\sigma(i) < \sigma(i+1)`.
+
+        :return: The ascents of the cycle decomposition.
+        :rtype: List[int]
+
+        :example:
+            >>> from symmetria import Cycle, CycleDecomposition
+            ...
+            >>> CycleDecomposition(Cycle(1, 2, 3)).ascents()
+            [1]
+            >>> CycleDecomposition(Cycle(1), Cycle(2), Cycle(3)).ascents()
+            [1, 2]
+            >>> CycleDecomposition(Cycle(2, 3), Cycle(4, 5, 1)).ascents()
+            [3]
+        """
+        permutation = symmetria.Permutation.from_cycle_decomposition(self)
+        return [idx + 1 for idx in range(len(permutation) - 1) if permutation.image[idx] < permutation.image[idx + 1]]
+
     def cycle_decomposition(self) -> "CycleDecomposition":
         """Return the cycle decomposition of the permutation.
 
