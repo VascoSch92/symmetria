@@ -41,7 +41,7 @@ Here, **P** denotes the class ``Permutation``, **C** the class ``Cycle``, and **
      - ✅
      - ✅
    * - ``ascents``
-     - Return the ascents positions of the permutation
+     - Return the positions of the permutation ascents
      - ✅
      - ❌
      - ✅
@@ -59,6 +59,11 @@ Here, **P** denotes the class ``Permutation``, **C** the class ``Cycle``, and **
      - Return the cycle notation of the permutation
      - ✅
      - ✅
+     - ✅
+   * - ``descents``
+     - Return the positions of the permutation descents
+     - ✅
+     - ❌
      - ✅
    * - ``inverse``
      - Compute the inverse of the permutation

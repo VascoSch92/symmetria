@@ -442,6 +442,27 @@ class Permutation(_Element):
         """
         return tuple(sorted(len(cycle) for cycle in self.cycle_decomposition()))
 
+    def descents(self) -> List[int]:
+        r"""Return the descents of the permutation.
+
+        Recall that a descent of a permutation :math:`\sigma \in S_n`, where :math:`n \in \mathbb{N}`, is any position
+        :math:`i<n` such that :math:`\sigma(i) > \sigma(i+1)`.
+
+        :return: The descents of the permutation.
+        :rtype: List[int]
+
+        :example:
+            >>> from symmetria import Permutation
+            ...
+            >>> Permutation(1, 2, 3).descents()
+            []
+            >>> Permutation(3, 4, 5, 2, 1, 6, 7).descents()
+            [3, 4]
+            >>> Permutation(4, 3, 2, 1).descents()
+            [1, 2, 3]
+        """
+        return [idx + 1 for idx in range(len(self) - 1) if self.image[idx] > self.image[idx + 1]]
+
     @property
     def domain(self) -> Iterable[int]:
         """Return an iterable containing the elements of the domain of the permutation.

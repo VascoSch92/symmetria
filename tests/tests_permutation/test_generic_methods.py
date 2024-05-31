@@ -11,6 +11,7 @@ from tests.test_factory import (
     validate_inverse,
     validate_is_even,
     validate_support,
+    validate_descents,
     validate_cycle_type,
     validate_equivalent,
     validate_inversions,
@@ -32,6 +33,7 @@ from tests.tests_permutation.test_cases import (
     TEST_INVERSE,
     TEST_IS_EVEN,
     TEST_SUPPORT,
+    TEST_DESCENTS,
     TEST_CYCLE_TYPE,
     TEST_EQUIVALENT,
     TEST_INVERSIONS,
@@ -83,6 +85,16 @@ def test_cycle_type(permutation, expected_value) -> None:
 def test_cycle_notation(permutation, expected_value) -> None:
     """Tests for the method `cycle_notation()`."""
     validate_cycle_notation(item=permutation, expected_value=expected_value)
+
+
+@pytest.mark.parametrize(
+    argnames="permutation, expected_value",
+    argvalues=TEST_DESCENTS,
+    ids=[f"{p.__repr__()}.descents()={c}" for p, c in TEST_DESCENTS],
+)
+def test_descents(permutation, expected_value) -> None:
+    """Tests for the method `descents()`."""
+    validate_descents(item=permutation, expected_value=expected_value)
 
 
 @pytest.mark.parametrize(
