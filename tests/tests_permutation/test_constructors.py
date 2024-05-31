@@ -1,11 +1,7 @@
 import pytest
 
 from symmetria import Permutation
-from tests.test_factory import (
-    validate_from_dict,
-    validate_from_cycle,
-    validate_from_cycle_decomposition,
-)
+from tests.test_factory import _check_values
 from tests.tests_permutation.test_cases import (
     TEST_CONSTRUCTOR,
     TEST_CONSTRUCTOR_ERROR,
@@ -43,7 +39,11 @@ def test_constructor_error(permutation, error, msg) -> None:
 )
 def test_constructor_from_dict(dict_permutation, expected_value) -> None:
     """Tests for the constructor method `from_dict()`."""
-    validate_from_dict(class_=Permutation, constructor=dict_permutation, expected_value=expected_value)
+    _check_values(
+        expression=f"Permutation.from_dict({dict_permutation}))",
+        evaluation=Permutation.from_dict(dict_permutation),
+        expected=expected_value,
+    )
 
 
 @pytest.mark.parametrize(
@@ -53,7 +53,9 @@ def test_constructor_from_dict(dict_permutation, expected_value) -> None:
 )
 def test_constructor_from_cycle(cycle, expected_value) -> None:
     """Tests for the constructor method `from_cycle()`."""
-    validate_from_cycle(class_=Permutation, constructor=cycle, expected_value=expected_value)
+    _check_values(
+        expression=f"Permutation.from_cycle({cycle}", evaluation=Permutation.from_cycle(cycle), expected=expected_value
+    )
 
 
 @pytest.mark.parametrize(
@@ -63,8 +65,8 @@ def test_constructor_from_cycle(cycle, expected_value) -> None:
 )
 def test_constructor_from_cycle_decomposition(cycle_decomposition, expected_value) -> None:
     """Tests for the constructor method `from_cycle_decomposition()`."""
-    validate_from_cycle_decomposition(
-        class_=Permutation,
-        constructor=cycle_decomposition,
-        expected_value=expected_value,
+    _check_values(
+        expression=f"Permutation.from_cycle_decomposition({cycle_decomposition})",
+        evaluation=Permutation.from_cycle_decomposition(cycle_decomposition),
+        expected=expected_value,
     )
