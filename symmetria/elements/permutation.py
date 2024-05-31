@@ -515,6 +515,37 @@ class Permutation(_Element):
             return self == Permutation.from_cycle_decomposition(other)
         return False
 
+    def exceedances(self, weakly: bool = False) -> List[int]:
+        r"""Return the exceedances of the permutation.
+
+                Recall that an exceedance of a permutation :math:`\sigma \in S_n`, where :math:`n \in \mathbb{N}`, is any
+                position :math:`i \in \{ 1, ..., n\}` where :math:`\sigma(i) > i`. An exceedance is called weakly if
+                :math:`\sigma(i) \geq i`.
+
+                :param weakly: `True` to return the weakly exceedances of the permutation. Default `False`.
+                :type weakly: bool
+        co
+                :return: The exceedances of the permutation.
+                :rtype: List[int]
+
+                :example:
+                    >>> from symmetria import Permutation
+                    ...
+                    >>> Permutation(1, 2, 3).exceedances()
+                    []
+                    >>> Permutation(1, 2, 3).exceedances(weakly=True)
+                    [1, 2, 3]
+                    >>> Permutation(4, 3, 2, 1).exceedances()
+                    [1, 2]
+                    >>> Permutation(3, 4, 5, 2, 1, 6, 7).exceedances()
+                    [1, 2, 3]
+                    >>> Permutation(3, 4, 5, 2, 1, 6, 7).exceedances(weakly=True)
+                    [1, 2, 3, 6, 7]
+        """
+        if weakly:
+            return [i for i, p in enumerate(self.image, 1) if p >= i]
+        return [i for i, p in enumerate(self.image, 1) if p > i]
+
     @classmethod
     def from_cycle(cls, cycle: "Cycle") -> "Permutation":
         """Return a permutation from a cycle.

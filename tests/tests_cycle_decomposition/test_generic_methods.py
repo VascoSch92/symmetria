@@ -15,6 +15,7 @@ from tests.test_factory import (
     validate_equivalent,
     validate_inversions,
     validate_is_regular,
+    validate_exceedances,
     validate_is_conjugate,
     validate_cycle_notation,
     validate_is_derangement,
@@ -35,6 +36,7 @@ from tests.tests_cycle_decomposition.test_cases import (
     TEST_EQUIVALENT,
     TEST_INVERSIONS,
     TEST_IS_REGULAR,
+    TEST_EXCEEDANCES,
     TEST_IS_CONJUGATE,
     TEST_CYCLE_NOTATION,
     TEST_IS_DERANGEMENT,
@@ -91,6 +93,16 @@ def test_cycle_type(cycle_decomposition, expected_value) -> None:
 def test_descents(cycle_decomposition, expected_value) -> None:
     """Tests for the method `descents()`."""
     validate_descents(item=cycle_decomposition, expected_value=expected_value)
+
+
+@pytest.mark.parametrize(
+    argnames="cycle_decomposition, weakly, expected_value",
+    argvalues=TEST_EXCEEDANCES,
+    ids=[f"{p.__repr__()}.exceedences(weakly={w})={i}" for p, w, i in TEST_EXCEEDANCES],
+)
+def test_exceedences(cycle_decomposition, weakly, expected_value) -> None:
+    """Tests for the method `exceedences()`."""
+    validate_exceedances(item=cycle_decomposition, weakly=weakly, expected_value=expected_value)
 
 
 @pytest.mark.parametrize(

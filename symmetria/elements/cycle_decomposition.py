@@ -526,6 +526,35 @@ class CycleDecomposition(_Element):
             return symmetria.elements.permutation.Permutation.from_cycle_decomposition(self) == other
         return False
 
+    def exceedances(self, weakly: bool = False) -> List[int]:
+        r"""Return the exceedances of the cycle decomposition.
+
+        Recall that an exceedance of a permutation :math:`\sigma \in S_n`, where :math:`n \in \mathbb{N}`, is any
+        position :math:`i \in \{ 1, ..., n\}` where :math:`\sigma(i) > i`. An exceedance is called weakly if
+        :math:`\sigma(i) \geq i`.
+
+        :param weakly: `True` to return the weakly exceedances of the cycle decomposition. Default `False`.
+        :type weakly: bool
+
+        :return: The exceedances of the cycle decomposition.
+        :rtype: List[int]
+
+        :example:
+            >>> from symmetria import Cycle, CycleDecomposition
+            ...
+            >>> CycleDecomposition(Cycle(1, 2), Cycle(3)).exceedances()
+            [1]
+            >>> CycleDecomposition(Cycle(1, 2), Cycle(3)).exceedances(weakly=True)
+            [1, 3]
+            >>> CycleDecomposition(Cycle(2, 3), Cycle(4, 5, 1)).exceedances()
+            [1, 2, 4]
+            >>> CycleDecomposition(Cycle(1), Cycle(2), Cycle(3)).exceedances()
+            []
+            >>> CycleDecomposition(Cycle(1), Cycle(2), Cycle(3)).exceedances(weakly=True)
+            [1, 2, 3]
+        """
+        return symmetria.Permutation.from_cycle_decomposition(self).exceedances(weakly=weakly)
+
     def inverse(self) -> "CycleDecomposition":
         r"""Return the inverse of the cycle decomposition.
 
