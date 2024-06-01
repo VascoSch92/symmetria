@@ -2,7 +2,7 @@ from typing import Any, Set, Dict, List, Tuple, Union, Iterable
 
 import symmetria.elements.cycle
 import symmetria.elements.cycle_decomposition
-from symmetria.elements._interface import _Element
+from symmetria.elements._base import _Element
 
 __all__ = ["Permutation"]
 

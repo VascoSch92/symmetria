@@ -4,7 +4,7 @@ from itertools import combinations
 
 import symmetria.elements.cycle
 import symmetria.elements.permutation
-from symmetria.elements._interface import _Element
+from symmetria.elements._base import _Element
 
 __all__ = ["CycleDecomposition"]
 
