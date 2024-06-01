@@ -11,6 +11,8 @@ import sys
 from pathlib import Path
 from datetime import datetime
 
+from m2r2 import M2RParser
+
 sys.path.append(str(Path.cwd().parent.parent))
 
 from symmetria import __version__
@@ -81,3 +83,8 @@ html_theme_options = {
     "home_page_in_toc": True,
     "show_toc_level": 3,
 }
+
+
+def setup(app) -> None:
+    parser = M2RParser()
+    app.add_source_parser(parser)
