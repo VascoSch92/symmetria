@@ -54,6 +54,7 @@ docs = [
     "sphinx-gallery<0.17.0",
     "sphinx-panels",
     "tabulate",
+    "m2r2",
 ]
 
 [project.urls]

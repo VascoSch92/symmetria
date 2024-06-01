@@ -16,21 +16,24 @@ help:
 clean:
 	@echo "[INFO] -- cleaning"
 	@rm -rf "./$(BUILDDIR)"
-	@rm -rf "./$(SOURCEDIR)/pages/community/changelog.md"
-	@rm -rf "./$(SOURCEDIR)/pages/community/contributing.md"
-	@rm -rf "./$(SOURCEDIR)/pages/community/code_of_conduct.md"
+	@rm -rf "./$(SOURCEDIR)/pages/community/changelog.rst"
+	@rm -rf "./$(SOURCEDIR)/pages/community/contributing.rst"
+	@rm -rf "./$(SOURCEDIR)/pages/community/code_of_conduct.rst"
 
 copy-changelog:
-	@echo "[INFO] Copying CHANGELOG.md in "docs/$(SOURCEDIR)""
-	@cp -r ../CHANGELOG.md "$(SOURCEDIR)/pages/community/changelog.md"
+	@echo "[INFO] Generating changelog.rst file and copying into "docs/$(SOURCEDIR)""
+	@m2r2 ../CHANGELOG.md
+	@mv ../CHANGELOG.rst "$(SOURCEDIR)/pages/community/changelog.rst"
 
 copy-contributing:
-	@echo "[INFO] Copying CONTRIBUTING.md in "docs/$(SOURCEDIR)""
-	@cp -r ../CONTRIBUTING.md "$(SOURCEDIR)/pages/community/contributing.md"
+	@echo "[INFO] Generating contributing.rst and copying into "docs/$(SOURCEDIR)""
+	@m2r2 ../CONTRIBUTING.md
+	@mv ../CONTRIBUTING.rst "$(SOURCEDIR)/pages/community/contributing.rst"
 
 copy-code-of-conduct:
-	@echo "[INFO] Copying CODE_OF_CONDUCT.md in "docs/$(SOURCEDIR)""
-	@cp -r ../CODE_OF_CONDUCT.md "$(SOURCEDIR)/pages/community/code_of_conduct.md"
+	@echo "[INFO] Generating code_of_conduct.rst and copying into "docs/$(SOURCEDIR)""
+	@m2r2 ../CODE_OF_CONDUCT.md
+	@mv ../CODE_OF_CONDUCT.rst "$(SOURCEDIR)/pages/community/code_of_conduct.rst"
 
 doc:
 	@echo "[INFO] Build documentation"

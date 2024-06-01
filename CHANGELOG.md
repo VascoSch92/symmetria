@@ -34,6 +34,8 @@ FEATURE:
 MAINTENANCE:
 - `tests`: Refactor. Now the code is more concise, and it is easier to add a new test.
 - `symmetria.elements._base.py`: Simplify the base class for elements object.
+- `pyproject.toml`: Add `m2r2` in docs dependency
+
 
 ## \[0.0.4\] - 2024-05-28
 
