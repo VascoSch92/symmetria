@@ -21,6 +21,8 @@ The version is represented by three digits: a.b.c.
 
 ## Unreleased
 
+FEATURE:
+- `generators`: add structure to generate permutations
 
 ## \[0.0.5\] - 2024-06-01
 

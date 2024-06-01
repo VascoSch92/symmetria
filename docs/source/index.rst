@@ -107,6 +107,7 @@ with the symmetric group and its elements.
 
    pages/API_reference/elements/index
    pages/API_reference/groups/index
+   pages/API_reference/generators/index
 
 .. toctree::
    :maxdepth: 1
