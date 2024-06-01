@@ -1,8 +1,8 @@
 import pytest
 
 from symmetria import Cycle, CycleDecomposition
-from tests.test_factory import _check_values
-from tests.tests_cycle_decomposition.test_cases import (
+from tests.test_utils import _check_values
+from tests.tests_elements.tests_cycle_decomposition.test_cases import (
     TEST_EQ,
     TEST_POW,
     TEST_BOOL,
@@ -124,7 +124,7 @@ def test_pow_error(cycle_decomposition, power, error, msg) -> None:
 def test_repr(cycle_decomposition, expected_value) -> None:
     """Tests for the method `__repr__()`."""
     _check_values(
-        expression=f"{cycle_decomposition.name}.__repr__()",
+        expression=f"{cycle_decomposition.typename}.__repr__()",
         evaluation=cycle_decomposition.__repr__(),
         expected=expected_value,
     )
