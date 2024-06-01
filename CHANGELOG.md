@@ -31,6 +31,7 @@ FEATURE:
 
 MAINTENANCE:
 - `tests`: Refactor. Now the code is more concise, and it is easier to add a new test.
+- `symmetria.elements._base.py`: Simplify the base class for elements object.
 
 ## \[0.0.4\] - 2024-05-28
 
