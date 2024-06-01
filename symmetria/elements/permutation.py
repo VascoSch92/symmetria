@@ -518,29 +518,29 @@ class Permutation(_Element):
     def exceedances(self, weakly: bool = False) -> List[int]:
         r"""Return the exceedances of the permutation.
 
-                Recall that an exceedance of a permutation :math:`\sigma \in S_n`, where :math:`n \in \mathbb{N}`, is any
-                position :math:`i \in \{ 1, ..., n\}` where :math:`\sigma(i) > i`. An exceedance is called weakly if
-                :math:`\sigma(i) \geq i`.
+        Recall that an exceedance of a permutation :math:`\sigma \in S_n`, where :math:`n \in \mathbb{N}`, is any
+        position :math:`i \in \{ 1, ..., n\}` where :math:`\sigma(i) > i`. An exceedance is called weakly if
+        :math:`\sigma(i) \geq i`.
 
-                :param weakly: `True` to return the weakly exceedances of the permutation. Default `False`.
-                :type weakly: bool
-        co
-                :return: The exceedances of the permutation.
-                :rtype: List[int]
+        :param weakly: `True` to return the weakly exceedances of the permutation. Default `False`.
+        :type weakly: bool
 
-                :example:
-                    >>> from symmetria import Permutation
-                    ...
-                    >>> Permutation(1, 2, 3).exceedances()
-                    []
-                    >>> Permutation(1, 2, 3).exceedances(weakly=True)
-                    [1, 2, 3]
-                    >>> Permutation(4, 3, 2, 1).exceedances()
-                    [1, 2]
-                    >>> Permutation(3, 4, 5, 2, 1, 6, 7).exceedances()
-                    [1, 2, 3]
-                    >>> Permutation(3, 4, 5, 2, 1, 6, 7).exceedances(weakly=True)
-                    [1, 2, 3, 6, 7]
+        :return: The exceedances of the permutation.
+        :rtype: List[int]
+
+        :example:
+            >>> from symmetria import Permutation
+            ...
+            >>> Permutation(1, 2, 3).exceedances()
+            []
+            >>> Permutation(1, 2, 3).exceedances(weakly=True)
+            [1, 2, 3]
+            >>> Permutation(4, 3, 2, 1).exceedances()
+            [1, 2]
+            >>> Permutation(3, 4, 5, 2, 1, 6, 7).exceedances()
+            [1, 2, 3]
+            >>> Permutation(3, 4, 5, 2, 1, 6, 7).exceedances(weakly=True)
+            [1, 2, 3, 6, 7]
         """
         if weakly:
             return [i for i, p in enumerate(self.image, 1) if p >= i]
@@ -909,6 +909,37 @@ class Permutation(_Element):
             4
         """
         return self.cycle_decomposition().order()
+
+    def records(self) -> List[int]:
+        r"""Return the records of the permutation.
+
+        Recall that a record of a permutation :math:`\sigma \in S_n`, where :math:`n \in \mathbb{N}`, is a position
+        :math:`i \in \{1, ..., n\}` such that is either :math:`i=1` or :math:`\sigma(j) < \sigma(i)`
+        for all :math:`j<i`.
+
+        .. note:: There are definitions of records in the literature where the first index is not considered as a
+            record.
+
+        :return: The records of the permutation.
+        :rtype: List[int]
+
+        :example:
+            >>> from symmetria import Permutation
+            ...
+            >>> Permutation(1, 2, 3).records()
+            [1, 2, 3]
+            >>> Permutation(3, 1, 2).records()
+            [1]
+            >>> Permutation(1, 3, 4, 5, 2, 6).records()
+            [1, 2, 3, 4, 6]
+        """
+        records = [1]
+        tmp_max = self[1]
+        for i in self.domain:
+            if self[i] > tmp_max:
+                records.append(i)
+                tmp_max = self[i]
+        return records
 
     def sgn(self) -> int:
         r"""Return the sign of the permutation.

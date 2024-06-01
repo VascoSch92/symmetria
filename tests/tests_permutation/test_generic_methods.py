@@ -12,6 +12,7 @@ from tests.tests_permutation.test_cases import (
     TEST_ASCENTS,
     TEST_INVERSE,
     TEST_IS_EVEN,
+    TEST_RECORDS,
     TEST_SUPPORT,
     TEST_DESCENTS,
     TEST_CYCLE_TYPE,
@@ -239,6 +240,16 @@ def test_is_regular(permutation, expected_value) -> None:
 def test_map(permutation, expected_value) -> None:
     """Tests for the method `map()`."""
     _check_values(expression=f"{permutation.rep()}.map()", evaluation=permutation.map, expected=expected_value)
+
+
+@pytest.mark.parametrize(
+    argnames="permutation, expected_value",
+    argvalues=TEST_RECORDS,
+    ids=[f"{p.rep()}.records()={s}" for p, s in TEST_RECORDS],
+)
+def test_records(permutation, expected_value) -> None:
+    """Tests for the method `records()`."""
+    _check_values(expression=f"{permutation.rep()}.records()", evaluation=permutation.records(), expected=expected_value)
 
 
 @pytest.mark.parametrize(

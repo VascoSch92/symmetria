@@ -28,6 +28,8 @@ FEATURE:
 - `symmetria.CyclePermutation`: add `descents` method
 - `symmetria.Permutation`: add `exceedances` method
 - `symmetria.CyclePermutation`: add `exceedances` method
+- `symmetria.Permutation`: add `records` method
+- `symmetria.CyclePermutation`: add `records` method
 
 MAINTENANCE:
 - `tests`: Refactor. Now the code is more concise, and it is easier to add a new test.

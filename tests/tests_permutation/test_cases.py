@@ -164,6 +164,11 @@ TEST_MAP = [
     (Permutation(1, 3, 2), {1: 1, 2: 3, 3: 2}),
     (Permutation(1, 4, 3, 2), {1: 1, 2: 4, 3: 3, 4: 2}),
 ]
+TEST_RECORDS = [
+    (Permutation(1, 2, 3), [1, 2, 3]),
+    (Permutation(3, 1, 2), [1]),
+    (Permutation(1, 3, 4, 5, 2, 6), [1, 2, 3, 4, 6]),
+]
 TEST_SUPPORT = [
     (Permutation(1), set()),
     (Permutation(2, 1), {1, 2}),

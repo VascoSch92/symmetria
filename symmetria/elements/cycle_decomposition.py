@@ -775,6 +775,31 @@ class CycleDecomposition(_Element):
         """
         return lcm(*[len(cycle) for cycle in self])
 
+    def records(self) -> List[int]:
+        r"""Return the records of the cycle decomposition.
+
+        Recall that a record of a permutation :math:`\sigma \in S_n`, where :math:`n \in \mathbb{N}`, is a position
+        :math:`i \in \{1, ..., n\}` such that is either :math:`i=1` or :math:`\sigma(j) < \sigma(i)`
+        for all :math:`j<i`.
+
+        .. note:: There are definitions of records in the literature where the first index is not considered as a
+            record.
+
+        :return: The records of the cycle decomposition.
+        :rtype: List[int]
+
+        :example:
+            >>> from symmetria import Cycle, CycleDecomposition
+            ...
+            >>> CycleDecomposition(Cycle(1)).records()
+            [1]
+            >>> CycleDecomposition(Cycle(1, 2), Cycle(3)).records()
+            [1, 3]
+            >>> CycleDecomposition(Cycle(1), Cycle(2, 4, 7, 6), Cycle(3, 5)).records()
+            [1, 2, 3, 4]
+        """
+        return symmetria.Permutation.from_cycle_decomposition(self).records()
+
     def sgn(self) -> int:
         r"""Return the sign of the cycle decomposition.
 

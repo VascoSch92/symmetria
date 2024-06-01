@@ -10,6 +10,7 @@ from tests.tests_cycle_decomposition.test_cases import (
     TEST_ASCENTS,
     TEST_INVERSE,
     TEST_IS_EVEN,
+    TEST_RECORDS,
     TEST_SUPPORT,
     TEST_DESCENTS,
     TEST_CYCLE_TYPE,
@@ -264,6 +265,20 @@ def test_order(cycle_decomposition, expected_value) -> None:
     _check_values(
         expression=f"{cycle_decomposition.rep()}.order()",
         evaluation=cycle_decomposition.order(),
+        expected=expected_value,
+    )
+
+
+@pytest.mark.parametrize(
+    argnames="cycle_decomposition, expected_value",
+    argvalues=TEST_RECORDS,
+    ids=[f"{p}.records()={o}" for p, o in TEST_RECORDS],
+)
+def test_records(cycle_decomposition, expected_value) -> None:
+    """Tests for the method `records()`."""
+    _check_values(
+        expression=f"{cycle_decomposition.rep()}.records()",
+        evaluation=cycle_decomposition.records(),
         expected=expected_value,
     )
 
