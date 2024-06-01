@@ -1,7 +1,7 @@
 import pytest
 
-from tests.test_factory import _check_values
-from tests.tests_cycle.test_cases import (
+from tests.test_utils import _check_values
+from tests.tests_elements.tests_cycle.test_cases import (
     TEST_EQ,
     TEST_INT,
     TEST_LEN,
@@ -126,4 +126,4 @@ def test_pow_error(cycle, power, error, msg) -> None:
 )
 def test_repr(cycle, expected_value) -> None:
     """Tests for the method `__repr__()`."""
-    _check_values(expression=f"{cycle.name}.__repr__()", evaluation=cycle.__repr__(), expected=expected_value)
+    _check_values(expression=f"{cycle.typename}.__repr__()", evaluation=cycle.__repr__(), expected=expected_value)

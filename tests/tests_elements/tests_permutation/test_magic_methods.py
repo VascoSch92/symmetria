@@ -1,7 +1,7 @@
 import pytest
 
-from tests.test_factory import _check_values
-from tests.tests_permutation.test_cases import (
+from tests.test_utils import _check_values
+from tests.tests_elements.tests_permutation.test_cases import (
     TEST_EQ,
     TEST_INT,
     TEST_LEN,
@@ -128,7 +128,7 @@ def test_pow_error(permutation, power, error, msg) -> None:
 def test_repr(permutation, expected_value) -> None:
     """Tests for the method `__repr__()`."""
     _check_values(
-        expression=f"{permutation.name}.__repr__()", evaluation=permutation.__repr__(), expected=expected_value
+        expression=f"{permutation.typename}.__repr__()", evaluation=permutation.__repr__(), expected=expected_value
     )
 
 

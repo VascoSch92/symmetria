@@ -1,7 +1,7 @@
 import pytest
 
 from symmetria import CycleDecomposition
-from tests.tests_cycle_decomposition.test_cases import (
+from tests.tests_elements.tests_cycle_decomposition.test_cases import (
     TEST_CONSTRUCTOR,
     TEST_CONSTRUCTOR_ERROR,
 )

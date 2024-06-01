@@ -1,8 +1,8 @@
 import pytest
 
 from symmetria import Permutation
-from tests.test_factory import _check_values
-from tests.tests_permutation.test_cases import (
+from tests.test_utils import _check_values
+from tests.tests_elements.tests_permutation.test_cases import (
     TEST_CONSTRUCTOR,
     TEST_CONSTRUCTOR_ERROR,
     TEST_CONSTRUCTOR_FROM_DICT,

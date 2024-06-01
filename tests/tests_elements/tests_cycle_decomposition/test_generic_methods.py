@@ -1,7 +1,7 @@
 import pytest
 
-from tests.test_factory import _check_values
-from tests.tests_cycle_decomposition.test_cases import (
+from tests.test_utils import _check_values
+from tests.tests_elements.tests_cycle_decomposition.test_cases import (
     TEST_MAP,
     TEST_SGN,
     TEST_ORBIT,

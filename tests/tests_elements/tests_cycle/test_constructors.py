@@ -1,7 +1,7 @@
 import pytest
 
 from symmetria import Cycle
-from tests.tests_cycle.test_cases import (
+from tests.tests_elements.tests_cycle.test_cases import (
     TEST_CONSTRUCTOR,
     TEST_CONSTRUCTOR_ERROR,
 )
