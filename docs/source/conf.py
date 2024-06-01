@@ -88,3 +88,7 @@ html_theme_options = {
 def setup(app) -> None:
     parser = M2RParser()
     app.add_source_parser(parser)
+
+    # Check if the .md suffix is already registered to avoid conflicts
+    if ".md" not in app.registry.source_suffix:
+        app.add_source_suffix(".md", "markdown")
