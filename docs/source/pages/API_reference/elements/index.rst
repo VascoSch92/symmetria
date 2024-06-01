@@ -125,6 +125,11 @@ Here, **P** denotes the class ``Permutation``, **C** the class ``Cycle``, and **
      - ✅
      - ✅
      - ✅
+   * - ``records``
+     - Return the positions of the permutation records
+     - ✅
+     - ❌
+     - ✅
    * - ``sgn``
      - Return the sign of the permutation
      - ✅
