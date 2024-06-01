@@ -113,10 +113,10 @@ with the symmetric group and its elements.
    :hidden:
    :caption: Community
 
-   pages/community/contributing.md
-   pages/community/changelog.md
+   pages/community/contributing
+   pages/community/changelog
    pages/community/license
-   pages/community/code_of_conduct.md
+   pages/community/code_of_conduct
 
 .. toctree::
    :maxdepth: 1
