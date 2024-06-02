@@ -1,15 +1,17 @@
-Permutation Generator
+Generate
 =====================
 
 To use the generator of permutation, import it as
 
 .. code-block:: python
 
-    from symmetria import permutation_generator
+    import symmetria
+    ...
+    permutations = symmetria.generate(algorithm="lexicographic", degree=3)
 
 
 The API of the method is given as following:
 
 .. automodule:: symmetria
-   :members: permutation_generator
+   :members: generate
    :exclude-members: Cycle, CycleDecomposition, Permutation

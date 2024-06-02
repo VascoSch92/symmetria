@@ -1,13 +1,15 @@
 from typing import List, Generator
 
-__all__ = ["permutation_generator"]
+from symmetria.generators._algorithms import _lexicographic_generator
+
+__all__ = ["generate"]
 
 _SUPPORTED_ALGORITHM: List[str] = [
     "lexicographic",
 ]
 
 
-def permutation_generator(degree: int, algorithm: str = "lexicographic") -> Generator["Permutation", None, None]:
+def generate(degree: int, algorithm: str = "lexicographic") -> Generator["Permutation", None, None]:
     """Generate all the permutations of the degree based on the chosen algorithm.
 
     The method generates all the permutations of the given degree using the specified algorithm.
@@ -22,17 +24,18 @@ def permutation_generator(degree: int, algorithm: str = "lexicographic") -> Gene
 
     :raises ValueError: If the algorithm is not supported or the degree is invalid.
 
-    # Activate once we have the lexicographic algorithm
-    #:examples:
-        # >>> from symmetria import permutation_generator
-        # ...
-        # >>> permutations = permutation_generator(degree=3, algorithm="lexicographic")
-        # >>> for perm in permutations:
-        # ...     print(perm)
-        # Permutation(1, 2, 3)
-        # Permutation(1, 3, 2)
-        # Permutation(2, 1, 3)
+    :examples:
+        >>> import symmetria
         ...
+        >>> permutations = symmetria.generate(degree=3, algorithm="lexicographic")
+        >>> for permutation in permutations:
+        ...     permutation
+        Permutation(1, 2, 3)
+        Permutation(1, 3, 2)
+        Permutation(2, 1, 3)
+        Permutation(2, 3, 1)
+        Permutation(3, 1, 2)
+        Permutation(3, 2, 1)
     """
     _check_algorithm_parameter(value=algorithm)
     _check_degree_parameter(value=degree)
@@ -66,4 +69,5 @@ def _check_degree_parameter(value: int) -> None:
 
 def _relevant_generator(algorithm: str, degree: int) -> Generator["Permutation", None, None]:
     """Private method to pick the correct algorithm for generating permutations."""
-    raise NotImplementedError(f"To be implemented using {algorithm} and {degree}.")
+    if algorithm == "lexicographic":
+        return _lexicographic_generator(degree=degree)
