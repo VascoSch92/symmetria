@@ -1,11 +1,12 @@
 from typing import List, Generator
 
-from symmetria.generators._algorithms import _lexicographic_generator
+from symmetria.generators._algorithms import _heap_algorithm, _lexicographic_generator
 
 __all__ = ["generate"]
 
 _SUPPORTED_ALGORITHM: List[str] = [
     "lexicographic",
+    "heap",
 ]
 
 
@@ -70,4 +71,6 @@ def _check_degree_parameter(value: int) -> None:
 def _relevant_generator(algorithm: str, degree: int) -> Generator["Permutation", None, None]:
     """Private method to pick the correct algorithm for generating permutations."""
     if algorithm == "lexicographic":
-        return _lexicographic_generator(degree=degree)
+        return _lexicographic_generator(degree=degree, start=list(range(1, degree + 1)))
+    elif algorithm == "heap":
+        return _heap_algorithm(degree=degree, start=list(range(1, degree + 1)))

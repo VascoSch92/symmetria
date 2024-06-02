@@ -23,6 +23,8 @@ The version is represented by three digits: a.b.c.
 
 FEATURE:
 - `generators`: add structure to generate permutations
+- `generators`: add `lexicographic` generator
+- `generators`: add generator following `Heap`'s algorithm
 
 ## \[0.0.5\] - 2024-06-01
 

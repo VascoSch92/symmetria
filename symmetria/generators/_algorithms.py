@@ -1,9 +1,9 @@
-from typing import Generator
+from typing import List, Generator
 
 import symmetria.elements.permutation
 
 
-def _lexicographic_generator(degree: int) -> Generator["Permutation", None, None]:
+def _lexicographic_generator(degree: int, start: List[int]) -> Generator["Permutation", None, None]:
     """Private method to generate all the permutations of degree `degree` in lexicographic order.
 
     The algorithm is described as follows:
@@ -16,7 +16,7 @@ def _lexicographic_generator(degree: int) -> Generator["Permutation", None, None
         - Step 7: Go to Step 2.
     """
     # step 1
-    permutation = list(range(1, degree + 1))
+    permutation = start
 
     while True:
         yield symmetria.Permutation(*permutation)
@@ -36,3 +36,28 @@ def _lexicographic_generator(degree: int) -> Generator["Permutation", None, None
 
         # step 6
         permutation[k + 1 :] = reversed(permutation[k + 1 :])
+
+
+def _heap_algorithm(degree: int, start: List[int]) -> Generator["Permutation", None, None]:
+    """Private method to generate all the permutations of degree `degree` using the Heap's algorithm.
+
+    A description of the algorithm can be founded in the article:
+        `Permutations by interchanges.` B. R. Heap, The Computer Journal, 6(3) (1963), pp. 293-298
+    """
+    k = degree
+    permutation = start
+
+    if k == 1:
+        yield symmetria.Permutation(*permutation)
+    else:
+        # Generate permutations with k-th unaltered
+        yield from _heap_algorithm(k - 1, permutation)
+
+        # Generate permutations for k-th swapped with each k-1 initial
+        for i in range(k - 1):
+            # Swap choice dependent on parity of k (even or odd)
+            if k % 2 == 0:
+                permutation[i], permutation[k - 1] = permutation[k - 1], permutation[i]
+            else:
+                permutation[0], permutation[k - 1] = permutation[k - 1], permutation[0]
+            yield from _heap_algorithm(k - 1, permutation)
