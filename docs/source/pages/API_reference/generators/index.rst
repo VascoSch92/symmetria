@@ -23,4 +23,4 @@ A list of implemented algorithms to generate permutations:
     :maxdepth: 1
     :hidden:
 
-    permutation_generator
+    generate

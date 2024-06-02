@@ -6,7 +6,7 @@ repos:
     - id: name-tests-test # verifies that test files are named correctly.
       args: [--pytest-test-first]
 -   repo: https://github.com/astral-sh/ruff-pre-commit
-    rev: v0.4.4 # ruff version
+    rev: v0.4.7 # ruff version
     hooks:
       - id: ruff  # run the linter
       - id: ruff-format # run the formatter
