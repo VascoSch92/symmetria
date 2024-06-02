@@ -2,6 +2,6 @@
 
 - [ ] Tests are updated.
 - [ ] Documentation is updated.
-- [ ] Changelog is updated.
+- [ ] `CHANGELOG.md` is updated.
 - [ ] If applicable, the PR is linked to the relative issue.
-- [ ] If it's a release, the version number is increased.
+- [ ] If it's a release, the version number(s) is increased.
