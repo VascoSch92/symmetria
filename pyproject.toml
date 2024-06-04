@@ -73,7 +73,6 @@ symmetria = "symmetria:_log_version"
 
 [tool.pytest.ini_options]
 cache_dir = "tests/.cache/pytest"
-
 log_cli = true
 log_level = "DEBUG"
 log_format = "%(asctime)s %(levelname)s %(message)s"
@@ -91,6 +90,7 @@ lint.select = [
     "B", # Flake8-bugbear
     "W", # Pycodestyle Warning
     "RET504", # Checks for variable assignments that immediately precede a return of the assigned variable.
+    "B023", # Checks for function definitions that use a loop variable
     "D200", # One-line docstring should fit on one line
     "D202", # No blank lines allowed after function docstring
     "D211", # Checks for docstrings on class definitions that are preceded by a blank line.
@@ -124,12 +124,6 @@ lint.select = [
 lint.ignore = [
     "C400", # Unnecessary generator (rewrite using list())
     "F821", # Checks for uses of undefined names
-    "B020", # Checks for contextlib.suppress without arguments
-    "B023", # Checks for function definitions that use a loop variable
-    "PTH123", # Checks for uses of the open builtin
-    "PIE804", # Checks for unnecessary dict kwargs
-    "PIE807", # Checks for lambdas that can be replaced with the list builtin
-    "W605", # Checks for invalid escape sequences
 ]
 
 # ignore unusued imports in the __init__

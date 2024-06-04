@@ -5,9 +5,9 @@ Symmetria offers three classes for representing permutations: ``Permutation``, `
 Each of these classes has its own set of advantages and disadvantages depending on the specific goal you want to
 achieve.
 
-Below is a brief example showcasing the capabilities of one of the aforementioned classes.
+Below is a brief example showcasing the capabilities of every of the aforementioned classes.
 
-To begin, import your selected class with:
+Let's start by defining a permutation and exploring how we can represent it in various formats.
 
 .. tab-set::
 
@@ -18,6 +18,13 @@ To begin, import your selected class with:
 
             from symmetria import Permutation
 
+            permutation = Permutation(1, 3, 4, 5, 2, 6)
+
+            permutation                         # Permutation(1, 3, 4, 5, 2, 6)
+            str(permutation)                    # (1, 3, 4, 5, 2, 6)
+            permutation.cycle_notation()        # (1)(2 3 4 5)(6)
+            permutation.one_line_notation()     # 134526
+
     .. tab-item:: Cycle
         :sync: cycle
 
@@ -25,46 +32,30 @@ To begin, import your selected class with:
 
             from symmetria import Cycle
 
-    .. tab-item:: CycleDecomposition
-        :sync: cycledecomposition
-
-        .. code-block:: python
-
-            from symmetria import CycleDecomposition
-
-you can now instantiate a permutation
-
-.. tab-set::
-
-    .. tab-item:: Permutation
-        :sync: permutation
-
-        .. code-block:: python
-
-            permutation = Permutation(1, 3, 4, 5, 2, 6)
-            print(permutation)
-            # (1, 3, 4, 5, 2, 6)
-
-    .. tab-item:: Cycle
-        :sync: cycle
-
-        .. code-block:: python
-
             cycle = Cycle(1, 3, 4, 5, 2, 6)
-            print(cycle)
-            # (1 3 4 5 2 6)
+
+            cycle                       # Cycle(1, 3, 4, 5, 2, 6)
+            cycle.cycle_notation()      # (1 3 4 5 2 6)
+            str(cycle)                  # (1 3 4 5 2 6)
+            int(cycle)                  # 134526
 
     .. tab-item:: CycleDecomposition
         :sync: cycledecomposition
 
         .. code-block:: python
 
-            cycle_decomposition = CycleDecomposition(Cycle(1, 3, 4,), Cycle( 5, 2, 6))
-            print(cycle_decomposition)
-            # (1 3 4)(5 2 6)
+            from symmetria import Cycle, CycleDecomposition
 
-You can employ standard syntax to manipulate these objects, designed for utmost intuitiveness.
-Here are a few illustrative examples:
+            cd = CycleDecomposition(Cycle(1, 2), Cycle(3, 4))
+
+            cd                     # CycleDecomposition(Cycle(1, 2), Cycle(3, 4))
+            cd.cycle_notation()    # (1 2)(3 4)
+            str(cd)                # (1 2)(3 4)
+            cd[0], cd[1]           # Cycle(1, 2), Cycle(3, 4)
+
+
+Permutation objects are easy to manipulate. They implement nearly every standard functionality of basic Python objects.
+As a rule of thumb, if something seems intuitively possible, you can probably do it.
 
 .. tab-set::
 
@@ -72,43 +63,67 @@ Here are a few illustrative examples:
         :sync: permutation
 
         .. code-block:: python
+
+            from symmetria import Permutation
+
+            idx = Permutation(1, 2, 3)
+            permutation = Permutation(1, 3, 2)
 
             if permutation:
-                print("The permutation is different from the identity permutation.")
-            if permutation == Permutation(1, 2, 3, 4, 5, 6):
-                print("The permutation is equal to the identity.")
-            if len(permutation) == 6:
-                print("The permutation has 6 elements, i.e., it acts on 6 elements.")
-            # The permutation is different from the identity.
-            # The permutation has 6 elements, i.e., it acts on 6 elements
+                print(f"The permutation {permutation} is not the identity.")
+            if idx == Permutation(1, 2, 3):
+                print(f"The permutation {idx} is the identity permutation.")
+            if  permutation != idx:
+                print(f"The permutations {permutation} and {idx} are different.")
+
+            # The permutation (1, 3, 2) is not the identity.
+            # The permutation (1, 2, 3) is the identity permutation.
+            # The permutations (1, 3, 2) and (1, 2, 3) are different.
 
     .. tab-item:: Cycle
         :sync: cycle
 
         .. code-block:: python
 
+            from symmetria import Cycle
+
+            idx = Cycle(1)
+            cycle = Cycle(1, 3, 2)
+
             if cycle:
-                print("The cycle is different from the identity cycle.")
-            if permutation == Cycle(1):
-                print("The cycle is equal to the identity cycle.")
-            if len(cycle) == 6:
-                print("The cycle has length 6, i.e., it is a 6-cycle.")
-            # The cycle is different from the identity cycle.
-            # The cycle has length 6, i.e., it is a 6-cycle.
+                print(f"The cycle {cycle} is not the identity.")
+            if idx == Cycle(1):
+                print(f"The cycle {idx} is the identity cycle.")
+            if  cycle != idx:
+                print(f"The cycles {cycle} and {idx} are different.")
+
+            # The cycle (1 3 2) is not the identity.
+            # The cycle (1 2 3) is the identity permutation.
+            # The cycles (1 3 2) and (1 2 3) are different.
 
     .. tab-item:: CycleDecomposition
         :sync: cycledecomposition
 
         .. code-block:: python
 
-            if cycle_decomposition:
-                print("The cycle decomposition is different from the identity permutation.")
-            if len(cycle_decomposition) == 6:
-                print("The cycle decomposition has length 6, i.e., it is composed by 6 cycles.")
-            # The cycle is different from the identity cycle.
-            # The cycle decomposition has length 6, i.e., it is composed by 6 cycles.
+            from symmetria import Cycle, CycleDecomposition
 
-Many methods for retrieving the properties of the permutation you wish to work with are already available.
+            idx = CycleDecomposition(Cycle(1), Cycle(2), Cycle(3))
+            cd = CycleDecomposition(Cycle(1, 2), Cycle(3))
+
+            if cd:
+                print(f"The cycle decomposition {cd} is not the identity.")
+            if idx == CycleDecomposition(Cycle(1), Cycle(2), Cycle(3)):
+                print(f"The cycle decomposition {cd} is the identity.")
+            if  cd != idx:
+                print(f"The cycle decompositions {cd} and {idx} are different.")
+
+            # The cycle decomposition (1 2)(3) is not the identity.
+            # The cycle decomposition (1)(2)(3) is the identity.
+            # The cycle decompositions (1 2)(3) and (1)(2)(3) are different.
+
+
+Basic arithmetic operations are implemented.
 
 .. tab-set::
 
@@ -117,26 +132,132 @@ Many methods for retrieving the properties of the permutation you wish to work w
 
         .. code-block:: python
 
-            permutation.order()  # 4
-            permutation.support()  # {2, 3, 4, 5}
-            permutation.is_derangement()  # True
+            from symmetria import Permutation
 
-    .. tab-item:: Cycle
-        :sync: cycle
+            permutation = Permutation(3, 1, 4, 2)
 
-        .. code-block:: python
-
-            cycle.order() # 6
-            cycle.support() # {1, 3, 4, 5, 2, 6}
-            cycle.is_derangemenet() # True
+            multiplication = permutation * permutation   # Permutation(4, 3, 2, 1)
+            power = permutation ** 2                     # Permutation(4, 3, 2, 1)
+            inverse = permutation ** -1                  # Permutation(2, 4, 1, 3)
+            identity = permutation * inverse             # Permutation(1, 2, 3, 4)
 
     .. tab-item:: CycleDecomposition
         :sync: cycledecomposition
 
         .. code-block:: python
 
-            cycle_decomposition.order() # 3
-            cycle_decomposition.support() # {1, 2, 3, 4, 5, 6}
-            cycle_decomposition.is_derangement() # True
+            from symmetria import Cycle, CycleDecomposition
 
-You can find more in the API reference section.
+            cd = CycleDecomposition(Cycle(1, 4, 2), Cycle(3))
+
+            multiplication = cd * cd # CycleDecomposition(Cycle(1, 2, 4), Cycle(3))
+            power = cd ** 2          # CycleDecomposition(Cycle(1, 2, 4), Cycle(3))
+            inverse = cd ** -1       # CycleDecomposition(Cycle(2, 4, 1), Cycle(3))
+            identity = cd * inverse  # CycleDecomposition(Cycle(1), Cycle(2), Cycle(3), Cycle(4))
+
+Actions on different objects are also implemented.
+
+.. tab-set::
+
+    .. tab-item:: Permutation
+        :sync: permutation
+
+        .. code-block:: python
+
+            from symmetria import Permutation
+
+            permutation = Permutation(3, 2, 4, 1)
+
+            permutation(3)                                # 4
+            permutation("abcd")                           # 'dbac'
+            permutation(["I", "love", "Python", "!"])     # ['!', 'love', 'I', 'Python']
+
+    .. tab-item:: Cycle
+        :sync: cycle
+
+        .. code-block:: python
+
+            from symmetria import Cycle
+
+            cycle = Cycle(1, 3, 4, 2)
+
+            cycle(3)                                # 4
+            cycle("abcd")                           # 'bdac'
+            cycle(["I", "love", "Python", "!"])     # ['love', '!', 'I', 'Python']
+
+    .. tab-item:: CycleDecomposition
+        :sync: cycledecomposition
+
+        .. code-block:: python
+
+            from symmetria import Cycle, CycleDecomposition
+
+            cd = CycleDecomposition(Cycle(1, 3), Cycle(2, 4))
+
+            cd(3)                               # 1
+            cd("abcd")                          # 'cdab'
+            cd(["I", "love", "Python", "!"])    # ['Python', '!', 'I', 'love']
+
+Moreover, many methods are already implemented. If what you are looking for is not available,
+let us know as soon as possible.
+
+.. tab-set::
+
+    .. tab-item:: Permutation
+        :sync: permutation
+
+        .. code-block:: python
+
+            from symmetria import Permutation
+
+            permutation = Permutation(3, 2, 4, 1)
+
+            permutation.order()                 # 3
+            permutation.support()               # {1, 3, 4}
+            permutation.sgn()                   # 1
+            permutation.cycle_decomposition()   # CycleDecomposition(Cycle(1, 3, 4), Cycle(2))
+            permutation.cycle_type()            # (1, 3)
+            permutation.is_derangement()        # False
+            permutation.is_regular()            # False
+            permutation.inversions()            # [(1, 2), (1, 4), (2, 4), (3, 4)]
+            permutation.ascents()               # [2]
+            permutation.descents()              # [1, 3]
+
+    .. tab-item:: Cycle
+        :sync: cycle
+
+        .. code-block:: python
+
+            from symmetria import Cycle
+
+            cycle = Cycle(2, 3, 5, 7, 6)
+
+            cycle.order()                   # 5
+            cycle.support()                 # {2, 3, 5, 7, 6}
+            cycle.sgn()                     # 1
+            cycle.cycle_decomposition()     # CycleDecomposition(Cycle(1), Cycle(2, 3, 5, 7, 6), Cycle(4))
+            cycle.is_derangement()          # True
+            cycle.inversions()              # [(4, 5)]
+
+    .. tab-item:: CycleDecomposition
+        :sync: cycledecomposition
+
+        .. code-block:: python
+
+            from symmetria import Cycle, CycleDecomposition
+
+            cd = CycleDecomposition(Cycle(1, 3), Cycle(2, 4))
+
+            cd.order()                 # 2
+            cd.support()               # {1, 2, 3, 4}
+            cd.sgn()                   # 1
+            cd.is_even()               # True
+            cd.cycle_type()            # (2, 2)
+            cd.is_derangement()        # True
+            cd.is_regular()            # True
+            cd.inversions()            # [(1, 3), (1, 4), (2, 3), (2, 4)]
+            cd.ascents()               # [1, 3]
+            cd.descents()              # [2]
+
+Click [here](https://symmetria.readthedocs.io/en/latest/pages/API_reference/elements/index.html) for an overview of
+all the functionalities implemented in `symmetria`.

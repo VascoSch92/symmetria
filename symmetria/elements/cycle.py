@@ -1,12 +1,4 @@
-from typing import (
-    Any,
-    Set,
-    Dict,
-    List,
-    Tuple,
-    Union,
-    Iterable,
-)
+from typing import Any, Set, Dict, List, Tuple, Union, Iterable
 
 import symmetria.elements.permutation
 import symmetria.elements.cycle_decomposition
@@ -289,40 +281,6 @@ class Cycle(_Element):
             "Try to call your cycle on the cycle you would like to compose."
         )
 
-    def __pow__(self, power: int) -> "Cycle":
-        """Return the cycle object to the chosen power.
-
-        :param power: the exponent for the power operation.
-        :type power: int
-
-        :return: the power of the cycle.
-        :rtype: Cycle
-
-        :raises TypeError: If `power` is not an integer.
-
-        :example:
-            >>> from symmetria import Cycle
-            ...
-            >>> Cycle(1, 3, 2)**0
-            Cycle(1, 2, 3)
-            >>> Cycle(1, 3, 2)**1
-            Cycle(1, 3, 2)
-            >>> Cycle(1, 3, 2)**-1
-            Cycle(1, 2, 3)
-            >>> Cycle(1, 3, 2)**2
-            Cycle(1, 2, 3)
-        """
-        if isinstance(power, int) is False:
-            raise TypeError(f"Power operation for type {type(power)} not supported.")
-        elif self is False or power == 0:
-            return Cycle(*list(self.domain))
-        elif power == 1:
-            return self
-        elif power <= -1:
-            return self.inverse() ** abs(power)
-        else:
-            return Cycle(*[self.map[(self ** (power - 1)).map[idx]] for idx in self.domain])
-
     def __repr__(self) -> str:
         r"""Return a string representation of the cycle in the format `Cycle(x, y, z, ...)`,
         where :math:`x, y, z, ... \in \mathbb{N}` are the elements of the cycle.
@@ -407,16 +365,6 @@ class Cycle(_Element):
             '(1 2 4 5 6 3)'
         """
         return str(self)
-
-    def cycle_type(self) -> Tuple[int]:
-        """
-        :raise NotImplementedError: The method is not implemented for the class ``Cycle``,
-            because cycles are used as building blocks for permutations and are not proper permutation.
-        """
-        raise NotImplementedError(
-            "The method `cycle_type` is not implemented for cycles, as cycles are building blocks to construct \n"
-            "permutations and not proper ones."
-        )
 
     @property
     def domain(self) -> Iterable[int]:
@@ -559,16 +507,6 @@ class Cycle(_Element):
                         inversions.append((i, i + j))
         return inversions
 
-    def is_conjugate(self, other: "Cycle") -> bool:
-        """
-        :raise NotImplementedError: The method `is_conjugate` is not implemented for cycles.
-            This is because cycles are just building blocks for permutations.
-        """
-        raise NotImplementedError(
-            "Method `is_conjugate` is not implemented for cycles. \n"
-            "Convert the cycle into a `Permutation` or a `CycleDecomposition`."
-        )
-
     def is_derangement(self) -> bool:
         r"""Check if the cycle is a derangement.
 
@@ -637,16 +575,6 @@ class Cycle(_Element):
             False
         """
         return self.sgn() == -1
-
-    def is_regular(self) -> bool:
-        """
-        :raise NotImplementedError: The method `is_regular` is not implemented for cycles.
-            This is because cycles are just building blocks for permutations, and don't have a cycle decomposition.
-        """
-        raise NotImplementedError(
-            "Method `is_regular` is not implemented for cycles. \n"
-            "Convert the cycle into a `Permutation` or a `CycleDecomposition`."
-        )
 
     @property
     def map(self) -> Dict[int, int]:

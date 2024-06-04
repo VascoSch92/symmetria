@@ -1,9 +1,8 @@
-from dataclasses import dataclass
-
-
-@dataclass(init=False, frozen=True, order=False, eq=False)
 class _Element:
     """Base class for elements."""
+
+    def __repr__(self) -> str:
+        return "_Element()"
 
     def rep(self) -> str:
         """Shortcut for `__repr__()`."""

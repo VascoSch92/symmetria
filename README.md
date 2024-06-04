@@ -1,6 +1,6 @@
 <a href="https://symmetria.readthedocs.io/en/latest/"><img src="./docs/source/_static/symmetria.png" width="200" align="right" /></a>
 
-<span style="font-size:4em;">**Welcome to symmetria**</span>
+## **Welcome to symmetria**
 
 Symmetria provides an intuitive, thorough, and comprehensive framework for interacting
 with the symmetric group and its elements.
@@ -13,9 +13,6 @@ with the symmetric group and its elements.
 
 You can give a look at how to work with symmetria in the section [quickstart](#quickstart),
 or you can directly visit the [docs](https://symmetria.readthedocs.io/en/latest/).
-
-An interesting list of all the functionalities implemented by symmetria can be found
-[here](https://symmetria.readthedocs.io/en/latest/pages/API_reference/elements/index.html).
 
 Pull requests are welcome. For major changes, please open an issue first
 to discuss what you would like to change, and give a look to the
@@ -48,46 +45,90 @@ symmetria --version
 Let's get started with symmetria. First and foremost, we can import the `Permutation`
 class from `symmetria`. The Permutation class serves as the fundamental class for
 working with elements of the symmetric group, representing permutations as
-bijective maps. Additionally, you can utilize the `Cycle` class and `CycleDecomposition`
+bijective maps. Otherwise, you can utilize the `Cycle` class and `CycleDecomposition`
 class to work with cycle permutations and permutations represented as cycle
 decompositions, respectively.
+
+Let's start by defining a permutation and exploring how we can represent it in various formats.
 
 ```python
 from symmetria import Permutation
 
 permutation = Permutation(1, 3, 4, 5, 2, 6)
+
+permutation                         # Permutation(1, 3, 4, 5, 2, 6)
+str(permutation)                    # (1, 3, 4, 5, 2, 6)
+permutation.cycle_notation()        # (1)(2 3 4 5)(6)
+permutation.one_line_notation()     # 134526
 ```
 
-You can now represent your permutation in various formats:
+Permutation objects are easy to manipulate. They implement nearly every standard functionality of basic Python objects. 
+As a rule of thumb, if something seems intuitively possible, you can probably do it.
 
 ```python
-print(permutation)                      # (1, 3, 4, 5, 2, 6)
-print(permutation.cycle_notation())     # (1)(2 3 4 5)(6)
-print(permutation.one_line_notation())  # 134526
-```
+from symmetria import Permutation
 
-Permutations can be compared between them and are easy to manipulate.
+idx = Permutation(1, 2, 3)
+permutation = Permutation(1, 3, 2)
 
-```python
 if permutation:
-    print("The permutation is different from the identity.")
-if permutation == Permutation(1, 2, 3, 4, 5, 6):
-    print("The permutation is equal to the identity.")
-if len(permutation) == 6:
-    print("The permutation acts on 6 elements.")
-print(permutation * permutation)
+    print(f"The permutation {permutation} is not the identity.")
+if idx == Permutation(1, 2, 3):
+    print(f"The permutation {idx} is the identity permutation.")
+if  permutation != idx:
+    print(f"The permutations {permutation} and {idx} are different.")
+
+# The permutation (1, 3, 2) is not the identity.
+# The permutation (1, 2, 3) is the identity permutation.
+# The permutations (1, 3, 2) and (1, 2, 3) are different.
 ```
 
-Furthermore, we can decompose a permutation into its cycle decomposition
-(`CycleDecomposition`) and compute its order and support.
+Basic arithmetic operations are implemented.
 
 ```python
-permutation.cycle_decomposition()
-# returns CycleDecomposition(Cycle(1), Cycle(2, 3, 4, 5), Cycle(6))
-permutation.order()  # 4
-permutation.support()  # {2, 3, 4, 5}
-permutation.is_derangement()  # True
+from symmetria import Permutation
+
+permutation = Permutation(3, 1, 4, 2)
+
+multiplication = permutation * permutation      # Permutation(4, 3, 2, 1)
+power = permutation ** 2                        # Permutation(4, 3, 2, 1)
+inverse = permutation ** -1                     # Permutation(2, 4, 1, 3)
+identity = permutation * inverse                # Permutation(1, 2, 3, 4)
 ```
+
+Actions on different objects are also implemented.
+
+```python
+from symmetria import Permutation
+
+permutation = Permutation(3, 2, 4, 1)
+
+permutation(3)                                # 4
+permutation("abcd")                           # 'dbac'
+permutation(["I", "love", "Python", "!"])     # ['!', 'love', 'I', 'Python']
+```
+
+Moreover, many methods are already implemented. If what you are looking for is not available, 
+let us know as soon as possible.
+
+```python
+from symmetria import Permutation
+
+permutation = Permutation(3, 2, 4, 1)
+
+permutation.order()                 # 3
+permutation.support()               # {1, 3, 4}
+permutation.sgn()                   # 1
+permutation.cycle_decomposition()   # CycleDecomposition(Cycle(1, 3, 4), Cycle(2))
+permutation.cycle_type()            # (1, 3)
+permutation.is_derangement()        # False
+permutation.is_regular()            # False
+permutation.inversions()            # [(1, 2), (1, 4), (2, 4), (3, 4)]
+permutation.ascents()               # [2]
+permutation.descents()              # [1, 3]
+```
+Click [here](https://symmetria.readthedocs.io/en/latest/pages/API_reference/elements/index.html) for an overview of 
+all the functionalities implemented in `symmetria`.
 
 ## Overview
 

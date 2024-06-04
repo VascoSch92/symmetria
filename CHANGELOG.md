@@ -2,13 +2,14 @@
 
 ## Legend
 
-- API_CHANGE: Any changes to the project's API
-- DEPRECATED: Indication of features that will be removed in future releases
-- ENHANCEMENT: Improvements to existing features that do not introduce new functionality
-- FEATURE: New features added to enhance functionality
-- FIX: Resolved issues, bugs, or unexpected behavior
+- API_CHANGE: Any changes to the project's API.
+- DEPRECATED: Indication of features that will be removed in future releases.
+- DOCUMENTATION: Something to do with the documentation.
+- ENHANCEMENT: Improvements to existing features that do not introduce new functionality.
+- FEATURE: New features added to enhance functionality.
+- FIX: Resolved issues, bugs, or unexpected behavior.
 - MAINTENANCE: Something which has to do with CI/CD or setup.
-- REMOVED: Features or functionalities removed from the project
+- REMOVED: Features or functionalities removed from the project.
 
 ## Version Policy
 
@@ -21,10 +22,20 @@ The version is represented by three digits: a.b.c.
 
 ## Unreleased
 
+DEPRECATED:
+- `symmetria.Cycle`: delete method `__pow__` as was not consistent
+- `symmetria.Cycle`: delete `NotImplementedError` for `is_regular` and `is_conjugate`
+- `symmetria.CycleDecomposition`: delete `NotImplementedError` for `__int__`  
+
+DOCUMENTATION:
+- `README.md`: improve section quickstart
+- `quickstart.rst`: improve examples
+
 FEATURE:
 - `generators`: add structure to generate permutations
 - `generators`: add `lexicographic` generator
 - `generators`: add generator following `Heap`'s algorithm
+
 
 ## \[0.0.5\] - 2024-06-01
 

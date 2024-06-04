@@ -222,18 +222,6 @@ class CycleDecomposition(_Element):
         """
         return self._cycles[idx]
 
-    def __int__(self) -> int:
-        """
-        :raise NotImplementedError: The method is not implemented for the class ``CycleDecomposition``,
-            because it is not possible to uniquely represent a cycle decomposition of a permutation using just
-            an integer.
-        """
-        raise NotImplementedError(
-            "The method is not implemented for the class `CycleDecomposition`, because it is not possible \n"
-            "to clearly represent a cycle decomposition of a permutation using just an integer. \n"
-            "If you want to have an integer representation for this object, convert it to a ``Permutation`` first."
-        )
-
     def __iter__(self) -> Iterable["Cycle"]:
         """Return an iterator over the cycles in the cycle decomposition.
 
