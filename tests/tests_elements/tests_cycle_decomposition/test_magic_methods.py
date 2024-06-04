@@ -1,6 +1,5 @@
 import pytest
 
-from symmetria import Cycle, CycleDecomposition
 from tests.test_utils import _check_values
 from tests.tests_elements.tests_cycle_decomposition.test_cases import (
     TEST_EQ,
@@ -72,12 +71,6 @@ def test_getitem(cycle_decomposition, idx, expected_value) -> None:
     _check_values(
         expression=f"{cycle_decomposition.rep()}[{idx}]", evaluation=cycle_decomposition[idx], expected=expected_value
     )
-
-
-def test_int() -> None:
-    """Tests for the method `__int__()`."""
-    with pytest.raises(NotImplementedError, match="The method is not implemented"):
-        _ = int(CycleDecomposition(Cycle(1)))
 
 
 @pytest.mark.parametrize(

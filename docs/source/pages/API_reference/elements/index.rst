@@ -38,7 +38,7 @@ Here, **P** denotes the class ``Permutation``, **C** the class ``Cycle``, and **
    * - ``__pow__``
      - Power of a permutation
      - ✅
-     - ✅
+     - ❌
      - ✅
    * - ``ascents``
      - Return the positions of the permutation ascents

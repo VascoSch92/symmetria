@@ -57,7 +57,6 @@ TEST_INVERSIONS = [
     (Cycle(1, 3, 4, 2), [(2, 4), (3, 4)]),
     (Cycle(1, 2, 5, 4, 3), [(3, 4), (3, 5), (4, 5)]),
 ]
-TEST_IS_CONJUGATE_ERROR = [(Cycle(1, 2, 3), Cycle(1, 2, 3), NotImplementedError, "Method")]
 TEST_IS_DERANGEMENT = [
     (Cycle(1), False),
     (Cycle(13), False),
@@ -76,7 +75,6 @@ TEST_IS_ODD = [
     (Cycle(1, 2, 3, 4, 5, 6), True),
     (Cycle(1, 2, 3, 4, 5, 6, 7), False),
 ]
-TEST_IS_REGULAR_ERROR = [(Cycle(1, 2, 3), NotImplementedError, "Method")]
 TEST_MAP = [
     (Cycle(1), {1: 1}),
     (Cycle(13), {13: 13}),
@@ -196,17 +194,6 @@ TEST_LEN = [
     (Cycle(13), 1),
     (Cycle(1, 2), 2),
     (Cycle(1, 3, 2), 3),
-]
-TEST_POW = [
-    (Cycle(1, 3, 2), 0, Cycle(1, 2, 3)),
-    (Cycle(1, 3, 2), 1, Cycle(1, 3, 2)),
-    (Cycle(1, 3, 2), -1, Cycle(1, 2, 3)),
-    (Cycle(1, 3, 2), 2, Cycle(1, 2, 3)),
-    (Cycle(1, 3, 2), -2, Cycle(1, 2, 3)),
-]
-TEST_POW_ERROR = [
-    (Cycle(1, 2, 3), "asd", TypeError, "Power"),
-    (Cycle(1, 2, 3), 0.9, TypeError, "Power"),
 ]
 TEST_REPR = [
     (Cycle(1), "Cycle(1)"),

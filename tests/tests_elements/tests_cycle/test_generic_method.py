@@ -1,6 +1,5 @@
 import pytest
 
-from symmetria import Cycle
 from tests.test_utils import _check_values
 from tests.tests_elements.tests_cycle.test_cases import (
     TEST_MAP,
@@ -17,8 +16,6 @@ from tests.tests_elements.tests_cycle.test_cases import (
     TEST_INVERSIONS,
     TEST_CYCLE_NOTATION,
     TEST_IS_DERANGEMENT,
-    TEST_IS_REGULAR_ERROR,
-    TEST_IS_CONJUGATE_ERROR,
 )
 
 
@@ -32,12 +29,6 @@ def test_cycle_notation(cycle, expected_value) -> None:
     _check_values(
         expression=f"{cycle.rep()}.cycle_notation()", evaluation=cycle.cycle_notation(), expected=expected_value
     )
-
-
-def test_cycle_type() -> None:
-    """Tests for the method `cycle_type()`."""
-    with pytest.raises(NotImplementedError, match="The method `cycle_type`"):
-        _ = Cycle(1).cycle_type()
 
 
 @pytest.mark.parametrize(
@@ -99,17 +90,6 @@ def test_inversions(cycle, expected_value) -> None:
 
 
 @pytest.mark.parametrize(
-    argnames="cycle, other, error, msg",
-    argvalues=TEST_IS_CONJUGATE_ERROR,
-    ids=[f"{p}.is_conjugate({o})" for p, o, _, _ in TEST_IS_CONJUGATE_ERROR],
-)
-def test_is_conjugate_error(cycle, other, error, msg) -> None:
-    """Tests for errors in the method `is_derangement()`."""
-    with pytest.raises(error, match=msg):
-        _ = cycle.is_conjugate(other)
-
-
-@pytest.mark.parametrize(
     argnames="cycle, expected_value",
     argvalues=TEST_IS_DERANGEMENT,
     ids=[f"{cycle}.is_derangement()={s}" for cycle, s in TEST_IS_DERANGEMENT],
@@ -139,17 +119,6 @@ def test_is_even(cycle, expected_value) -> None:
 def test_is_odd(cycle, expected_value) -> None:
     """Tests for the method `is_odd()`."""
     _check_values(expression=f"{cycle.rep()}.is_odd()", evaluation=cycle.is_odd(), expected=expected_value)
-
-
-@pytest.mark.parametrize(
-    argnames="cycle, error, msg",
-    argvalues=TEST_IS_REGULAR_ERROR,
-    ids=[f"{p}.is_regular({o})" for p, o, _ in TEST_IS_REGULAR_ERROR],
-)
-def test_is_regular_error(cycle, error, msg) -> None:
-    """Tests for errors in the method `is_regular()`."""
-    with pytest.raises(error, match=msg):
-        _ = cycle.is_regular()
 
 
 @pytest.mark.parametrize(
