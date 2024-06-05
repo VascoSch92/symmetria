@@ -35,6 +35,7 @@ FEATURE:
 - `generators`: add structure to generate permutations
 - `generators`: add `lexicographic` generator
 - `generators`: add generator following `Heap`'s algorithm
+- `generators`: add generator following `Steinhaus-Johnson-Trotter`'s algorithm
 
 
 ## \[0.0.5\] - 2024-06-01
