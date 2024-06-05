@@ -259,5 +259,6 @@ let us know as soon as possible.
             cd.ascents()               # [1, 3]
             cd.descents()              # [2]
 
-Click [here](https://symmetria.readthedocs.io/en/latest/pages/API_reference/elements/index.html) for an overview of
-all the functionalities implemented in `symmetria`.
+Click `here`_ for an overview of all the functionalities implemented in `symmetria`.
+
+.. _here: https://symmetria.readthedocs.io/en/latest/pages/API_reference/elements/index.html

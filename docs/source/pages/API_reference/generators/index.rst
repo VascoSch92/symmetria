@@ -17,11 +17,17 @@ A list of implemented algorithms to generate permutations:
      - Reference
    * - ``lexicographic``
      - The permutations are generate following the **lexicographic order**.
-     - here
+     - `[1]`_
    * - ``heap``
      - The permutations are generate following the **Heap's algorithm**.
-     - here
+     - `[2]`_
+   * - ``steinhaus-johnson-trotter``
+     - The permutations are generate following the **Steinhaus-Johnson-Trotter algorithm**.
+     - `[3]`_
 
+.. _[1]: https://en.wikipedia.org/wiki/Lexicographic_order
+.. _[2]: https://academic.oup.com/comjnl/article/6/3/293/360213
+.. _[3]: https://en.wikipedia.org/wiki/Steinhaus–Johnson–Trotter_algorithm
 
 .. toctree::
     :maxdepth: 1
