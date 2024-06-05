@@ -61,3 +61,39 @@ def _heap(degree: int, start: List[int]) -> Generator["Permutation", None, None]
             else:
                 permutation[0], permutation[k - 1] = permutation[k - 1], permutation[0]
             yield from _heap(k - 1, permutation)
+
+
+def _steinhaus_johnson_trotter(degree: int, start: List[int]) -> Generator["Permutation", None, None]:
+    """Private method to generate all the permutations of degree `degree` using the Steinhaus-Johnson-Trotter algorithm.
+
+    A description of the algorithm is given at:
+        https://en.wikipedia.org/wiki/Steinhaus–Johnson–Trotter_algorithm
+    """
+    # Initialize the first permutation
+    permutation = start
+    # Direction of each element, 1 for right, -1 for left
+    directions = [-1] * degree
+
+    while True:
+        yield symmetria.Permutation(*permutation)
+
+        mobile, mobile_index = -1, -1
+
+        for i in range(degree):
+            if (directions[i] == -1 and i != 0 and permutation[i] > permutation[i - 1]) or (
+                directions[i] == 1 and i != degree - 1 and permutation[i] > permutation[i + 1]
+            ):
+                if permutation[i] > mobile:
+                    mobile, mobile_index = permutation[i], i
+        if mobile_index == -1:
+            return None
+
+        # Swap the mobile element with the adjacent element it is looking at
+        swap_with = mobile_index + directions[mobile_index]
+        permutation[mobile_index], permutation[swap_with] = permutation[swap_with], permutation[mobile_index]
+        directions[mobile_index], directions[swap_with] = directions[swap_with], directions[mobile_index]
+
+        # Reverse the direction of all elements larger than the current mobile element
+        for i in range(degree):
+            if permutation[i] > permutation[swap_with]:
+                directions[i] = -directions[i]
