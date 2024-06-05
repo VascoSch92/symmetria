@@ -22,6 +22,9 @@ The version is represented by three digits: a.b.c.
 
 ## Unreleased
 
+
+## \[0.1.0\] - 2024-06-05
+
 DEPRECATED:
 - `symmetria.Cycle`: delete method `__pow__` as was not consistent
 - `symmetria.Cycle`: delete `NotImplementedError` for `is_regular` and `is_conjugate`

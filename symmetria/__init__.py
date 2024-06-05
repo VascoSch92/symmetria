@@ -5,7 +5,7 @@ from symmetria.generators.api import generate
 from symmetria.elements.permutation import Permutation
 from symmetria.elements.cycle_decomposition import CycleDecomposition
 
-__version__ = "0.0.5"
+__version__ = "0.1.0"
 __all__ = ["__version__", "generate", "Permutation", "Cycle", "CycleDecomposition"]
 
 
