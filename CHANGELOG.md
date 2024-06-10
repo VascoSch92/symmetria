@@ -22,6 +22,9 @@ The version is represented by three digits: a.b.c.
 
 ## Unreleased
 
+
+## \[0.1.1\] - 2024-06-10
+
 FEATURE:
 - `symmetria.Permutation`: add `describe` method
 - `symmetria.CyclePermutation`: add `describe` method
