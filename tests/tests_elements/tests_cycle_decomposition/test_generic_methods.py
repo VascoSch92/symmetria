@@ -13,6 +13,7 @@ from tests.tests_elements.tests_cycle_decomposition.test_cases import (
     TEST_RECORDS,
     TEST_SUPPORT,
     TEST_DESCENTS,
+    TEST_DESCRIBE,
     TEST_CYCLE_TYPE,
     TEST_EQUIVALENT,
     TEST_INVERSIONS,
@@ -92,6 +93,20 @@ def test_descents(cycle_decomposition, expected_value) -> None:
     _check_values(
         expression=f"{cycle_decomposition.rep()}.descents()",
         evaluation=cycle_decomposition.descents(),
+        expected=expected_value,
+    )
+
+
+@pytest.mark.parametrize(
+    argnames="cycle_decomposition, expected_value",
+    argvalues=TEST_DESCRIBE,
+    ids=[f"{p}.describe()" for p, _ in TEST_DESCRIBE],
+)
+def test_describe(cycle_decomposition, expected_value) -> None:
+    """Tests for the property `describe`."""
+    _check_values(
+        expression=f"{cycle_decomposition.rep()}.describe()",
+        evaluation=cycle_decomposition.describe(),
         expected=expected_value,
     )
 

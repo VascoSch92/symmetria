@@ -11,6 +11,7 @@ from tests.tests_elements.tests_cycle.test_cases import (
     TEST_INVERSE,
     TEST_IS_EVEN,
     TEST_SUPPORT,
+    TEST_DESCRIBE,
     TEST_ELEMENTS,
     TEST_EQUIVALENT,
     TEST_INVERSIONS,
@@ -57,6 +58,16 @@ def test_equivalent(lhs, rhs, expected_value) -> None:
         evaluation=lhs.equivalent(other=rhs),
         expected=expected_value,
     )
+
+
+@pytest.mark.parametrize(
+    argnames="cycle, expected_value",
+    argvalues=TEST_DESCRIBE,
+    ids=[f"{p}.describe()" for p, _ in TEST_DESCRIBE],
+)
+def test_describe(cycle, expected_value) -> None:
+    """Tests for the property `describe`."""
+    _check_values(expression=f"{cycle.rep()}.describe()", evaluation=cycle.describe(), expected=expected_value)
 
 
 @pytest.mark.parametrize(

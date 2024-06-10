@@ -1,8 +1,10 @@
 from typing import Any, Set, Dict, List, Tuple, Union, Iterable
+from collections import OrderedDict
 
 import symmetria.elements.cycle
 import symmetria.elements.cycle_decomposition
 from symmetria.elements._base import _Element
+from symmetria.elements._utils import _pretty_print_table
 
 __all__ = ["Permutation"]
 
@@ -462,6 +464,65 @@ class Permutation(_Element):
             [1, 2, 3]
         """
         return [idx + 1 for idx in range(len(self) - 1) if self.image[idx] > self.image[idx + 1]]
+
+    def describe(self) -> str:
+        """Return a table describing the permutation.
+
+        :return: A table describing the permutation.
+        :rtype: str
+
+        :example:
+            >>> from symmetria import Permutation
+            ...
+            >>> p = Permutation(2, 4, 1, 3, 5).describe()
+            >>> print(p)
+            +----------------------------------------------------------------------+
+            |                      Permutation(2, 4, 1, 3, 5)                      |
+            +----------------------------------------------------------------------+
+            | order                             |                4                 |
+            +-----------------------------------+----------------------------------+
+            | degree                            |                5                 |
+            +-----------------------------------+----------------------------------+
+            | is derangement                    |              False               |
+            +-----------------------------------+----------------------------------+
+            | inverse                           |         (3, 1, 4, 2, 5)          |
+            +-----------------------------------+----------------------------------+
+            | parity                            |             -1 (odd)             |
+            +-----------------------------------+----------------------------------+
+            | cycle notation                    |           (1 2 4 3)(5)           |
+            +-----------------------------------+----------------------------------+
+            | cycle type                        |              (1, 4)              |
+            +-----------------------------------+----------------------------------+
+            | inversions                        |     [(1, 3), (2, 3), (2, 4)]     |
+            +-----------------------------------+----------------------------------+
+            | ascents                           |            [1, 3, 4]             |
+            +-----------------------------------+----------------------------------+
+            | descents                          |               [2]                |
+            +-----------------------------------+----------------------------------+
+            | excedencees                       |              [1, 2]              |
+            +-----------------------------------+----------------------------------+
+            | records                           |            [1, 2, 5]             |
+            +-----------------------------------+----------------------------------+
+        """
+        return _pretty_print_table(
+            title=self.rep(),
+            body=OrderedDict(
+                {
+                    "order": str(self.order()),
+                    "degree": str(len(self)),
+                    "is derangement": str(self.is_derangement()),
+                    "inverse": str(self.inverse()),
+                    "parity": "+1 (even)" if self.sgn() > 0 else "-1 (odd)",
+                    "cycle notation": self.cycle_notation(),
+                    "cycle type": str(self.cycle_type()),
+                    "inversions": str(self.inversions()),
+                    "ascents": str(self.ascents()),
+                    "descents": str(self.descents()),
+                    "excedencees": str(self.exceedances()),
+                    "records": str(self.records()),
+                }
+            ),
+        )
 
     @property
     def domain(self) -> Iterable[int]:

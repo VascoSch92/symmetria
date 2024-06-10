@@ -65,6 +65,11 @@ Here, **P** denotes the class ``Permutation``, **C** the class ``Cycle``, and **
      - ✅
      - ❌
      - ✅
+   * - ``describe``
+     - Return a table describing the permutation
+     - ✅
+     - ✅
+     - ✅
    * - ``exceedances``
      - Return the positions of the permutation exceedances
      - ✅
