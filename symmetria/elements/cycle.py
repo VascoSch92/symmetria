@@ -1,8 +1,10 @@
 from typing import Any, Set, Dict, List, Tuple, Union, Iterable
+from collections import OrderedDict
 
 import symmetria.elements.permutation
 import symmetria.elements.cycle_decomposition
 from symmetria.elements._base import _Element
+from symmetria.elements._utils import _pretty_print_table
 
 __all__ = ["Cycle"]
 
@@ -365,6 +367,50 @@ class Cycle(_Element):
             '(1 2 4 5 6 3)'
         """
         return str(self)
+
+    def describe(self) -> str:
+        """Return a table describing the cycle.
+
+        :return: A table describing the cycle.
+        :rtype: str
+
+        :example:
+            >>> from symmetria import Cycle
+            ...
+            >>> c = Cycle(3, 5, 6, 7).describe()
+            >>> print(c)
+            +----------------------------------------------------+
+            |                 Cycle(3, 5, 6, 7)                  |
+            +----------------------------------------------------+
+            | order                    |            4            |
+            +--------------------------+-------------------------+
+            | degree                   |            4            |
+            +--------------------------+-------------------------+
+            | is derangement           |          True           |
+            +--------------------------+-------------------------+
+            | inverse                  |        (3 7 6 5)        |
+            +--------------------------+-------------------------+
+            | parity                   |        -1 (odd)         |
+            +--------------------------+-------------------------+
+            | cycle notation           |        (3 5 6 7)        |
+            +--------------------------+-------------------------+
+            | inversions               |           []            |
+            +--------------------------+-------------------------+
+        """
+        return _pretty_print_table(
+            title=self.rep(),
+            body=OrderedDict(
+                {
+                    "order": str(self.order()),
+                    "degree": str(len(self)),
+                    "is derangement": str(self.is_derangement()),
+                    "inverse": str(self.inverse()),
+                    "parity": "+1 (even)" if self.sgn() > 0 else "-1 (odd)",
+                    "cycle notation": self.cycle_notation(),
+                    "inversions": str(self.inversions()),
+                }
+            ),
+        )
 
     @property
     def domain(self) -> Iterable[int]:

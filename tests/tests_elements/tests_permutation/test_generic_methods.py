@@ -15,6 +15,7 @@ from tests.tests_elements.tests_permutation.test_cases import (
     TEST_RECORDS,
     TEST_SUPPORT,
     TEST_DESCENTS,
+    TEST_DESCRIBE,
     TEST_CYCLE_TYPE,
     TEST_EQUIVALENT,
     TEST_INVERSIONS,
@@ -88,6 +89,18 @@ def test_descents(permutation, expected_value) -> None:
     """Tests for the method `descents()`."""
     _check_values(
         expression=f"{permutation.rep()}.descents()", evaluation=permutation.descents(), expected=expected_value
+    )
+
+
+@pytest.mark.parametrize(
+    argnames="permutation, expected_value",
+    argvalues=TEST_DESCRIBE,
+    ids=[f"{p}.describe()" for p, _ in TEST_DESCRIBE],
+)
+def test_describe(permutation, expected_value) -> None:
+    """Tests for the property `describe`."""
+    _check_values(
+        expression=f"{permutation.rep()}.describe()", evaluation=permutation.describe(), expected=expected_value
     )
 
 

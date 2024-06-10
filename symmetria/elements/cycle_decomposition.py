@@ -1,10 +1,12 @@
 from math import lcm, prod
 from typing import Any, Set, Dict, List, Tuple, Union, Iterable
 from itertools import combinations
+from collections import OrderedDict
 
 import symmetria.elements.cycle
 import symmetria.elements.permutation
 from symmetria.elements._base import _Element
+from symmetria.elements._utils import _pretty_print_table
 
 __all__ = ["CycleDecomposition"]
 
@@ -453,6 +455,65 @@ class CycleDecomposition(_Element):
         """
         permutation = symmetria.Permutation.from_cycle_decomposition(self)
         return permutation.descents()
+
+    def describe(self) -> str:
+        """Return a table describing the cycle decomposition.
+
+        :return: A table describing the cycle decomposition.
+        :rtype: str
+
+        :example:
+            >>> from symmetria import Cycle, CycleDecomposition
+            ...
+            >>> cycle_decomposition = CycleDecomposition(Cycle(1, 3), Cycle(2)).describe()
+            >>> print(cycle_decomposition)
+            +--------------------------------------------------------------------------------------+
+            |                      CycleDecomposition(Cycle(1, 3), Cycle(2))                       |
+            +--------------------------------------------------------------------------------------+
+            | order                                     |                    2                     |
+            +-------------------------------------------+------------------------------------------+
+            | degree                                    |                    2                     |
+            +-------------------------------------------+------------------------------------------+
+            | is derangement                            |                  False                   |
+            +-------------------------------------------+------------------------------------------+
+            | inverse                                   |                 (1 3)(2)                 |
+            +-------------------------------------------+------------------------------------------+
+            | parity                                    |                 -1 (odd)                 |
+            +-------------------------------------------+------------------------------------------+
+            | cycle notation                            |                 (1 3)(2)                 |
+            +-------------------------------------------+------------------------------------------+
+            | cycle type                                |                  (1, 2)                  |
+            +-------------------------------------------+------------------------------------------+
+            | inversions                                |         [(1, 2), (1, 3), (2, 3)]         |
+            +-------------------------------------------+------------------------------------------+
+            | ascents                                   |                    []                    |
+            +-------------------------------------------+------------------------------------------+
+            | descents                                  |                  [1, 2]                  |
+            +-------------------------------------------+------------------------------------------+
+            | excedencees                               |                   [1]                    |
+            +-------------------------------------------+------------------------------------------+
+            | records                                   |                   [1]                    |
+            +-------------------------------------------+------------------------------------------+
+        """
+        return _pretty_print_table(
+            title=self.rep(),
+            body=OrderedDict(
+                {
+                    "order": str(self.order()),
+                    "degree": str(len(self)),
+                    "is derangement": str(self.is_derangement()),
+                    "inverse": str(self.inverse()),
+                    "parity": "+1 (even)" if self.sgn() > 0 else "-1 (odd)",
+                    "cycle notation": self.cycle_notation(),
+                    "cycle type": str(self.cycle_type()),
+                    "inversions": str(self.inversions()),
+                    "ascents": str(self.ascents()),
+                    "descents": str(self.descents()),
+                    "excedencees": str(self.exceedances()),
+                    "records": str(self.records()),
+                }
+            ),
+        )
 
     @property
     def domain(self) -> Iterable[int]:
