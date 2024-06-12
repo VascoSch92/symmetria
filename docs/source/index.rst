@@ -92,26 +92,33 @@ with the symmetric group and its elements.
 
 
 .. toctree::
+   :hidden:
    :maxdepth: 1
    :caption: Getting started
-   :hidden:
 
    pages/getting_started/installation
    pages/getting_started/quickstart
 
 
 .. toctree::
+   :hidden:
    :maxdepth: 2
    :caption: API references
-   :hidden:
 
    pages/API_reference/elements/index
    pages/API_reference/groups/index
    pages/API_reference/generators/index
 
 .. toctree::
-   :maxdepth: 1
    :hidden:
+   :maxdepth: 1
+   :caption: Command Line Interface
+
+   pages/cli/command_line_interface
+
+.. toctree::
+   :hidden:
+   :maxdepth: 1
    :caption: Community
 
    pages/community/contributing.md

@@ -69,7 +69,7 @@ requires = ["setuptools>61", "wheel", "toml", "build"]
 build-backend = "setuptools.build_meta"
 
 [project.scripts]
-symmetria = "symmetria:_log_version"
+symmetria = "symmetria.__main__:main"
 
 [tool.pytest.ini_options]
 cache_dir = "tests/.cache/pytest"
