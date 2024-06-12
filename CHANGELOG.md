@@ -22,8 +22,14 @@ The version is represented by three digits: a.b.c.
 
 ## Unreleased
 
+
+## \[0.2.0\] - 2024-06-12
+
 FEATURE:
 - `cli`: add (minimal) command line interface
+
+DOCUMENTATION:
+- add documentation for command line interface
 
 ## \[0.1.1\] - 2024-06-10
 
@@ -31,6 +37,7 @@ FEATURE:
 - `symmetria.Permutation`: add `describe` method
 - `symmetria.CyclePermutation`: add `describe` method
 - `symmetria.Cycle`: add `describe` method
+
 
 ## \[0.1.0\] - 2024-06-05
 
