@@ -22,6 +22,8 @@ The version is represented by three digits: a.b.c.
 
 ## Unreleased
 
+FEATURE:
+- `cli`: add (minimal) command line interface
 
 ## \[0.1.1\] - 2024-06-10
 

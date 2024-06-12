@@ -18,26 +18,34 @@ Pull requests are welcome. For major changes, please open an issue first
 to discuss what you would like to change, and give a look to the
 [contribution guidelines](https://github.com/VascoSch92/symmetria/blob/main/CONTRIBUTING.md).
 
+---
+
+- [Installation](#installation)
+- [Quickstart](#quickstart)
+- [Command Line Interface](#command-line-interface)
+- [Overview](#overview)
+
+---
 ## Installation
 
 Symmetria can be comfortably installed from PyPI using the command
 
-```bash
-pip install symmetria
+```text
+$ pip install symmetria
 ```
 
 or directly from the source GitHub code with
 
-```bash
-pip install git+https://github.com/VascoSch92/symmetria@xxx
+```text
+$ pip install git+https://github.com/VascoSch92/symmetria@xxx
 ```
 
 where `xxx` is the name of the branch or the tag you would like to install.
 
 You can check that `symmetria` was successfully installed by typing the command
 
-```bash
-symmetria --version
+```text
+$ symmetria --version
 ```
 
 ## Quickstart
@@ -170,6 +178,61 @@ in a nice formatted table:
 
 Click [here](https://symmetria.readthedocs.io/en/latest/pages/API_reference/elements/index.html) for an overview of 
 all the functionalities implemented in `symmetria`.
+
+
+## Command Line Interface
+Symmetria also provides a simple command line interface to find all what you need just with a line.
+
+```text
+$ symmetria 132
++------------------------------------------------------+
+|                 Permutation(1, 3, 2)                 |
++------------------------------------------------------+
+| order                     |            2             |
++---------------------------+--------------------------+
+| degree                    |            3             |
++---------------------------+--------------------------+
+| is derangement            |          False           |
++---------------------------+--------------------------+
+| inverse                   |        (1, 3, 2)         |
++---------------------------+--------------------------+
+| parity                    |         -1 (odd)         |
++---------------------------+--------------------------+
+| cycle notation            |         (1)(2 3)         |
++---------------------------+--------------------------+
+| cycle type                |          (1, 2)          |
++---------------------------+--------------------------+
+| inversions                |         [(2, 3)]         |
++---------------------------+--------------------------+
+| ascents                   |           [1]            |
++---------------------------+--------------------------+
+| descents                  |           [2]            |
++---------------------------+--------------------------+
+| excedencees               |           [2]            |
++---------------------------+--------------------------+
+| records                   |          [1, 2]          |
++---------------------------+--------------------------+
+```
+
+Check it out.
+
+```text
+$ symmetria --help
+Symmetria, an intuitive framework for working with the symmetric group and its elements.
+
+
+Usage: symmetria <ARGUMENT> [OPTIONS] 
+
+Options: 
+ -h, --help        Print help 
+ -v, --version     Print version 
+
+Argument (optional): 
+ permutation       A permutation you want to learn more about. 
+                   The permutation must be given in its one-line format, i.e., 
+                   for the permutation Permutation(2, 3, 1), write 231. 
+```
+
 
 ## Overview
 
