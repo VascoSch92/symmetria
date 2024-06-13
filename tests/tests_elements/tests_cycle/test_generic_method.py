@@ -6,6 +6,7 @@ from tests.tests_elements.tests_cycle.test_cases import (
     TEST_SGN,
     TEST_ORBIT,
     TEST_ORDER,
+    TEST_DEGREE,
     TEST_DOMAIN,
     TEST_IS_ODD,
     TEST_INVERSE,
@@ -58,6 +59,16 @@ def test_equivalent(lhs, rhs, expected_value) -> None:
         evaluation=lhs.equivalent(other=rhs),
         expected=expected_value,
     )
+
+
+@pytest.mark.parametrize(
+    argnames="cycle, expected_value",
+    argvalues=TEST_DEGREE,
+    ids=[f"{c.rep()}.degree()={d}" for c, d in TEST_DEGREE],
+)
+def test_degree(cycle, expected_value) -> None:
+    """Tests for the method `degree()`."""
+    _check_values(expression=f"{cycle.rep()}.degree()", evaluation=cycle.degree(), expected=expected_value)
 
 
 @pytest.mark.parametrize(

@@ -6,6 +6,7 @@ from tests.tests_elements.tests_cycle_decomposition.test_cases import (
     TEST_SGN,
     TEST_ORBIT,
     TEST_ORDER,
+    TEST_DEGREE,
     TEST_IS_ODD,
     TEST_ASCENTS,
     TEST_INVERSE,
@@ -93,6 +94,20 @@ def test_descents(cycle_decomposition, expected_value) -> None:
     _check_values(
         expression=f"{cycle_decomposition.rep()}.descents()",
         evaluation=cycle_decomposition.descents(),
+        expected=expected_value,
+    )
+
+
+@pytest.mark.parametrize(
+    argnames="cycle_decomposition, expected_value",
+    argvalues=TEST_DEGREE,
+    ids=[f"{p.rep()}.degree()={d}" for p, d in TEST_DEGREE],
+)
+def test_degree(cycle_decomposition, expected_value) -> None:
+    """Tests for the method `degree()`."""
+    _check_values(
+        expression=f"{cycle_decomposition.rep()}.degree()",
+        evaluation=cycle_decomposition.degree(),
         expected=expected_value,
     )
 

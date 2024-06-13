@@ -444,6 +444,26 @@ class Permutation(_Element):
         """
         return tuple(sorted(len(cycle) for cycle in self.cycle_decomposition()))
 
+    def degree(self) -> int:
+        """Return the degree of the permutation.
+
+        Recall that the degree of a permutation is the number of elements on which it acts.
+
+        :return: The degree of the permutation.
+        :rtype: int
+
+        :example:
+            >>> from symmetria import Permutation
+            ...
+            >>> Permutation(1).degree()
+            1
+            >>> Permutation(1, 3, 2).degree()
+            3
+            >>> Permutation(1, 4, 3, 2).degree()
+            4
+        """
+        return len(self)
+
     def descents(self) -> List[int]:
         r"""Return the descents of the permutation.
 
@@ -1006,7 +1026,8 @@ class Permutation(_Element):
         r"""Return the sign of the permutation.
 
         Recall that the sign, signature, or signum of a permutation :math:`\sigma` is defined as +1 if :math:`\sigma`
-        is even, and -1 if :math:`\sigma` is odd.
+        is even, i.e., :math:`\sigma` has an even number of inversions, and -1 if :math:`\sigma` is odd, i.e.,
+        :math:`\sigma` has an odd number of inversions.
 
         :return: 1 if the permutation is even, -1 if the permutation is odd.
         :rtype: int
@@ -1021,7 +1042,7 @@ class Permutation(_Element):
             >>> Permutation(2, 3, 4, 5, 6, 1).sgn()
             -1
         """
-        return self.cycle_decomposition().sgn()
+        return -1 if len(self.inversions()) % 2 else 1
 
     def support(self) -> Set[int]:
         r"""Return a set containing the indices in the domain of the permutation whose images are different from their

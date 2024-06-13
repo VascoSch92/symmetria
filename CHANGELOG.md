@@ -22,6 +22,14 @@ The version is represented by three digits: a.b.c.
 
 ## Unreleased
 
+FEATURE:
+- `symmetria.Permutation`: add `degree` method
+- `symmetria.CyclePermutation`: add `degree` method
+- `symmetria.Cycle`: add `degree` method
+
+ENHANCEMENT:
+- `symmetria.Permutation`: change how the sign is computed
+
 
 ## \[0.2.0\] - 2024-06-12
 

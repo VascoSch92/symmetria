@@ -7,6 +7,7 @@ from tests.tests_elements.tests_permutation.test_cases import (
     TEST_IMAGE,
     TEST_ORBIT,
     TEST_ORDER,
+    TEST_DEGREE,
     TEST_DOMAIN,
     TEST_IS_ODD,
     TEST_ASCENTS,
@@ -78,6 +79,16 @@ def test_cycle_notation(permutation, expected_value) -> None:
         evaluation=permutation.cycle_notation(),
         expected=expected_value,
     )
+
+
+@pytest.mark.parametrize(
+    argnames="permutation, expected_value",
+    argvalues=TEST_DEGREE,
+    ids=[f"{p.rep()}.degree()={d}" for p, d in TEST_DEGREE],
+)
+def test_degree(permutation, expected_value) -> None:
+    """Tests for the method `degree()`."""
+    _check_values(expression=f"{permutation.rep()}.degree()", evaluation=permutation.degree(), expected=expected_value)
 
 
 @pytest.mark.parametrize(
