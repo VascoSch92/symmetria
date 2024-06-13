@@ -2,6 +2,7 @@ from typing import List, Generator
 
 from symmetria.generators._algorithms import (
     _heap,
+    _zaks,
     _lexicographic,
     _steinhaus_johnson_trotter,
 )
@@ -12,6 +13,7 @@ _SUPPORTED_ALGORITHM: List[str] = [
     "lexicographic",
     "heap",
     "steinhaus-johnson-trotter",
+    "zaks",
 ]
 
 
@@ -83,3 +85,5 @@ def _relevant_generator(algorithm: str, degree: int) -> Generator["Permutation",
         return _heap(degree=degree, start=list(range(1, degree + 1)))
     elif algorithm == "steinhaus-johnson-trotter":
         return _steinhaus_johnson_trotter(degree=degree, start=list(range(1, degree + 1)))
+    elif algorithm == "zaks":
+        return _zaks(degree=degree, start=list(range(degree, 0, -1)))
