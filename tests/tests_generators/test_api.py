@@ -71,3 +71,16 @@ def test_zaks_generator(degree, expected_value) -> None:
         evaluation=list(symmetria.generate(algorithm="zaks", degree=degree)),
         expected=expected_value,
     )
+
+
+@pytest.mark.parametrize(
+    argnames="degree, expected_value",
+    argvalues=TEST_ZAKS_GENERATOR,
+    ids=[f"symmetria.generate('zaks', {d})" for d, _ in TEST_ZAKS_GENERATOR],
+)
+def test_zaks_generator(degree, expected_value) -> None:
+    _check_values(
+        expression=f"symmetria.generate('zaks', {degree})",
+        evaluation=list(symmetria.generate(algorithm="zaks", degree=degree)),
+        expected=expected_value,
+    )
