@@ -135,3 +135,17 @@ TEST_SJT_GENERATOR = [
         ],
     ),
 ]
+TEST_ZAKS_GENERATOR = [
+    (1, [Permutation(1)]),
+    (
+        3,
+        [
+            Permutation(1, 2, 3),
+            Permutation(2, 1, 3),
+            Permutation(3, 1, 2),
+            Permutation(1, 3, 2),
+            Permutation(2, 3, 1),
+            Permutation(3, 2, 1),
+        ],
+    ),
+]

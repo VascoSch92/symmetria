@@ -89,3 +89,19 @@ def _steinhaus_johnson_trotter(degree: int) -> Generator[Permutation, None, None
         for i in range(degree):
             if permutation[i] > permutation[swap_with]:
                 directions[i] = -directions[i]
+
+
+def _zaks(degree: int, start: List[int]) -> Generator["Permutation", None, None]:
+    # Start with the identity permutation
+    permutation = start
+
+    for j in start[1:]:
+        yield symmetria.Permutation(*permutation)
+
+        # Reverse the first k elements
+        permutation[degree - j - 1 :] = reversed(permutation[degree - j - 1 :])
+
+
+if __name__ == "__main__":
+    for a in _zaks(3, list(range(1, 4))):
+        print(a)
