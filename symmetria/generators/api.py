@@ -3,6 +3,7 @@ from typing import List, Generator
 from symmetria.generators._algorithms import (
     _heap,
     _lexicographic,
+    _colexicographic,
     _steinhaus_johnson_trotter,
 )
 
@@ -10,6 +11,7 @@ __all__ = ["generate"]
 
 _SUPPORTED_ALGORITHM: List[str] = [
     "lexicographic",
+    "colexicographic",
     "heap",
     "steinhaus-johnson-trotter",
 ]
@@ -53,7 +55,7 @@ def generate(degree: int, algorithm: str = "lexicographic") -> Generator["Permut
 def _check_algorithm_parameter(value: str) -> None:
     """Private method to check the value provided for the parameter `algorithm`.
 
-    Recall that the parameter `algorithm` must be a string present in the list _SUPPORTED_ALGORITHM
+    Recall that the parameter `algorithm` must be a string presents in the list _SUPPORTED_ALGORITHM
     """
     if isinstance(value, str) is False:
         raise TypeError(f"The parameter `algorithm` must be of type string, but {type(value)} was provided.")
@@ -79,6 +81,8 @@ def _relevant_generator(algorithm: str, degree: int) -> Generator["Permutation",
     """Private method to pick the correct algorithm for generating permutations."""
     if algorithm == "lexicographic":
         return _lexicographic(degree=degree, start=list(range(1, degree + 1)))
+    elif algorithm == "colexicographic":
+        return _colexicographic(degree=degree, start=list(range(degree, 0, -1)))
     elif algorithm == "heap":
         return _heap(degree=degree, start=list(range(1, degree + 1)))
     elif algorithm == "steinhaus-johnson-trotter":

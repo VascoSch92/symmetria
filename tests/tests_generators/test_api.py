@@ -6,6 +6,7 @@ from tests.tests_generators.test_cases import (
     TEST_SJT_GENERATOR,
     TEST_HEAP_GENERATOR,
     TEST_LEXICOGRAPHIC_GENERATOR,
+    TEST_COLEXICOGRAPHIC_GENERATOR,
     TEST_PERMUTATION_GENERATOR_EXCPETIONS,
 )
 
@@ -29,6 +30,19 @@ def test_lexicographic_generator(degree, expected_value) -> None:
     _check_values(
         expression=f"symmetria.generate('lexicographic', {degree})",
         evaluation=list(symmetria.generate(algorithm="lexicographic", degree=degree)),
+        expected=expected_value,
+    )
+
+
+@pytest.mark.parametrize(
+    argnames="degree, expected_value",
+    argvalues=TEST_COLEXICOGRAPHIC_GENERATOR,
+    ids=[f"symmetria.generate(colexicographic, {d})" for d, _ in TEST_COLEXICOGRAPHIC_GENERATOR],
+)
+def test_colexicographic_generator(degree, expected_value) -> None:
+    _check_values(
+        expression=f"symmetria.generate('colexicographic', {degree})",
+        evaluation=list(symmetria.generate(algorithm="colexicographic", degree=degree)),
         expected=expected_value,
     )
 

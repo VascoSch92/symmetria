@@ -38,6 +38,45 @@ def _lexicographic(degree: int, start: List[int]) -> Generator["Permutation", No
         permutation[k + 1 :] = reversed(permutation[k + 1 :])
 
 
+def _colexicographic(degree: int, start: List[int]) -> Generator["Permutation", None, None]:
+    """Private method to generate all the permutations of degree `degree` in colexicographic order.
+
+    The algorithm is described as follows:
+        1. Consider the identity permutation in the given degree.
+        2. Find the largest index k such that permutation[k] < permutation[k + 1].
+        3. If no k exists, then it is permutation is the last permutation. END.
+        4. Find the largest index j greater than k such that permutation[k] < permutation[j].
+        5. Swap the value of permutation[k] with that of permutation[j].
+        6. Reverse the sequence from permutation[k + 1] up to and including the final element permutation[degree].
+        7. Go to point 2.
+    """
+    # step 1
+    permutation = start
+    _ = degree
+
+    while True:
+        yield symmetria.Permutation(*permutation)
+
+        # Find the largest index k such that arr[k] > arr[k + 1]
+        k = len(permutation) - 2
+        while k >= 0 and permutation[k] < permutation[k + 1]:
+            k -= 1
+
+        if k == -1:
+            return
+
+        # Find the largest index l such that arr[k] > arr[l]
+        j = len(permutation) - 1
+        while permutation[k] < permutation[l]:
+            j -= 1
+
+        # Swap arr[k] with arr[l]
+        permutation[k], permutation[l] = permutation[l], permutation[k]
+
+        # Reverse the sequence from arr[k + 1] to the end
+        permutation[k + 1 :] = reversed(permutation[k + 1 :])
+
+
 def _heap(degree: int, start: List[int]) -> Generator["Permutation", None, None]:
     """Private method to generate all the permutations of degree `degree` using the Heap's algorithm.
 
