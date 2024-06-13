@@ -368,6 +368,26 @@ class Cycle(_Element):
         """
         return str(self)
 
+    def degree(self) -> int:
+        """Return the degree of the cycle.
+
+        Recall that the degree of a cycle is the number of elements on which it acts.
+
+        :return: The degree of the cycle.
+        :rtype: int
+
+        :example:
+            >>> from symmetria import Cycle
+            ...
+            >>> Cycle(1).degree()
+            1
+            >>> Cycle(1, 3, 2).degree()
+            3
+            >>> Cycle(1, 4, 3, 2).degree()
+            4
+        """
+        return len(self)
+
     def describe(self) -> str:
         """Return a table describing the cycle.
 

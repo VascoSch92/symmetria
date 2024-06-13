@@ -22,6 +22,11 @@ TEST_CYCLE_NOTATION = [
     (Cycle(1, 2), "(1 2)"),
     (Cycle(1, 2, 3), "(1 2 3)"),
 ]
+TEST_DEGREE = [
+    (Cycle(1), 1),
+    (Cycle(1, 3, 2), 3),
+    (Cycle(1, 4, 3, 2), 4),
+]
 TEST_DESCRIBE = [
     (
         Cycle(1),

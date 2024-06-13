@@ -60,6 +60,11 @@ Here, **P** denotes the class ``Permutation``, **C** the class ``Cycle``, and **
      - ✅
      - ✅
      - ✅
+   * - ``degree``
+     - Return the degree of the permutation
+     - ✅
+     - ✅
+     - ✅
    * - ``descents``
      - Return the positions of the permutation descents
      - ✅

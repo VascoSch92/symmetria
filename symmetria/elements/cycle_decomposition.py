@@ -434,6 +434,26 @@ class CycleDecomposition(_Element):
         """
         return tuple(sorted(len(cycle) for cycle in self))
 
+    def degree(self) -> int:
+        """Return the degree of the cycle decomposition.
+
+        Recall that the degree of a cycle decomposition is the number of elements on which it acts.
+
+        :return: The degree of the cycle decomposition.
+        :rtype: int
+
+        :example:
+            >>> from symmetria import Cycle, CycleDecomposition
+            ...
+            >>> CycleDecomposition(Cycle(1)).degree()
+            1
+            >>> CycleDecomposition(Cycle(1), Cycle(3, 2)).degree()
+            3
+            >>> CycleDecomposition(Cycle(1, 4), Cycle(3, 2)).degree()
+            4
+        """
+        return max(max(cycle.elements) for cycle in self._cycles)
+
     def descents(self) -> List[int]:
         r"""Return the descents of the cycle decomposition.
 
