@@ -52,29 +52,26 @@ def _colexicographic(degree: int, start: List[int]) -> Generator["Permutation", 
     """
     # step 1
     permutation = start
-    _ = degree
+
+    d = [1] * degree
+    yield symmetria.Permutation(*permutation)
 
     while True:
-        yield symmetria.Permutation(*permutation)
-
-        # Find the largest index k such that arr[k] > arr[k + 1]
-        k = len(permutation) - 2
-        while k >= 0 and permutation[k] < permutation[k + 1]:
-            k -= 1
-
-        if k == -1:
+        k = 1
+        while k < degree - 1 and permutation[k] < permutation[k + 1]:
+            d[k - 1] = 0
+            k += 1
+        if k == degree - 1:
             return
 
-        # Find the largest index l such that arr[k] > arr[l]
-        j = len(permutation) - 1
-        while permutation[k] < permutation[l]:
-            j -= 1
+        d[k - 1] += 1
+        if d[k - 1] == k + 1:
+            permutation[0], permutation[k + 1] = permutation[k + 1], permutation[0]
+            d[k - 1] = 0
+        else:
+            permutation[k], permutation[k - d[k - 1]] = permutation[k - d[k - 1]], permutation[k]
 
-        # Swap arr[k] with arr[l]
-        permutation[k], permutation[l] = permutation[l], permutation[k]
-
-        # Reverse the sequence from arr[k + 1] to the end
-        permutation[k + 1 :] = reversed(permutation[k + 1 :])
+        yield symmetria.Permutation(*permutation)
 
 
 def _heap(degree: int, start: List[int]) -> Generator["Permutation", None, None]:
