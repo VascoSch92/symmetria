@@ -5,6 +5,7 @@ import symmetria.elements.permutation
 import symmetria.elements.cycle_decomposition
 from symmetria.elements._base import _Element
 from symmetria.elements._utils import _pretty_print_table
+from symmetria.elements._validators import _validate_cycle
 
 __all__ = ["Cycle"]
 
@@ -42,23 +43,20 @@ class Cycle(_Element):
 
     __slots__ = ["_cycle", "_domain"]
 
+    def __new__(cls, *cycle: int) -> "Cycle":
+        _validate_cycle(cycle=cycle)
+        return super().__new__(cls)
+
     def __init__(self, *cycle: int) -> None:
-        self._cycle: Tuple[int, ...] = self._validate_and_standardize(cycle)
+        self._cycle: Tuple[int, ...] = self._standardization(cycle=cycle)
         self._domain: Iterable[int] = range(1, max(self._cycle) + 1)
 
     @staticmethod
-    def _validate_and_standardize(cycle: Tuple[int, ...]) -> Tuple[int, ...]:
-        """Private method to validate and standardize a set of integers to form a cycle.
+    def _standardization(cycle: Tuple[int, ...]) -> Tuple[int, ...]:
+        """Private method to standardize a set of integers to form a cycle.
 
-        A tuple is eligible to be a cycle if it contains only strictly positive integers.
         The standard form for a cycle is the (unique) one where the first element is the smallest.
         """
-        for element in cycle:
-            if isinstance(element, int) is False:
-                raise ValueError(f"Expected `int` type, but got {type(element)}.")
-            if element < 1:
-                raise ValueError(f"Expected all strictly positive values, but got {element}.")
-
         smallest_element_index = cycle.index(min(cycle))
         if smallest_element_index == 0:
             return tuple(cycle)

@@ -29,7 +29,9 @@ FEATURE:
 
 ENHANCEMENT:
 - `symmetria.Permutation`: change how the sign is computed
-
+- `symmetria.Permutation`: add `__new__` method to the class
+- `symmetria.CyclePermutation`: add `__new__` method to the class
+- `symmetria.Cycle`: add `__new__` method to the class
 
 ## \[0.2.0\] - 2024-06-12
 

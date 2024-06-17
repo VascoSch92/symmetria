@@ -1,12 +1,12 @@
 from math import lcm, prod
 from typing import Any, Set, Dict, List, Tuple, Union, Iterable
-from itertools import combinations
 from collections import OrderedDict
 
 import symmetria.elements.cycle
 import symmetria.elements.permutation
 from symmetria.elements._base import _Element
 from symmetria.elements._utils import _pretty_print_table
+from symmetria.elements._validators import _validate_cycle_decomposition
 
 __all__ = ["CycleDecomposition"]
 
@@ -45,41 +45,24 @@ class CycleDecomposition(_Element):
 
     __slots__ = ["_cycles", "_domain"]
 
+    def __new__(cls, *cycles: "Cycle") -> "CycleDecomposition":
+        _validate_cycle_decomposition(cycles=cycles)
+        return super().__new__(cls)
+
     def __init__(self, *cycles: "Cycle") -> None:
-        self._cycles: Tuple["Cycle", ...] = self._validate_and_standardize(
-            cycles=cycles,
-        )
+        self._cycles: Tuple["Cycle", ...] = self._standardization(cycles=cycles)
         self._domain: Iterable[int] = range(
             1,
             max(max(cycle.elements) for cycle in self._cycles) + 1,
         )
 
     @staticmethod
-    def _validate_and_standardize(cycles: Tuple["Cycle", ...]) -> Tuple["Cycle", ...]:
-        """Private method to validate and standardize a tuple of cycles to become a cycle decomposition.
+    def _standardization(cycles: Tuple["Cycle", ...]) -> Tuple["Cycle", ...]:
+        """Private method to standardize a tuple of cycles to become a cycle decomposition.
 
-        A tuple of cycles is eligible to be a cycle decomposition if and only if:
-            - every pair of cycles is disjoint, meaning their supports are disjoint;
-            - every element from 1 to the largest permuted element is included in at least one cycle.
-        Furthermore, the cycle decomposition is standardized, meaning the cycles are ordered by the first
-        element of each cycle in increasing order.
+        A cycle decomposition is standardized if the cycles are ordered by increasingly the first element of each cycle.
         """
-        # checks that the cycles are disjoint
-        for cycle_a, cycle_b in combinations(cycles, 2):
-            if set(cycle_a.elements) & set(cycle_b.elements):
-                raise ValueError(f"The cycles {cycle_a} and {cycle_b} don't have disjoint support.")
-
-        # checks that every element is included in a cycle
-        elements = {element for cycle in cycles for element in cycle.elements}
-        if set(range(1, len(elements) + 1)) != elements:
-            raise ValueError(
-                "Every element from 1 to the biggest permuted element must be included in some cycle,\n "
-                f"but this is not the case for the element(s): {set(range(1, len(elements) + 1)).difference(elements)}"
-            )
-
-        # standardization
-        cycles = sorted(cycles, key=lambda cycle: cycle[0])
-        return tuple(cycles)
+        return tuple(sorted(cycles, key=lambda cycle: cycle[0]))
 
     def __bool__(self) -> bool:
         r"""Check if the cycle decomposition is non-empty, i.e., it is different from the identity

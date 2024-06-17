@@ -27,16 +27,21 @@ class OrderTestSuite:
                 return [item.name for item in leaf.body if isinstance(item, ast.FunctionDef)]
 
     @staticmethod
-    def test_init_first_method(script_methods) -> None:
+    def test_new_first_method(script_methods) -> None:
+        if "__new__" in script_methods:
+            assert script_methods.index("__new__") == 0, "The `__new__` method is not in the first position."
+
+    @staticmethod
+    def test_init_second_method(script_methods) -> None:
         if "__init__" in script_methods:
-            assert script_methods.index("__init__") == 0, "The `__init__` method is not in first position."
+            assert script_methods.index("__init__") == 1, "The `__init__` method is not in the second position."
 
     @staticmethod
     def test_order(script_methods) -> None:
         script_methods = [
             method
             for method in script_methods
-            if method != "__init__"  # exclude __init__
+            if method not in {"__new__", "__init__"}  # exclude __new__ and __init__
             and not (method.startswith("_") and not method.startswith("__"))  # exclude private method but not magic
         ]
         assert sorted(script_methods) == script_methods
