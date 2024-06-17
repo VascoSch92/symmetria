@@ -5,6 +5,7 @@ import symmetria.elements.cycle
 import symmetria.elements.cycle_decomposition
 from symmetria.elements._base import _Element
 from symmetria.elements._utils import _pretty_print_table
+from symmetria.elements._validators import _validate_permutation
 
 __all__ = ["Permutation"]
 
@@ -35,35 +36,14 @@ class Permutation(_Element):
 
     __slots__ = ["_map", "_domain", "_image"]
 
+    def __new__(cls, *image: int) -> "Permutation":
+        _validate_permutation(image=image)
+        return super().__new__(cls)
+
     def __init__(self, *image: int) -> None:
-        self._map: Dict[int, int] = self._validate_image(image)
+        self._map: Dict[int, int] = dict(enumerate(image, 1))
         self._domain: Iterable[int] = range(1, len(self._map) + 1)
         self._image: Tuple[int] = tuple(image)
-
-    @staticmethod
-    def _validate_image(image: Tuple[int, ...]) -> Dict[int, int]:
-        """Private method to check if a set of integers is eligible as image for a permutation.
-
-        Recall that, a tuple of integers represent the image of a permutation if the following conditions hold:
-            - all the integers are strictly positive;
-            - all the integers are bounded by the total number of integers;
-            - there are no integer repeated.
-        """
-        _map = {}
-        for idx, img in enumerate(image):
-            if isinstance(img, int) is False:
-                raise ValueError(f"Expected `int` type, but got {type(img)}.")
-            if img < 1:
-                raise ValueError(f"Expected all strictly positive values, but got {img}")
-            elif img > len(image):
-                raise ValueError(f"The permutation is not injecting on its image. Indeed, {img} is not in the image.")
-            elif img in _map.values():
-                raise ValueError(
-                    f"It seems that the permutation is not bijective. Indeed, {img} has two, or more, pre-images."
-                )
-            else:
-                _map[idx + 1] = img
-        return _map
 
     def __bool__(self) -> bool:
         """Check if the permutation is different from the identity permutation.
