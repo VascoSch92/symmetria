@@ -1,9 +1,10 @@
 from typing import List, Generator
 
 import symmetria.elements.permutation
+from symmetria import Permutation
 
 
-def _lexicographic(degree: int, start: List[int]) -> Generator["Permutation", None, None]:
+def _lexicographic(degree: int, start: List[int]) -> Generator[Permutation, None, None]:
     """Private method to generate all the permutations of degree `degree` in lexicographic order.
 
     The algorithm is described as follows:
@@ -38,7 +39,7 @@ def _lexicographic(degree: int, start: List[int]) -> Generator["Permutation", No
         permutation[k + 1 :] = reversed(permutation[k + 1 :])
 
 
-def _heap(degree: int, start: List[int]) -> Generator["Permutation", None, None]:
+def _heap(degree: int, start: List[int]) -> Generator[Permutation, None, None]:
     """Private method to generate all the permutations of degree `degree` using the Heap's algorithm.
 
     A description of the algorithm can be founded in the article:
@@ -63,7 +64,7 @@ def _heap(degree: int, start: List[int]) -> Generator["Permutation", None, None]
             yield from _heap(k - 1, permutation)
 
 
-def _steinhaus_johnson_trotter(degree: int, start: List[int]) -> Generator["Permutation", None, None]:
+def _steinhaus_johnson_trotter(degree: int, start: List[int]) -> Generator[Permutation, None, None]:
     """Private method to generate all the permutations of degree `degree` using the Steinhaus-Johnson-Trotter algorithm.
 
     A description of the algorithm is given at:
