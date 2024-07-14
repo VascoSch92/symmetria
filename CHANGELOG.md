@@ -26,6 +26,7 @@ FEATURE:
 - `symmetria.Permutation`: add `degree` method
 - `symmetria.CyclePermutation`: add `degree` method
 - `symmetria.Cycle`: add `degree` method
+- `symmetria.random`: add random module to create random permutations
 
 ENHANCEMENT:
 - `symmetria.Permutation`: change how the sign is computed

@@ -84,6 +84,38 @@ with the symmetric group and its elements.
 
             API reference
 
+    .. grid-item-card:: :octicon:`iterations` Generators
+        :text-align: center
+        :class-title: sd-fs-5
+        :class-card: sd-p-3
+
+        Generating permutations
+
+        .. button-ref:: pages/API_reference/generators/index
+            :ref-type: doc
+            :color: primary
+            :outline:
+            :click-parent:
+            :expand:
+
+            API Reference
+
+    .. grid-item-card:: :octicon:`file-code` CLI
+        :text-align: center
+        :class-title: sd-fs-5
+        :class-card: sd-p-3
+
+        Command Line Interface
+
+        .. button-ref:: pages/cli/command_line_interface
+            :ref-type: doc
+            :color: primary
+            :outline:
+            :click-parent:
+            :expand:
+
+            API reference
+
 
 
 .. warning:: The documentations is still a working in progress.
