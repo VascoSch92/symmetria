@@ -1,6 +1,6 @@
 [project]
 name = "symmetria"
-version = "0.2.0"
+version = "0.3.0"
 description = "Symmetria provides an intuitive, thorough, and comprehensive framework for interacting with the symmetric group and its elements."
 authors = [
     {name = "Vasco Schiavo"},
