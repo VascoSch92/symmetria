@@ -770,7 +770,7 @@ class CycleDecomposition(_Element):
         Recall that the lexicographic rank of a permutation refers to its position in the list of all
         permutations of the same degree sorted in lexicographic order.
 
-        :return: the lexocographic rank of the permutation.
+        :return: the lexocographic rank of the cycle decomposition.
         :rtype: int
 
         :example:
