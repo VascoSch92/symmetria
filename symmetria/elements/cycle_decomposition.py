@@ -764,6 +764,27 @@ class CycleDecomposition(_Element):
         """
         return all(len(cycle) == len(self[0]) for cycle in self)
 
+    def lexicographic_rank(self) -> int:
+        """Return the lexicographic rank of the cycle decomposition.
+
+        Recall that the lexicographic rank of a permutation refers to its position in the list of all
+        permutations of the same degree sorted in lexicographic order.
+
+        :return: the lexocographic rank of the cycle decomposition.
+        :rtype: int
+
+        :example:
+            >>> from symmetria import Cycle, CycleDecomposition
+            ...
+            >>> CycleDecomposition(Cycle(1)).lexicographic_rank()
+            1
+            >>> CycleDecomposition(Cycle(1, 3, 2)).lexicographic_rank()
+            5
+            >>> CycleDecomposition(Cycle(1, 3, 2), Cycle(4, 5)).lexicographic_rank()
+            50
+        """
+        return symmetria.elements.permutation.Permutation.from_cycle_decomposition(self).lexicographic_rank()
+
     @property
     def map(self) -> Dict[int, int]:
         """Return a dictionary representing the mapping of the cycle decomposition,

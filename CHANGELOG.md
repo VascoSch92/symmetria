@@ -22,6 +22,10 @@ The version is represented by three digits: a.b.c.
 
 ## Unreleased
 
+FEATURE:
+- `symmetria.Permutation`: add `lexicographic_rank` method
+- `symmetria.CycleDecomposition`: add `lexicographic_rank` method
+
 ## \[0.3.0\] - 2024-07-15
 
 FEATURE:

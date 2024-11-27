@@ -225,6 +225,16 @@ TEST_IS_REGULAR = [
     (Permutation(2, 1), True),
     (Permutation(2, 1, 3), False),
 ]
+TEST_LEXICOGRAPHIC_RANK = [
+    (Permutation(1), 1),
+    (Permutation(1, 2), 1),
+    (Permutation(2, 1), 2),
+    (Permutation(1, 2, 3), 1),
+    (Permutation(1, 3, 2), 2),
+    (Permutation(3, 2, 1), 6),
+    (Permutation(3, 2, 1, 4), 15),
+    (Permutation(1, 2, 5, 4, 3), 6),
+]
 TEST_MAP = [
     (Permutation(1), {1: 1}),
     (Permutation(2, 1), {1: 2, 2: 1}),
