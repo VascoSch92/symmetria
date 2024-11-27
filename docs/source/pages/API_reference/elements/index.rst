@@ -115,6 +115,11 @@ Here, **P** denotes the class ``Permutation``, **C** the class ``Cycle``, and **
      - ✅
      - ❌
      - ✅
+   * - ``lexicographic_rank``
+     - Return the lexicographic rank of the permutation
+     - ✅
+     - ❌
+     - ✅
    * - ``map``
      - Return the map defining the permutation
      - ✅

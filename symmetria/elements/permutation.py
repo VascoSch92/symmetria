@@ -1,3 +1,4 @@
+from math import factorial
 from typing import Any, Set, Dict, List, Tuple, Union, Iterable
 from collections import OrderedDict
 
@@ -875,6 +876,39 @@ class Permutation(_Element):
         """
         cycle_decomposition = self.cycle_decomposition()
         return all(len(cycle) == len(cycle_decomposition[0]) for cycle in cycle_decomposition)
+
+    def lexicographic_rank(self) -> int:
+        """Return the lexicographic rank of the permutation.
+
+        Recall that the lexicographic rank of a permutation refers to its position in the list of all
+        permutations of the same degree sorted in lexicographic order.
+
+        :return: the lexocographic rank of the permutation.
+        :rtype: int
+
+        :example:
+            >>> from symmetria import Permutation
+            ...
+            >>> Permutation(1).lexicographic_rank()
+            1
+            >>> Permutation(1, 2, 3).lexicographic_rank()
+            1
+            >>> Permutation(1, 3, 2).lexicographic_rank()
+            2
+            >>> Permutation(3, 2, 1, 4).lexicographic_rank()
+            15
+        """
+        n = self.__len__()
+        rank = 1
+
+        for i in range(n):
+            right_smaller = 0
+            for j in range(i + 1, n):
+                if self[i + 1] > self[j + 1]:
+                    right_smaller += 1
+            rank += right_smaller * factorial(n - i - 1)
+
+        return rank
 
     @property
     def map(self) -> Dict[int, int]:

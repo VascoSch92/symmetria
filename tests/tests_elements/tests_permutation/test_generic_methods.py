@@ -27,6 +27,7 @@ from tests.tests_elements.tests_permutation.test_cases import (
     TEST_IS_DERANGEMENT,
     TEST_ONE_LINE_NOTATION,
     TEST_IS_CONJUGATE_ERROR,
+    TEST_LEXICOGRAPHIC_RANK,
     TEST_CYCLE_DECOMPOSITION,
 )
 
@@ -253,6 +254,20 @@ def test_is_regular(permutation, expected_value) -> None:
     """Tests for the method `is_regular()`."""
     _check_values(
         expression=f"{permutation.rep()}.is_regular()", evaluation=permutation.is_regular(), expected=expected_value
+    )
+
+
+@pytest.mark.parametrize(
+    argnames="permutation, expected_value",
+    argvalues=TEST_LEXICOGRAPHIC_RANK,
+    ids=[f"{p}.lexicographic_rank()={m}" for p, m in TEST_LEXICOGRAPHIC_RANK],
+)
+def test_lexicographic_rank(permutation, expected_value) -> None:
+    """Tests for the method `lexicographic_rank()`."""
+    _check_values(
+        expression=f"{permutation.rep()}.lexicographic_rank()",
+        evaluation=permutation.lexicographic_rank(),
+        expected=expected_value,
     )
 
 
