@@ -26,6 +26,9 @@ FEATURE:
 - `symmetria.Permutation`: add `lexicographic_rank` method
 - `symmetria.CycleDecomposition`: add `lexicographic_rank` method
 
+FIX:
+- `symmetria.Permutation`: fix small typos in class methods
+
 ## \[0.3.0\] - 2024-07-15
 
 FEATURE:
