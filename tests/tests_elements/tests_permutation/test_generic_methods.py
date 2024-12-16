@@ -22,6 +22,7 @@ from tests.tests_elements.tests_permutation.test_cases import (
     TEST_INVERSIONS,
     TEST_IS_REGULAR,
     TEST_EXCEEDANCES,
+    TEST_LEHMER_CODE,
     TEST_IS_CONJUGATE,
     TEST_CYCLE_NOTATION,
     TEST_IS_DERANGEMENT,
@@ -254,6 +255,20 @@ def test_is_regular(permutation, expected_value) -> None:
     """Tests for the method `is_regular()`."""
     _check_values(
         expression=f"{permutation.rep()}.is_regular()", evaluation=permutation.is_regular(), expected=expected_value
+    )
+
+
+@pytest.mark.parametrize(
+    argnames="permutation, expected_value",
+    argvalues=TEST_LEHMER_CODE,
+    ids=[f"{p}.lehmer_code()={m}" for p, m in TEST_LEHMER_CODE],
+)
+def test_lehmer_core(permutation, expected_value) -> None:
+    """Tests for the method `lehmer_code()`."""
+    _check_values(
+        expression=f"{permutation.rep()}.lehmer_code()",
+        evaluation=permutation.lehmer_code(),
+        expected=expected_value,
     )
 
 

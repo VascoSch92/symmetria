@@ -115,6 +115,11 @@ Here, **P** denotes the class ``Permutation``, **C** the class ``Cycle``, and **
      - ✅
      - ❌
      - ✅
+   * - ``lehmer_code``
+     - Return the Lehmer code of the permutation
+     - ✅
+     - ❌
+     - ✅
    * - ``lexicographic_rank``
      - Return the lexicographic rank of the permutation
      - ✅
