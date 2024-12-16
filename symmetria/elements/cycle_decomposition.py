@@ -764,6 +764,27 @@ class CycleDecomposition(_Element):
         """
         return all(len(cycle) == len(self[0]) for cycle in self)
 
+    def lehmer_code(self) -> List[int]:
+        """Return the Lehmer code of the cycle decomposition.
+
+        Recall that the Lehmer code of a permutation is a sequence that encodes the permutation as a series of integers.
+        Each integer represents the number of smaller elements to the right of a given element in the permutation.
+
+        :return: the Lehmer code of the cycle decomposition.
+        :rtype: List[int]
+
+        :example:
+            >>> from symmetria import CycleDecomposition, Cycle
+            ...
+            >>> CycleDecomposition(Cycle(1)).lehmer_code()
+            [0]
+            >>> CycleDecomposition(Cycle(1, 2), Cycle(3)).lehmer_code()
+            [1, 0, 0]
+            >>> CycleDecomposition(Cycle(1, 4), Cycle(2, 3)).lehmer_code()
+            [3, 2, 1, 0]
+        """
+        return symmetria.Permutation.from_cycle_decomposition(self).lehmer_code()
+
     def lexicographic_rank(self) -> int:
         """Return the lexicographic rank of the cycle decomposition.
 

@@ -25,6 +25,8 @@ The version is represented by three digits: a.b.c.
 FEATURE:
 - `symmetria.Permutation`: add `lexicographic_rank` method
 - `symmetria.CycleDecomposition`: add `lexicographic_rank` method
+- `symmetria.Permutation`: add `lehmer_code` method
+- `symmetria.CycleDecomposition`: add `lehmer_code` method
 
 FIX:
 - `symmetria.Permutation`: fix small typos in class methods
