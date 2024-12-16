@@ -638,7 +638,7 @@ class Permutation(_Element):
                 image.append(cycle[(idx + 1) % cycle_length])
             else:
                 image.append(element)
-        return Permutation(*image)
+        return cls(*image)
 
     @classmethod
     def from_cycle_decomposition(cls, cycle_decomposition: "CycleDecomposition") -> "Permutation":
@@ -660,7 +660,7 @@ class Permutation(_Element):
             >>> Permutation.from_cycle_decomposition(CycleDecomposition(Cycle(4, 3), Cycle(1, 2)))
             Permutation(2, 1, 4, 3)
         """
-        return Permutation.from_dict(p=cycle_decomposition.map)
+        return cls.from_dict(p=cycle_decomposition.map)
 
     @classmethod
     def from_dict(cls, p: Dict[int, int]) -> "Permutation":
@@ -681,7 +681,7 @@ class Permutation(_Element):
             >>> Permutation.from_dict({1: 5, 2: 3, 3: 1, 4: 2, 5:4})
             Permutation(5, 3, 1, 2, 4)
         """
-        return Permutation(*[p[idx] for idx in range(1, len(p) + 1)])
+        return cls(*[p[idx] for idx in range(1, len(p) + 1)])
 
     @property
     def image(self) -> Tuple[int]:
