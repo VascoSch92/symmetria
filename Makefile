@@ -24,6 +24,7 @@ help:
 	@echo " * install-pre-commit: install/update pre-commit and install it in git-hook."
 	@echo " * pre-commit: run pre-commit."
 	@echo " * release: release a dist."
+	@echo " * ruff: Ruff formatting and checking."
 	@echo " * test: run tests."
 	@echo " * test-report-xml: run tests and generate test-report.xml."
 	@echo " * test-report-missing: run tests with coverage report."
@@ -102,6 +103,12 @@ pre-commit:
 release:
 	@echo "[INFO] Release dist"
 	@twine upload "./$(DISTDIR)/*" -u __token__ -p $(PYPI_PASSWORD)
+
+ruff:
+	@echo "[INFO] Ruff formatting and checking"
+	@ruff check . --fix
+	@ruff format .
+
 
 test:
 	@echo "[INFO] Run tests"
