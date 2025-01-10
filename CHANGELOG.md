@@ -23,7 +23,9 @@ The version is represented by three digits: a.b.c.
 ## Unreleased
 
 MAINTENANCE:
-- deprecated symmetria.generator. This function will be deprecated in a future version. Use 'permutation_generator' instead
+- deprecated symmetria.generator: This function will be deprecated in a future version. Use `permutation_generator` instead
+- deprecated symmetria.generators.random.api.random: This function will be deprecated in a future version. Use `random_permutation` instead
+- Makefile: added `ruff` command.
 
 ## \[0.3.1\] - 2024-12-16
 
