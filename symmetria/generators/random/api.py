@@ -21,6 +21,8 @@ _SUPPORTED_ALGORITHM: List[str] = [
 def random(degree: int, algorithm: str = "random") -> Permutation:
     """Generate a random permutation of the given degree based on the chosen algorithm.
 
+    :warning: This function will be deprecated in a future version. Use 'random_permutation' instead.
+
     The method generate a random permutation of the given degree using the specified algorithm.
 
     :param degree: The degree of the permutation to be generated. Must be a non-zero positive integer.
