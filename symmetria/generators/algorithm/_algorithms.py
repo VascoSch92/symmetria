@@ -91,15 +91,33 @@ def _steinhaus_johnson_trotter(degree: int) -> Generator[Permutation, None, None
                 directions[i] = -directions[i]
 
 
-def _zaks(degree: int, start: List[int]) -> Generator["Permutation", None, None]:
-    # Start with the identity permutation
-    permutation = start
+def _zaks(degree: int, start: List[int]) -> Generator[List[int], None, None]:
+    """
+    Generate all permutations of degree `degree` using the Zaks algorithm.
 
-    for j in start[1:]:
-        yield symmetria.Permutation(*permutation)
+    Args:
+        degree: The degree of the permutation.
+        start: The starting permutation (e.g., [0, 1, 2, ...]).
 
-        # Reverse the first k elements
-        permutation[degree - j - 1 :] = reversed(permutation[degree - j - 1 :])
+    Yields:
+        List[int]: The next permutation in the sequence.
+    """
+    if degree == 1:
+        yield Permutation(*start)  # Yield a copy to avoid modifying the original list
+    else:
+        # Generate permutations with k-th unaltered
+        for perm in _zaks(degree - 1, start):
+            yield Permutation(*perm)
+
+        # Generate permutations for k-th swapped with each k-1 initial
+        for i in range(1, degree + 1):
+            # Zaks's Swapping Rule:
+            # Swap the k-th element with the element at index i * (k - 1) % (degree - 1)
+            j = i * (degree - 1) % (degree - 1)
+            start[j], start[degree - 1] = start[degree - 1], start[j]
+            for perm in _zaks(degree - 1, start):
+                yield Permutation(*perm)
+            start[j], start[degree - 1] = start[degree - 1], start[j]  # Restore original order
 
 
 if __name__ == "__main__":
