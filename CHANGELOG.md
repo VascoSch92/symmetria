@@ -22,6 +22,8 @@ The version is represented by three digits: a.b.c.
 
 ## Unreleased
 
+## \[0.3.2\] - 2025-02-08
+
 MAINTENANCE:
 - deprecated symmetria.generator: This function will be deprecated in a future version. Use `permutation_generator` instead
 - deprecated symmetria.generators.random.api.random: This function will be deprecated in a future version. Use `random_permutation` instead
