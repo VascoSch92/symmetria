@@ -1,5 +1,5 @@
 from math import lcm, prod
-from typing import Any, Set, Dict, List, Tuple, Union, Iterable
+from typing import TYPE_CHECKING, Any, Set, Dict, List, Tuple, Union, Iterable
 from collections import OrderedDict
 
 import symmetria.elements.cycle
@@ -7,6 +7,10 @@ import symmetria.elements.permutation
 from symmetria.elements._base import _Element
 from symmetria.elements._utils import _pretty_print_table
 from symmetria.elements._validators import _validate_cycle_decomposition
+
+if TYPE_CHECKING:
+    from symmetria.elements.cycle import Cycle
+    from symmetria.elements.permutation import Permutation
 
 __all__ = ["CycleDecomposition"]
 
@@ -85,7 +89,7 @@ class CycleDecomposition(_Element):
             :math:`n \in \mathbb{N}`, i.e., ``bool(CycleDecomposition(Cycle(n))) = False``. Same for cycle decomposition
             of identity cycle, e.g., ``CycleDecomposition(Cycle(1), Cycle(2), Cycle(3)).``
         """
-        return any(bool(cycle) for cycle in self)
+        return any(bool(cycle) for cycle in iter(self))
 
     def __call__(self, item: Any) -> Any:
         """Call the cycle decomposition on the `item` object, i.e., mimic a cycle decomposition action on the
@@ -109,7 +113,7 @@ class CycleDecomposition(_Element):
         """
         if isinstance(item, int):
             return self._call_on_integer(original=item)
-        elif isinstance(item, (str, List, Tuple)):
+        elif isinstance(item, (str, list, tuple)):
             if max(self.domain) > len(item):
                 raise ValueError(f"Not enough object to permute {item} using the cycle {self}.")
             return self._call_on_str_list_tuple(original=item)
@@ -149,7 +153,7 @@ class CycleDecomposition(_Element):
             permuted[self._call_on_integer(original=idx) - 1] = w
         if isinstance(original, str):
             return "".join(permuted)
-        elif isinstance(original, Tuple):
+        elif isinstance(original, tuple):
             return tuple(p for p in permuted)
         else:
             return permuted
@@ -179,11 +183,10 @@ class CycleDecomposition(_Element):
         if isinstance(other, CycleDecomposition):
             if len(self) != len(other):
                 return False
-            else:
-                for cycle_a, cycle_b in zip(self, other):
-                    if cycle_a.elements != cycle_b.elements:
-                        return False
-                return True
+            for cycle_a, cycle_b in zip(iter(self), iter(other)):
+                if cycle_a.elements != cycle_b.elements:
+                    return False
+            return True
         return False
 
     def __getitem__(self, idx: int) -> "Cycle":
@@ -321,7 +324,7 @@ class CycleDecomposition(_Element):
             >>> CycleDecomposition(Cycle(1, 3), Cycle(4, 5, 2, 6)).__repr__()
             'CycleDecomposition(Cycle(1, 3), Cycle(2, 6, 4, 5))'
         """
-        return f"CycleDecomposition({', '.join([cycle.__repr__() for cycle in self])})"
+        return f"CycleDecomposition({', '.join([cycle.__repr__() for cycle in iter(self)])})"
 
     def __str__(self) -> str:
         """Return a string representation of the cycle decomposition in the cycle notation.
@@ -339,7 +342,7 @@ class CycleDecomposition(_Element):
             >>> str(CycleDecomposition(Cycle(1, 3), Cycle(4, 5, 2, 6)))
             '(1 3)(2 6 4 5)'
         """
-        return "".join([str(c) for c in self])
+        return "".join([str(c) for c in iter(self)])
 
     def ascents(self) -> List[int]:
         r"""Return the ascents of the cycle decomposition.
@@ -392,7 +395,7 @@ class CycleDecomposition(_Element):
         """
         return str(self)
 
-    def cycle_type(self) -> Tuple[int]:
+    def cycle_type(self) -> Tuple[int, ...]:
         r"""Return the cycle type of the cycle decomposition.
 
         Recall that the cycle type of the permutation :math:`\sigma` is a sequence of integer, where
@@ -415,7 +418,7 @@ class CycleDecomposition(_Element):
             >>> CycleDecomposition(Cycle(1, 2), Cycle(3, 4)).cycle_type()
             (2, 2)
         """
-        return tuple(sorted(len(cycle) for cycle in self))
+        return tuple(sorted(len(cycle) for cycle in iter(self)))
 
     def degree(self) -> int:
         """Return the degree of the cycle decomposition.
@@ -570,7 +573,7 @@ class CycleDecomposition(_Element):
             if len(other) == 1:
                 return other[0] == 1
             else:
-                for cycle in self:
+                for cycle in iter(self):
                     if len(cycle) > 1 and cycle != other:
                         return False
             return True
@@ -625,7 +628,7 @@ class CycleDecomposition(_Element):
             >>> CycleDecomposition(Cycle(1, 2), Cycle(3, 4)).inverse()
             CycleDecomposition(Cycle(1, 2), Cycle(3, 4))
         """
-        return CycleDecomposition(*[cycle.inverse() for cycle in self])
+        return CycleDecomposition(*[cycle.inverse() for cycle in iter(self)])
 
     def inversions(self) -> List[Tuple[int, int]]:
         r"""Return the inversions of the cycle decomposition.
@@ -697,7 +700,7 @@ class CycleDecomposition(_Element):
             >>> CycleDecomposition(Cycle(1), Cycle(2, 3)).is_derangement()
             False
         """
-        for cycle in self:
+        for cycle in iter(self):
             if len(cycle) == 1:
                 return False
         return True
@@ -762,7 +765,7 @@ class CycleDecomposition(_Element):
             >>> CycleDecomposition(Cycle(2, 1), Cycle(3)).is_regular()
             False
         """
-        return all(len(cycle) == len(self[0]) for cycle in self)
+        return all(len(cycle) == len(self[0]) for cycle in iter(self))
 
     def lehmer_code(self) -> List[int]:
         """Return the Lehmer code of the cycle decomposition.
@@ -823,7 +826,7 @@ class CycleDecomposition(_Element):
             {1: 2, 2: 1, 3: 4, 4: 3}
         """
         _map = {}
-        for cycle in self:
+        for cycle in iter(self):
             _map.update(cycle.map)
         return _map
 
@@ -867,7 +870,7 @@ class CycleDecomposition(_Element):
             >>> CycleDecomposition(Cycle(1, 3, 2), Cycle(4, 5)).order()
             6
         """
-        return lcm(*[len(cycle) for cycle in self])
+        return lcm(*[len(cycle) for cycle in iter(self)])
 
     def records(self) -> List[int]:
         r"""Return the records of the cycle decomposition.
@@ -916,7 +919,7 @@ class CycleDecomposition(_Element):
             >>> CycleDecomposition(Cycle(1), Cycle(2, 4, 7, 6), Cycle(3, 5)).sgn()
             1
         """
-        return prod([cycle.sgn() for cycle in self])
+        return prod([cycle.sgn() for cycle in iter(self)])
 
     def support(self) -> Set[int]:
         r"""Return a set containing the indices in the domain of the permutation whose images are different from
@@ -936,4 +939,4 @@ class CycleDecomposition(_Element):
             >>> CycleDecomposition(Cycle(3, 4, 5, 6), Cycle(2, 1)).support()
             {1, 2, 3, 4, 5, 6}
         """
-        return {element for cycle in self if len(cycle) != 1 for element in cycle.elements}
+        return {element for cycle in iter(self) if len(cycle) != 1 for element in iter(cycle.elements)}

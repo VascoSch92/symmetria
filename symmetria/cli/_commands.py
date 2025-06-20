@@ -43,8 +43,8 @@ def _execute_help_command() -> None:
 
 def _execute_permutation_command(permutation: str) -> None:
     """Execute the command when a permutation is given."""
-    permutation = _parse_permutation(permutation=permutation)
-    sys.stdout.write(permutation.describe() + "\n")
+    parsed_permutation = _parse_permutation(permutation=permutation)
+    sys.stdout.write(parsed_permutation.describe() + "\n")
     sys.exit(0)
 
 

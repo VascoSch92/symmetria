@@ -22,6 +22,7 @@ help:
 	@echo " * init-dist: install dist dependencies."
 	@echo " * init-dev: install dev dependencies."
 	@echo " * install-pre-commit: install/update pre-commit and install it in git-hook."
+	@echo " * mypy: run mypy."
 	@echo " * pre-commit: run pre-commit."
 	@echo " * release: release a dist."
 	@echo " * ruff: Ruff formatting and checking."
@@ -92,6 +93,10 @@ install-pre-commit:
 	@pre-commit --version
 	@echo "[INFO] Install pre-commit into git-hooks"
 	@pre-commit install
+
+mypy:
+	@echo "[INFO] Run mypy"
+	@mypy .
 
 pip:
 	@python -m pip install --upgrade pip

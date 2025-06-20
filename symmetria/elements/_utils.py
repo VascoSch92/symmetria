@@ -1,8 +1,7 @@
-from typing import Any
 from collections import OrderedDict
 
 
-def _pretty_print_table(title: str, body: OrderedDict[str, Any] = None) -> str:
+def _pretty_print_table(title: str, body: OrderedDict[str, str]) -> str:
     """Private method to print an ordered dictionary in a table format."""
     max_length_keys = max([len(key) for key in body.keys()])
     max_length_values = max([len(value) for value in body.values()])

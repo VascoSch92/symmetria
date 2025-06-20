@@ -104,7 +104,6 @@ lint.select = [
     "UP003", # Use {} instead of type(...)
     "UP008", # Use super() instead of super(_class_, self)
     "UP011", # Unnecessary parentheses to functools.lru_cache
-    "UP027", # Replace unpacked list comprehension with a generator expression
     "UP032", # Use f-string instead of format call
     "C4", # flake8-comprehensions
     "ICN", # flake8-import-conventions

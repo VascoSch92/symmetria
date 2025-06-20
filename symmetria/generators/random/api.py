@@ -1,5 +1,5 @@
 import warnings
-from typing import List, Generator
+from typing import List, Final, Generator
 
 from symmetria import Permutation
 from symmetria.generators._validators import _check_degree_parameter, _check_algorithm_parameter
@@ -12,7 +12,7 @@ from symmetria.generators.random._algorithms import (
 
 __all__ = ["random", "random_generator", "random_permutation"]
 
-_SUPPORTED_ALGORITHM: List[str] = [
+_SUPPORTED_ALGORITHM: Final[List[str]] = [
     "random",
     "fisher-yates",
 ]
@@ -83,6 +83,9 @@ def _relevant_random_permutation(algorithm: str, degree: int) -> Permutation:
         return _random_shuffle(permutation=list(range(1, degree + 1)))
     elif algorithm == "fisher-yates":
         return _fisher_yates_shuffle(permutation=list(range(1, degree + 1)))
+    raise NotImplementedError(
+        f"Algorithm '{algorithm}' is not supported yet.\nSupported algorithms are {', '.join(_SUPPORTED_ALGORITHM)}"
+    )
 
 
 def random_generator(degree: int, algorithm: str = "random") -> Generator[Permutation, None, None]:
@@ -123,3 +126,6 @@ def _relevant_random_generator(algorithm: str, degree: int) -> Generator[Permuta
         return _random_shuffle_generator(degree=degree)
     elif algorithm == "fisher-yates":
         return _fisher_yates_shuffle_generator(degree=degree)
+    raise NotImplementedError(
+        f"Algorithm '{algorithm}' is not supported yet.\nSupported algorithms are {', '.join(_SUPPORTED_ALGORITHM)}"
+    )
