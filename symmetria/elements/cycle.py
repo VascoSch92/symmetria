@@ -1,4 +1,4 @@
-from typing import Any, Set, Dict, List, Tuple, Union, Iterable
+from typing import TYPE_CHECKING, Any, Set, Dict, List, Tuple, Union, Iterable, Iterator
 from collections import OrderedDict
 
 import symmetria.elements.permutation
@@ -6,6 +6,10 @@ import symmetria.elements.cycle_decomposition
 from symmetria.elements._base import _Element
 from symmetria.elements._utils import _pretty_print_table
 from symmetria.elements._validators import _validate_cycle
+
+if TYPE_CHECKING:
+    from symmetria.elements.permutation import Permutation
+    from symmetria.elements.cycle_decomposition import CycleDecomposition
 
 __all__ = ["Cycle"]
 
@@ -115,7 +119,7 @@ class Cycle(_Element):
         """
         if isinstance(item, int):
             return self._call_on_integer(original=item)
-        elif isinstance(item, (str, List, Tuple)):
+        elif isinstance(item, (str, list, tuple)):
             if max(self.elements) > len(item):
                 raise ValueError(f"Not enough object to permute {item} using the cycle {self}.")
             return self._call_on_str_list_tuple(original=item)
@@ -155,7 +159,7 @@ class Cycle(_Element):
             permuted[self._call_on_integer(original=idx) - 1] = w
         if isinstance(original, str):
             return "".join(permuted)
-        elif isinstance(original, Tuple):
+        elif isinstance(original, tuple):
             return tuple(p for p in permuted)
         else:
             return permuted
@@ -177,6 +181,25 @@ class Cycle(_Element):
                 cycles.append(Cycle(idx))
         cycle_decomposition = symmetria.elements.cycle_decomposition.CycleDecomposition(*cycles)
         return cycle_decomposition * original
+
+    def __contains__(self, item: Any) -> bool:
+        """Membership check, i.e., if an element is contained in the cycle.
+
+        :param item: The object to check membership for.
+        :type item: Any
+
+        :return: True if the given element is in the cycle. Otherwise, False.
+        :rtype: bool
+
+        :example:
+            >>> from symmetria import Cycle
+            ...
+            >>> 1 in Cycle(1, 2, 3)
+            True
+            >>> 7 in Cycle(1, 2, 3)
+            False
+        """
+        return item in self._cycle
 
     def __eq__(self, other: Any) -> bool:
         """Check if the cycle is equal to another object.
@@ -254,6 +277,24 @@ class Cycle(_Element):
             134526
         """
         return sum([element * 10 ** (len(self) - idx) for idx, element in enumerate(self.elements, 1)])
+
+    def __iter__(self) -> Iterator[int]:
+        """Return an iterator over the cycles in the cycle decomposition.
+
+        :return: An iterator over the Cycle objects contained.
+        :rtype: Iterator[Cycle]
+
+        :example:
+            >>> from symmetria import Cycle
+            >>> cycle = Cycle(1, 2, 3, 4)
+            >>> for element in cycle:
+            ...     print(element)
+            1
+            2
+            3
+            4
+        """
+        return iter(self._cycle)
 
     def __len__(self) -> int:
         """Return the length of the cycle, which is the number of elements in its domain.
@@ -454,7 +495,7 @@ class Cycle(_Element):
         return self._domain
 
     @property
-    def elements(self) -> Tuple[int]:
+    def elements(self) -> Tuple[int, ...]:
         """Return a tuple containing the elements of the cycle in its standard form.
 
         :return: The elements of the cycle.
@@ -500,13 +541,13 @@ class Cycle(_Element):
         if isinstance(other, symmetria.elements.cycle_decomposition.CycleDecomposition):
             # case where both are the identity
             if bool(self) is False and bool(other) is False:
-                return max(self.elements) == max([max(cycle.elements) for cycle in other])
+                return max(self.elements) == max([max(cycle.elements) for cycle in iter(other)])
             # cases where is the identity but the other no
             elif (bool(self) is False and bool(other) is True) or (bool(self) is True and bool(other) is False):
                 return False
             # both not the identity
             else:
-                for cycle in other:
+                for cycle in iter(other):
                     if len(cycle) > 1:
                         return self == cycle
         elif isinstance(other, symmetria.elements.permutation.Permutation):

@@ -25,6 +25,7 @@ class OrderTestSuite:
         for leaf in module.body:
             if isinstance(leaf, ast.ClassDef):
                 return [item.name for item in leaf.body if isinstance(item, ast.FunctionDef)]
+        return []
 
     @staticmethod
     def test_new_first_method(script_methods) -> None:

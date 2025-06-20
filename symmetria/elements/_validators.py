@@ -1,5 +1,8 @@
-from typing import Tuple
+from typing import TYPE_CHECKING, Tuple
 from itertools import combinations
+
+if TYPE_CHECKING:
+    from symmetria.elements.cycle import Cycle
 
 
 def _validate_cycle(cycle: Tuple[int, ...]) -> None:

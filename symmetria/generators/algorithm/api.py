@@ -1,5 +1,5 @@
 import warnings
-from typing import List, Generator
+from typing import List, Final, Generator
 
 from symmetria import Permutation
 from symmetria.generators._validators import _check_degree_parameter, _check_algorithm_parameter
@@ -11,7 +11,7 @@ from symmetria.generators.algorithm._algorithms import (
 
 __all__ = ["generate", "permutation_generator"]
 
-_SUPPORTED_ALGORITHM: List[str] = [
+_SUPPORTED_ALGORITHM: Final[List[str]] = [
     "lexicographic",
     "heap",
     "steinhaus-johnson-trotter",
@@ -103,3 +103,6 @@ def _relevant_generator(algorithm: str, degree: int) -> Generator[Permutation, N
         return _heap(degree=degree, start=list(range(1, degree + 1)))
     elif algorithm == "steinhaus-johnson-trotter":
         return _steinhaus_johnson_trotter(degree=degree, start=list(range(1, degree + 1)))
+    raise NotImplementedError(
+        f"Algorithm '{algorithm}' is not supported yet.\nSupported algorithm are: {', '.join(_SUPPORTED_ALGORITHM)}."
+    )

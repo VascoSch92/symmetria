@@ -1,5 +1,5 @@
 from math import factorial
-from typing import Any, Set, Dict, List, Tuple, Union, Iterable
+from typing import TYPE_CHECKING, Any, Set, Dict, List, Tuple, Union, Iterable
 from collections import OrderedDict
 
 import symmetria.elements.cycle
@@ -7,6 +7,10 @@ import symmetria.elements.cycle_decomposition
 from symmetria.elements._base import _Element
 from symmetria.elements._utils import _pretty_print_table
 from symmetria.elements._validators import _validate_permutation
+
+if TYPE_CHECKING:
+    from symmetria.elements.cycle import Cycle
+    from symmetria.elements.cycle_decomposition import CycleDecomposition
 
 __all__ = ["Permutation"]
 
@@ -44,7 +48,7 @@ class Permutation(_Element):
     def __init__(self, *image: int) -> None:
         self._map: Dict[int, int] = dict(enumerate(image, 1))
         self._domain: Iterable[int] = range(1, len(self._map) + 1)
-        self._image: Tuple[int] = tuple(image)
+        self._image: Tuple[int, ...] = tuple(image)
 
     def __bool__(self) -> bool:
         """Check if the permutation is different from the identity permutation.
@@ -96,7 +100,7 @@ class Permutation(_Element):
         """
         if isinstance(item, int):
             return self._call_on_integer(idx=item)
-        elif isinstance(item, (str, List, Tuple)):
+        elif isinstance(item, (str, list, tuple)):
             if len(self) > len(item):
                 raise ValueError(f"Not enough object to permute {item} using the permutation {self}.")
             return self._call_on_str_list_tuple(original=item)
@@ -129,7 +133,7 @@ class Permutation(_Element):
             permuted[self._call_on_integer(idx=idx) - 1] = w
         if isinstance(original, str):
             return "".join(permuted)
-        elif isinstance(original, Tuple):
+        elif isinstance(original, tuple):
             return tuple(p for p in permuted)
         else:
             return permuted
@@ -400,7 +404,7 @@ class Permutation(_Element):
         """
         return self.cycle_decomposition().cycle_notation()
 
-    def cycle_type(self) -> Tuple[int]:
+    def cycle_type(self) -> Tuple[int, ...]:
         r"""Return the cycle type of the permutation.
 
         Recall that the cycle type of the permutation :math:`\sigma` is a sequence of integer, where
@@ -423,7 +427,7 @@ class Permutation(_Element):
             >>> Permutation(1, 4, 5, 7, 3, 2, 6).cycle_type()
             (1, 2, 4)
         """
-        return tuple(sorted(len(cycle) for cycle in self.cycle_decomposition()))
+        return tuple(sorted(len(cycle) for cycle in iter(self.cycle_decomposition())))
 
     def degree(self) -> int:
         """Return the degree of the permutation.
@@ -684,7 +688,7 @@ class Permutation(_Element):
         return cls(*[p[idx] for idx in range(1, len(p) + 1)])
 
     @property
-    def image(self) -> Tuple[int]:
+    def image(self) -> Tuple[int, ...]:
         r"""Return the image of the permutation.
 
         For example, consider the permutation :math:`\sigma \in S_3` given by :math:`\sigma(1)=3, \sigma(2)=1`, and
@@ -875,7 +879,7 @@ class Permutation(_Element):
             False
         """
         cycle_decomposition = self.cycle_decomposition()
-        return all(len(cycle) == len(cycle_decomposition[0]) for cycle in cycle_decomposition)
+        return all(len(cycle) == len(cycle_decomposition[0]) for cycle in iter(cycle_decomposition))
 
     def lehmer_code(self) -> List[int]:
         """Return the Lehmer code of the permutation.
@@ -900,7 +904,7 @@ class Permutation(_Element):
         """
         n = len(self)
         lehmer_code = [0] * n
-        stack = []  # (value, count)
+        stack: List[Tuple[int, int]] = []  # (value, count)
 
         for i in range(n, 0, -1):
             count = 0
