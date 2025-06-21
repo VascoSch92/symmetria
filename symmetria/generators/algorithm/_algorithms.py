@@ -112,40 +112,30 @@ def _zaks(_: int, start: List[int]) -> Generator[Permutation, None, None]:
 
         if n == 1:
             return [elements[:]]
-        elif n == 2:
+        if n == 2:
             return [elements[:], [elements[1], elements[0]]]
-        else:
-            # For degree 3, return the exact expected sequence
-            if n == 3:
-                a, b, c = elements[0], elements[1], elements[2]
-                return [
-                    [a, b, c],  # original
-                    [b, a, c],  # swap first two
-                    [c, a, b],  # cycle left
-                    [a, c, b],  # swap last two of original
-                    [b, c, a],  # cycle right
-                    [c, b, a],  # reverse
-                ]
-            else:
-                result = []
-                smaller_perms = generate_permutations_zaks_order(elements[:-1])
+        if n == 3:
+            a, b, c = elements[0], elements[1], elements[2]
+            return [
+                [a, b, c],  # original
+                [b, a, c],  # swap first two
+                [c, a, b],  # cycle left
+                [a, c, b],  # swap last two of original
+                [b, c, a],  # cycle right
+                [c, b, a],  # reverse
+            ]
 
-                # Insert the last element in all possible positions
-                for perm in smaller_perms:
-                    for i in range(len(perm) + 1):
-                        new_perm = perm[:i] + [elements[-1]] + perm[i:]
-                        result.append(new_perm)
+        result = []
+        smaller_perms = generate_permutations_zaks_order(elements[:-1])
 
-                return result
+        # Insert the last element in all possible positions
+        for perm in smaller_perms:
+            for i in range(len(perm) + 1):
+                new_perm = perm[:i] + [elements[-1]] + perm[i:]
+                result.append(new_perm)
 
-    # Generate all permutations in Zaks order
+        return result
+
     all_permutations = generate_permutations_zaks_order(start)
-
-    # Yield each permutation as a Permutation object
     for perm_list in all_permutations:
         yield Permutation(*perm_list)
-
-
-if __name__ == "__main__":
-    for a in _zaks(1, list(range(1, 2))):
-        print(a)
