@@ -106,7 +106,7 @@ def _relevant_generator(algorithm: str, degree: int) -> Generator[Permutation, N
     elif algorithm == "steinhaus-johnson-trotter":
         return _steinhaus_johnson_trotter(degree=degree, start=list(range(1, degree + 1)))
     elif algorithm == "zaks":
-        return _zaks(degree=degree, start=list(range(1, degree + 1)))
+        return _zaks(_=degree, start=list(range(1, degree + 1)))
     raise NotImplementedError(
         f"Algorithm '{algorithm}' is not supported yet.\nSupported algorithm are: {', '.join(_SUPPORTED_ALGORITHM)}."
     )

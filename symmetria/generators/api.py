@@ -1,6 +1,7 @@
 from typing import List, Generator
 
-from symmetria.generators._algorithms import (
+from symmetria import Permutation
+from symmetria.generators.algorithm._algorithms import (
     _heap,
     _zaks,
     _lexicographic,
@@ -17,7 +18,7 @@ _SUPPORTED_ALGORITHM: List[str] = [
 ]
 
 
-def generate(degree: int, algorithm: str = "lexicographic") -> Generator["Permutation", None, None]:
+def generate(degree: int, algorithm: str = "lexicographic") -> Generator[Permutation, None, None]:
     """Generate all the permutations of the given degree based on the chosen algorithm.
 
     The method generates all the permutations of the given degree using the specified algorithm.
@@ -77,7 +78,7 @@ def _check_degree_parameter(value: int) -> None:
         raise ValueError(f"The parameter `degree` must be a non-zero positive integer, but {value} was provided.")
 
 
-def _relevant_generator(algorithm: str, degree: int) -> Generator["Permutation", None, None]:
+def _relevant_generator(algorithm: str, degree: int) -> Generator[Permutation, None, None]:
     """Private method to pick the correct algorithm for generating permutations."""
     if algorithm == "lexicographic":
         return _lexicographic(degree=degree, start=list(range(1, degree + 1)))
@@ -86,4 +87,8 @@ def _relevant_generator(algorithm: str, degree: int) -> Generator["Permutation",
     elif algorithm == "steinhaus-johnson-trotter":
         return _steinhaus_johnson_trotter(degree=degree, start=list(range(1, degree + 1)))
     elif algorithm == "zaks":
-        return _zaks(degree=degree, start=list(range(degree, 0, -1)))
+        return _zaks(_=degree, start=list(range(degree, 0, -1)))
+    raise ValueError(
+        f"The given algorithm ({algorithm}) is not supported. \n "
+        f"Here, a list of supported algorithm for generations of permutations {_SUPPORTED_ALGORITHM}."
+    )
