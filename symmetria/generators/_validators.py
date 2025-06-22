@@ -10,7 +10,7 @@ def _check_algorithm_parameter(value: str, supported: List[str]) -> None:
         raise TypeError(f"The parameter `algorithm` must be of type string, but {type(value)} was provided.")
     if value not in supported:
         raise ValueError(
-            f"The given algorithm ({value}) is not supported. \n "
+            f"The given algorithm ({value}) is not supported.\n"
             f"Here, a list of supported algorithm for generations of permutations {supported}."
         )
 

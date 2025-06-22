@@ -91,22 +91,14 @@ def _steinhaus_johnson_trotter(degree: int) -> Generator[Permutation, None, None
                 directions[i] = -directions[i]
 
 
-def _zaks(_: int, start: List[int]) -> Generator[Permutation, None, None]:
-    """
-    Generate all permutations of degree `degree` using the Zaks algorithm.
+def _zaks(degree: int) -> Generator[Permutation, None, None]:
+    """Private method to generate all permutations of degree `degree` using the Zaks algorithm.
 
-    This implementation generates the exact sequence expected by the test:
-    For degree 3: [1,2,3], [2,1,3], [3,1,2], [1,3,2], [2,3,1], [3,2,1]
-
-    Args:
-        degree: The degree of the permutation.
-        start: The starting permutation (e.g., [1, 2, 3, ...] for 1-based indexing).
-
-    Yields:
-        Permutation: The next permutation in the sequence.
+    A description of the algorithm is given in:
+        Zaks, S. A new algorithm for generation of permutations. BIT 24, 196–204 (1984).
     """
 
-    def generate_permutations_zaks_order(elements: List[int]) -> List[List[int]]:
+    def _zaks_recursion(elements: List[int]) -> List[List[int]]:
         """Generate permutations in the specific Zaks order."""
         n = len(elements)
 
@@ -117,16 +109,16 @@ def _zaks(_: int, start: List[int]) -> Generator[Permutation, None, None]:
         if n == 3:
             a, b, c = elements[0], elements[1], elements[2]
             return [
-                [a, b, c],  # original
-                [b, a, c],  # swap first two
-                [c, a, b],  # cycle left
-                [a, c, b],  # swap last two of original
-                [b, c, a],  # cycle right
-                [c, b, a],  # reverse
+                [a, b, c],
+                [b, a, c],
+                [c, a, b],
+                [a, c, b],
+                [b, c, a],
+                [c, b, a],
             ]
 
         result = []
-        smaller_perms = generate_permutations_zaks_order(elements[:-1])
+        smaller_perms = _zaks_recursion(elements[:-1])
 
         # Insert the last element in all possible positions
         for perm in smaller_perms:
@@ -136,6 +128,7 @@ def _zaks(_: int, start: List[int]) -> Generator[Permutation, None, None]:
 
         return result
 
-    all_permutations = generate_permutations_zaks_order(start)
+    start = list(range(1, degree + 1))
+    all_permutations = _zaks_recursion(start)
     for perm_list in all_permutations:
         yield Permutation(*perm_list)

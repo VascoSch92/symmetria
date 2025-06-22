@@ -16,7 +16,7 @@ _SUPPORTED_ALGORITHMS: Final[Dict[str, Callable]] = {
     "lexicographic": _lexicographic,
     "heap": _heap,
     "steinhaus-johnson-trotter": _steinhaus_johnson_trotter,
-    "zask": _zaks,
+    "zaks": _zaks,
 }
 
 
