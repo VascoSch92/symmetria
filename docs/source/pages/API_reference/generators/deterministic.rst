@@ -30,10 +30,14 @@ A list of implemented algorithms to generate permutations:
    * - ``steinhaus-johnson-trotter``
      - The permutations are generate following the **Steinhaus-Johnson-Trotter algorithm**.
      - `[3]`_
+   * - ``zaks``
+     - The permutations are generate following the **Zaks algorithm**.
+     - `[4]`_
 
 .. _[1]: https://en.wikipedia.org/wiki/Lexicographic_order
 .. _[2]: https://academic.oup.com/comjnl/article/6/3/293/360213
 .. _[3]: https://en.wikipedia.org/wiki/Steinhaus–Johnson–Trotter_algorithm
+.. _[4]: https://www.academia.edu/95743174/A_new_algorithm_for_generation_of_permutations
 
 ====
 

@@ -5,6 +5,7 @@ from symmetria import Permutation
 from symmetria.generators._validators import _check_degree_parameter, _check_algorithm_parameter
 from symmetria.generators.algorithm._algorithms import (
     _heap,
+    _zaks,
     _lexicographic,
     _steinhaus_johnson_trotter,
 )
@@ -15,6 +16,7 @@ _SUPPORTED_ALGORITHMS: Final[Dict[str, Callable]] = {
     "lexicographic": _lexicographic,
     "heap": _heap,
     "steinhaus-johnson-trotter": _steinhaus_johnson_trotter,
+    "zaks": _zaks,
 }
 
 

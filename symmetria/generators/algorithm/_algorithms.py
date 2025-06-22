@@ -89,3 +89,46 @@ def _steinhaus_johnson_trotter(degree: int) -> Generator[Permutation, None, None
         for i in range(degree):
             if permutation[i] > permutation[swap_with]:
                 directions[i] = -directions[i]
+
+
+def _zaks(degree: int) -> Generator[Permutation, None, None]:
+    """Private method to generate all permutations of degree `degree` using the Zaks algorithm.
+
+    A description of the algorithm is given in:
+        Zaks, S. A new algorithm for generation of permutations. BIT 24, 196–204 (1984).
+    """
+
+    def _zaks_recursion(elements: List[int]) -> List[List[int]]:
+        """Generate permutations in the specific Zaks order."""
+        n = len(elements)
+
+        if n == 1:
+            return [elements[:]]
+        if n == 2:
+            return [elements[:], [elements[1], elements[0]]]
+        if n == 3:
+            a, b, c = elements[0], elements[1], elements[2]
+            return [
+                [a, b, c],
+                [b, a, c],
+                [c, a, b],
+                [a, c, b],
+                [b, c, a],
+                [c, b, a],
+            ]
+
+        result = []
+        smaller_perms = _zaks_recursion(elements[:-1])
+
+        # Insert the last element in all possible positions
+        for perm in smaller_perms:
+            for i in range(len(perm) + 1):
+                new_perm = perm[:i] + [elements[-1]] + perm[i:]
+                result.append(new_perm)
+
+        return result
+
+    start = list(range(1, degree + 1))
+    all_permutations = _zaks_recursion(start)
+    for perm_list in all_permutations:
+        yield Permutation(*perm_list)
