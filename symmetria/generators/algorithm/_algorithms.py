@@ -4,7 +4,7 @@ import symmetria.elements.permutation
 from symmetria import Permutation
 
 
-def _lexicographic(degree: int, start: List[int]) -> Generator[Permutation, None, None]:
+def _lexicographic(degree: int) -> Generator[Permutation, None, None]:
     """Private method to generate all the permutations of degree `degree` in lexicographic order.
 
     The algorithm is described as follows:
@@ -16,62 +16,53 @@ def _lexicographic(degree: int, start: List[int]) -> Generator[Permutation, None
         6. Reverse the sequence from permutation[k + 1] up to and including the final element permutation[degree].
         7. Go to point 2.
     """
-    # step 1
-    permutation = start
+    permutation = list(range(1, degree + 1))
 
     while True:
         yield symmetria.Permutation(*permutation)
 
-        # step 2
         k = next((i for i in range(degree - 2, -1, -1) if permutation[i] < permutation[i + 1]), -1)
-
-        # step 3
         if k == -1:
             return None
 
-        # step 4
         j = next(i for i in range(degree - 1, k, -1) if permutation[k] < permutation[i])
-
-        # step 5
         permutation[k], permutation[j] = permutation[j], permutation[k]
-
-        # step 6
         permutation[k + 1 :] = reversed(permutation[k + 1 :])
 
 
-def _heap(degree: int, start: List[int]) -> Generator[Permutation, None, None]:
+def _heap(degree: int) -> Generator[Permutation, None, None]:
     """Private method to generate all the permutations of degree `degree` using the Heap's algorithm.
 
     A description of the algorithm can be founded in the article:
         `Permutations by interchanges.` B. R. Heap, The Computer Journal, 6(3) (1963), pp. 293-298
     """
-    k = degree
-    permutation = start
 
-    if k == 1:
-        yield symmetria.Permutation(*permutation)
-    else:
-        # Generate permutations with k-th unaltered
-        yield from _heap(k - 1, permutation)
+    def _heap_recursion(degree: int, permutation: List[int]) -> Generator[Permutation, None, None]:
+        if degree == 1:
+            yield symmetria.Permutation(*permutation)
+        else:
+            # Generate permutations with k-th unaltered
+            yield from _heap_recursion(degree - 1, permutation)
 
-        # Generate permutations for k-th swapped with each k-1 initial
-        for i in range(k - 1):
-            # Swap choice dependent on parity of k
-            if k % 2 == 0:
-                permutation[i], permutation[k - 1] = permutation[k - 1], permutation[i]
-            else:
-                permutation[0], permutation[k - 1] = permutation[k - 1], permutation[0]
-            yield from _heap(k - 1, permutation)
+            # Generate permutations for k-th swapped with each k-1 initial
+            for i in range(degree - 1):
+                # Swap choice dependent on parity of k
+                if degree % 2 == 0:
+                    permutation[i], permutation[degree - 1] = permutation[degree - 1], permutation[i]
+                else:
+                    permutation[0], permutation[degree - 1] = permutation[degree - 1], permutation[0]
+                yield from _heap_recursion(degree - 1, permutation)
+
+    return _heap_recursion(degree, list(range(1, degree + 1)))
 
 
-def _steinhaus_johnson_trotter(degree: int, start: List[int]) -> Generator[Permutation, None, None]:
+def _steinhaus_johnson_trotter(degree: int) -> Generator[Permutation, None, None]:
     """Private method to generate all the permutations of degree `degree` using the Steinhaus-Johnson-Trotter algorithm.
 
     A description of the algorithm is given at:
         https://en.wikipedia.org/wiki/Steinhaus–Johnson–Trotter_algorithm
     """
-    # Initialize the first permutation
-    permutation = start
+    permutation = list(range(1, degree + 1))
     # Direction of each element, 1 for right, -1 for left
     directions = [-1] * degree
 

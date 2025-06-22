@@ -1,5 +1,5 @@
 import warnings
-from typing import List, Final, Generator
+from typing import Dict, Final, Callable, Generator
 
 from symmetria import Permutation
 from symmetria.generators._validators import _check_degree_parameter, _check_algorithm_parameter
@@ -11,11 +11,11 @@ from symmetria.generators.algorithm._algorithms import (
 
 __all__ = ["generate", "permutation_generator"]
 
-_SUPPORTED_ALGORITHM: Final[List[str]] = [
-    "lexicographic",
-    "heap",
-    "steinhaus-johnson-trotter",
-]
+_SUPPORTED_ALGORITHMS: Final[Dict[str, Callable]] = {
+    "lexicographic": _lexicographic,
+    "heap": _heap,
+    "steinhaus-johnson-trotter": _steinhaus_johnson_trotter,
+}
 
 
 def generate(degree: int, algorithm: str = "lexicographic") -> Generator[Permutation, None, None]:
@@ -55,7 +55,7 @@ def generate(degree: int, algorithm: str = "lexicographic") -> Generator[Permuta
         PendingDeprecationWarning,
         stacklevel=1,
     )
-    _check_algorithm_parameter(value=algorithm, supported=_SUPPORTED_ALGORITHM)
+    _check_algorithm_parameter(value=algorithm, supported=list(_SUPPORTED_ALGORITHMS.keys()))
     _check_degree_parameter(value=degree)
     return _relevant_generator(algorithm=algorithm, degree=degree)
 
@@ -90,19 +90,16 @@ def permutation_generator(degree: int, algorithm: str = "lexicographic") -> Gene
         Permutation(3, 1, 2)
         Permutation(3, 2, 1)
     """
-    _check_algorithm_parameter(value=algorithm, supported=_SUPPORTED_ALGORITHM)
+    _check_algorithm_parameter(value=algorithm, supported=list(_SUPPORTED_ALGORITHMS.keys()))
     _check_degree_parameter(value=degree)
     return _relevant_generator(algorithm=algorithm, degree=degree)
 
 
 def _relevant_generator(algorithm: str, degree: int) -> Generator[Permutation, None, None]:
     """Private method to pick the correct algorithm for generating permutations."""
-    if algorithm == "lexicographic":
-        return _lexicographic(degree=degree, start=list(range(1, degree + 1)))
-    elif algorithm == "heap":
-        return _heap(degree=degree, start=list(range(1, degree + 1)))
-    elif algorithm == "steinhaus-johnson-trotter":
-        return _steinhaus_johnson_trotter(degree=degree, start=list(range(1, degree + 1)))
-    raise NotImplementedError(
-        f"Algorithm '{algorithm}' is not supported yet.\nSupported algorithm are: {', '.join(_SUPPORTED_ALGORITHM)}."
+    if algorithm in _SUPPORTED_ALGORITHMS:
+        return _SUPPORTED_ALGORITHMS[algorithm](degree=degree)
+    raise ValueError(
+        f"The given algorithm ({algorithm}) is not supported. \n "
+        f"Here, a list of supported algorithm for generations of permutations {list(_SUPPORTED_ALGORITHMS.keys())}."
     )

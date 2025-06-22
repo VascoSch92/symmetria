@@ -24,6 +24,7 @@ The version is represented by three digits: a.b.c.
 
 MAINTENANCE:
 - added mypy
+- change API private methods in module `symmetria.generators`
 
 ## \[0.3.2\] - 2025-02-08
 

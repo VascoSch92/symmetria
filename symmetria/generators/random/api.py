@@ -1,5 +1,5 @@
 import warnings
-from typing import List, Final, Generator
+from typing import Dict, Final, Callable, Generator
 
 from symmetria import Permutation
 from symmetria.generators._validators import _check_degree_parameter, _check_algorithm_parameter
@@ -12,10 +12,16 @@ from symmetria.generators.random._algorithms import (
 
 __all__ = ["random", "random_generator", "random_permutation"]
 
-_SUPPORTED_ALGORITHM: Final[List[str]] = [
-    "random",
-    "fisher-yates",
-]
+_SUPPORTED_ALGORITHM: Final[Dict[str, Dict[str, Callable]]] = {
+    "random": {
+        "random": _random_shuffle,
+        "fisher-yates": _fisher_yates_shuffle,
+    },
+    "generator": {
+        "random": _random_shuffle_generator,
+        "fisher-yates": _fisher_yates_shuffle_generator,
+    },
+}
 
 
 def random(degree: int, algorithm: str = "random") -> Permutation:
@@ -46,7 +52,7 @@ def random(degree: int, algorithm: str = "random") -> Permutation:
         PendingDeprecationWarning,
         stacklevel=1,
     )
-    _check_algorithm_parameter(value=algorithm, supported=_SUPPORTED_ALGORITHM)
+    _check_algorithm_parameter(value=algorithm, supported=list(_SUPPORTED_ALGORITHM["random"].keys()))
     _check_degree_parameter(value=degree)
     return _relevant_random_permutation(algorithm=algorithm, degree=degree)
 
@@ -72,7 +78,7 @@ def random_permutation(degree: int, algorithm: str = "random") -> Permutation:
         ...
         >>> permutation = random_permutation(degree=3, algorithm="fisher-yates")
     """
-    _check_algorithm_parameter(value=algorithm, supported=_SUPPORTED_ALGORITHM)
+    _check_algorithm_parameter(value=algorithm, supported=list(_SUPPORTED_ALGORITHM["random"].keys()))
     _check_degree_parameter(value=degree)
     return _relevant_random_permutation(algorithm=algorithm, degree=degree)
 
@@ -84,7 +90,8 @@ def _relevant_random_permutation(algorithm: str, degree: int) -> Permutation:
     elif algorithm == "fisher-yates":
         return _fisher_yates_shuffle(permutation=list(range(1, degree + 1)))
     raise NotImplementedError(
-        f"Algorithm '{algorithm}' is not supported yet.\nSupported algorithms are {', '.join(_SUPPORTED_ALGORITHM)}"
+        f"Algorithm '{algorithm}' is not supported yet.\n"
+        f"Supported algorithms are {', '.join(_SUPPORTED_ALGORITHM['random'].keys())}"
     )
 
 
@@ -115,17 +122,16 @@ def random_generator(degree: int, algorithm: str = "random") -> Generator[Permut
         PendingDeprecationWarning,
         stacklevel=1,
     )
-    _check_algorithm_parameter(value=algorithm, supported=_SUPPORTED_ALGORITHM)
+    _check_algorithm_parameter(value=algorithm, supported=list(_SUPPORTED_ALGORITHM["generator"].keys()))
     _check_degree_parameter(value=degree)
     return _relevant_random_generator(algorithm=algorithm, degree=degree)
 
 
 def _relevant_random_generator(algorithm: str, degree: int) -> Generator[Permutation, None, None]:
     """Private method to pick the correct algorithm for generating random permutations."""
-    if algorithm == "random":
-        return _random_shuffle_generator(degree=degree)
-    elif algorithm == "fisher-yates":
-        return _fisher_yates_shuffle_generator(degree=degree)
+    if algorithm in _SUPPORTED_ALGORITHM["generator"]:
+        return _SUPPORTED_ALGORITHM["generator"][algorithm](degree=degree)
     raise NotImplementedError(
-        f"Algorithm '{algorithm}' is not supported yet.\nSupported algorithms are {', '.join(_SUPPORTED_ALGORITHM)}"
+        f"Algorithm '{algorithm}' is not supported yet.\n"
+        f"Supported algorithms are {', '.join(_SUPPORTED_ALGORITHM['generator'].keys())}"
     )
