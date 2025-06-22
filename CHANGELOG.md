@@ -22,6 +22,8 @@ The version is represented by three digits: a.b.c.
 
 ## Unreleased
 
+## \[0.3.3\] - 2025-06-22
+
 FEATURE:
 - `generators`: add `zaks` generator
 
