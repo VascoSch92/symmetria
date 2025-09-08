@@ -128,18 +128,18 @@ lint.ignore = [
 # ignore unusued imports in the __init__
 lint.per-file-ignores = {"symmetria/__init__.py" = ["F401", "F403"]}
 
-# Set the max length of a line
-line-length = 121
-
-# The style in which the output message should be formatted
-output-format = "grouped"
-
 lint.flake8-quotes.inline-quotes = "double"
 lint.flake8-quotes.docstring-quotes = "double"
 lint.flake8-quotes.multiline-quotes = "double"
 
 lint.isort.combine-as-imports = true
 lint.isort.length-sort = true
+
+# Set the max length of a line
+line-length = 121
+
+# The style in which the output message should be formatted
+output-format = "grouped"
 
 [tool.ruff.format]
 indent-style = "space"

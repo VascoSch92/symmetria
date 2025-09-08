@@ -1,11 +1,10 @@
 from math import factorial
 from typing import TYPE_CHECKING, Any, Set, Dict, List, Tuple, Union, Iterable
-from collections import OrderedDict
 
 import symmetria.elements.cycle
 import symmetria.elements.cycle_decomposition
 from symmetria.elements._base import _Element
-from symmetria.elements._utils import _pretty_print_table
+from symmetria.elements._utils import Table
 from symmetria.elements._validators import _validate_permutation
 
 if TYPE_CHECKING:
@@ -481,52 +480,49 @@ class Permutation(_Element):
             ...
             >>> p = Permutation(2, 4, 1, 3, 5).describe()
             >>> print(p)
-            +----------------------------------------------------------------------+
-            |                      Permutation(2, 4, 1, 3, 5)                      |
-            +----------------------------------------------------------------------+
-            | order                             |                4                 |
-            +-----------------------------------+----------------------------------+
-            | degree                            |                5                 |
-            +-----------------------------------+----------------------------------+
-            | is derangement                    |              False               |
-            +-----------------------------------+----------------------------------+
-            | inverse                           |         (3, 1, 4, 2, 5)          |
-            +-----------------------------------+----------------------------------+
-            | parity                            |             -1 (odd)             |
-            +-----------------------------------+----------------------------------+
-            | cycle notation                    |           (1 2 4 3)(5)           |
-            +-----------------------------------+----------------------------------+
-            | cycle type                        |              (1, 4)              |
-            +-----------------------------------+----------------------------------+
-            | inversions                        |     [(1, 3), (2, 3), (2, 4)]     |
-            +-----------------------------------+----------------------------------+
-            | ascents                           |            [1, 3, 4]             |
-            +-----------------------------------+----------------------------------+
-            | descents                          |               [2]                |
-            +-----------------------------------+----------------------------------+
-            | excedencees                       |              [1, 2]              |
-            +-----------------------------------+----------------------------------+
-            | records                           |            [1, 2, 5]             |
-            +-----------------------------------+----------------------------------+
+            +--------------------------------------------------------------------------------+
+            |                           Permutation(2, 4, 1, 3, 5)                           |
+            +--------------------------------------------------------------------------------+
+            | order                                  |                   4                   |
+            +----------------------------------------+---------------------------------------+
+            | degree                                 |                   5                   |
+            +----------------------------------------+---------------------------------------+
+            | is_derangement                         |                 False                 |
+            +----------------------------------------+---------------------------------------+
+            | inverse                                |            (3, 1, 4, 2, 5)            |
+            +----------------------------------------+---------------------------------------+
+            | parity                                 |               -1 (odd)                |
+            +----------------------------------------+---------------------------------------+
+            | cycle_notation                         |             (1 2 4 3)(5)              |
+            +----------------------------------------+---------------------------------------+
+            | cycle_type                             |                (1, 4)                 |
+            +----------------------------------------+---------------------------------------+
+            | inversions                             |       [(1, 3), (2, 3), (2, 4)]        |
+            +----------------------------------------+---------------------------------------+
+            | ascents                                |               [1, 3, 4]               |
+            +----------------------------------------+---------------------------------------+
+            | descents                               |                  [2]                  |
+            +----------------------------------------+---------------------------------------+
+            | excedencees                            |                [1, 2]                 |
+            +----------------------------------------+---------------------------------------+
+            | records                                |               [1, 2, 5]               |
+            +----------------------------------------+---------------------------------------+
         """
-        return _pretty_print_table(
-            title=self.rep(),
-            body=OrderedDict(
-                {
-                    "order": str(self.order()),
-                    "degree": str(len(self)),
-                    "is derangement": str(self.is_derangement()),
-                    "inverse": str(self.inverse()),
-                    "parity": "+1 (even)" if self.sgn() > 0 else "-1 (odd)",
-                    "cycle notation": self.cycle_notation(),
-                    "cycle type": str(self.cycle_type()),
-                    "inversions": str(self.inversions()),
-                    "ascents": str(self.ascents()),
-                    "descents": str(self.descents()),
-                    "excedencees": str(self.exceedances()),
-                    "records": str(self.records()),
-                }
-            ),
+        return (
+            Table(title=self.rep())
+            .add("order", str(self.order()))
+            .add("degree", str(self.degree()))
+            .add("is_derangement", str(self.is_derangement()))
+            .add("inverse", str(self.inverse()))
+            .add("parity", "+1 (even)" if self.sgn() > 0 else "-1 (odd)")
+            .add("cycle_notation", self.cycle_notation())
+            .add("cycle_type", str(self.cycle_type()))
+            .add("inversions", str(self.inversions()))
+            .add("ascents", str(self.ascents()))
+            .add("descents", str(self.descents()))
+            .add("excedencees", str(self.exceedances()))
+            .add("records", str(self.records()))
+            .build()
         )
 
     @property

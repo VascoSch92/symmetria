@@ -1,11 +1,10 @@
 from math import lcm, prod
 from typing import TYPE_CHECKING, Any, Set, Dict, List, Tuple, Union, Iterable
-from collections import OrderedDict
 
 import symmetria.elements.cycle
 import symmetria.elements.permutation
 from symmetria.elements._base import _Element
-from symmetria.elements._utils import _pretty_print_table
+from symmetria.elements._utils import Table
 from symmetria.elements._validators import _validate_cycle_decomposition
 
 if TYPE_CHECKING:
@@ -473,52 +472,49 @@ class CycleDecomposition(_Element):
             ...
             >>> cycle_decomposition = CycleDecomposition(Cycle(1, 3), Cycle(2)).describe()
             >>> print(cycle_decomposition)
-            +--------------------------------------------------------------------------------------+
-            |                      CycleDecomposition(Cycle(1, 3), Cycle(2))                       |
-            +--------------------------------------------------------------------------------------+
-            | order                                     |                    2                     |
-            +-------------------------------------------+------------------------------------------+
-            | degree                                    |                    2                     |
-            +-------------------------------------------+------------------------------------------+
-            | is derangement                            |                  False                   |
-            +-------------------------------------------+------------------------------------------+
-            | inverse                                   |                 (1 3)(2)                 |
-            +-------------------------------------------+------------------------------------------+
-            | parity                                    |                 -1 (odd)                 |
-            +-------------------------------------------+------------------------------------------+
-            | cycle notation                            |                 (1 3)(2)                 |
-            +-------------------------------------------+------------------------------------------+
-            | cycle type                                |                  (1, 2)                  |
-            +-------------------------------------------+------------------------------------------+
-            | inversions                                |         [(1, 2), (1, 3), (2, 3)]         |
-            +-------------------------------------------+------------------------------------------+
-            | ascents                                   |                    []                    |
-            +-------------------------------------------+------------------------------------------+
-            | descents                                  |                  [1, 2]                  |
-            +-------------------------------------------+------------------------------------------+
-            | excedencees                               |                   [1]                    |
-            +-------------------------------------------+------------------------------------------+
-            | records                                   |                   [1]                    |
-            +-------------------------------------------+------------------------------------------+
+            +------------------------------------------------------------------------------------------------+
+            |                           CycleDecomposition(Cycle(1, 3), Cycle(2))                            |
+            +------------------------------------------------------------------------------------------------+
+            | order                                          |                       2                       |
+            +------------------------------------------------+-----------------------------------------------+
+            | degree                                         |                       2                       |
+            +------------------------------------------------+-----------------------------------------------+
+            | is_derangement                                 |                     False                     |
+            +------------------------------------------------+-----------------------------------------------+
+            | inverse                                        |                   (1 3)(2)                    |
+            +------------------------------------------------+-----------------------------------------------+
+            | parity                                         |                   -1 (odd)                    |
+            +------------------------------------------------+-----------------------------------------------+
+            | cycle_notation                                 |                   (1 3)(2)                    |
+            +------------------------------------------------+-----------------------------------------------+
+            | cycle_type                                     |                    (1, 2)                     |
+            +------------------------------------------------+-----------------------------------------------+
+            | inversions                                     |           [(1, 2), (1, 3), (2, 3)]            |
+            +------------------------------------------------+-----------------------------------------------+
+            | ascents                                        |                      []                       |
+            +------------------------------------------------+-----------------------------------------------+
+            | descents                                       |                    [1, 2]                     |
+            +------------------------------------------------+-----------------------------------------------+
+            | excedencees                                    |                      [1]                      |
+            +------------------------------------------------+-----------------------------------------------+
+            | records                                        |                      [1]                      |
+            +------------------------------------------------+-----------------------------------------------+
         """
-        return _pretty_print_table(
-            title=self.rep(),
-            body=OrderedDict(
-                {
-                    "order": str(self.order()),
-                    "degree": str(len(self)),
-                    "is derangement": str(self.is_derangement()),
-                    "inverse": str(self.inverse()),
-                    "parity": "+1 (even)" if self.sgn() > 0 else "-1 (odd)",
-                    "cycle notation": self.cycle_notation(),
-                    "cycle type": str(self.cycle_type()),
-                    "inversions": str(self.inversions()),
-                    "ascents": str(self.ascents()),
-                    "descents": str(self.descents()),
-                    "excedencees": str(self.exceedances()),
-                    "records": str(self.records()),
-                }
-            ),
+        return (
+            Table(title=self.rep())
+            .add("order", str(self.order()))
+            .add("degree", str(len(self)))
+            .add("is_derangement", str(self.is_derangement()))
+            .add("inverse", str(self.inverse()))
+            .add("parity", "+1 (even)" if self.sgn() > 0 else "-1 (odd)")
+            .add("cycle_notation", self.cycle_notation())
+            .add("cycle_type", str(self.cycle_type()))
+            .add("inversions", str(self.inversions()))
+            .add("ascents", str(self.ascents()))
+            .add("descents", str(self.descents()))
+            .add("excedencees", str(self.exceedances()))
+            .add("records", str(self.records()))
+            .build()
         )
 
     @property
