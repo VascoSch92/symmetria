@@ -1,5 +1,7 @@
-from typing import Dict, List, Self
+from typing import Dict, List
 from dataclasses import field, dataclass
+
+from typing_extensions import Self
 
 
 @dataclass(kw_only=True)
