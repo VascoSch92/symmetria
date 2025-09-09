@@ -22,6 +22,8 @@ The version is represented by three digits: a.b.c.
 
 ## Unreleased
 
+## \[0.3.4\] - 2025-09-09
+
 ENHANCEMENT:
 - `symmetria.elements._util`: refactored how the table to represent a permutation is made
 - `py.typed`: added
