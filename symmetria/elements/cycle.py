@@ -1,10 +1,9 @@
 from typing import TYPE_CHECKING, Any, Set, Dict, List, Tuple, Union, Iterable, Iterator
-from collections import OrderedDict
 
 import symmetria.elements.permutation
 import symmetria.elements.cycle_decomposition
 from symmetria.elements._base import _Element
-from symmetria.elements._utils import _pretty_print_table
+from symmetria.elements._utils import Table
 from symmetria.elements._validators import _validate_cycle
 
 if TYPE_CHECKING:
@@ -438,37 +437,34 @@ class Cycle(_Element):
             ...
             >>> c = Cycle(3, 5, 6, 7).describe()
             >>> print(c)
-            +----------------------------------------------------+
-            |                 Cycle(3, 5, 6, 7)                  |
-            +----------------------------------------------------+
-            | order                    |            4            |
-            +--------------------------+-------------------------+
-            | degree                   |            4            |
-            +--------------------------+-------------------------+
-            | is derangement           |          True           |
-            +--------------------------+-------------------------+
-            | inverse                  |        (3 7 6 5)        |
-            +--------------------------+-------------------------+
-            | parity                   |        -1 (odd)         |
-            +--------------------------+-------------------------+
-            | cycle notation           |        (3 5 6 7)        |
-            +--------------------------+-------------------------+
-            | inversions               |           []            |
-            +--------------------------+-------------------------+
+            +------------------------------------------------------------+
+            |                     Cycle(3, 5, 6, 7)                      |
+            +------------------------------------------------------------+
+            | order                        |              4              |
+            +------------------------------+-----------------------------+
+            | degree                       |              4              |
+            +------------------------------+-----------------------------+
+            | is_derangement               |            True             |
+            +------------------------------+-----------------------------+
+            | inverse                      |          (3 7 6 5)          |
+            +------------------------------+-----------------------------+
+            | parity                       |          -1 (odd)           |
+            +------------------------------+-----------------------------+
+            | cycle_notation               |          (3 5 6 7)          |
+            +------------------------------+-----------------------------+
+            | inversions                   |             []              |
+            +------------------------------+-----------------------------+
         """
-        return _pretty_print_table(
-            title=self.rep(),
-            body=OrderedDict(
-                {
-                    "order": str(self.order()),
-                    "degree": str(len(self)),
-                    "is derangement": str(self.is_derangement()),
-                    "inverse": str(self.inverse()),
-                    "parity": "+1 (even)" if self.sgn() > 0 else "-1 (odd)",
-                    "cycle notation": self.cycle_notation(),
-                    "inversions": str(self.inversions()),
-                }
-            ),
+        return (
+            Table(title=self.rep())
+            .add("order", str(self.order()))
+            .add("degree", str(len(self)))
+            .add("is_derangement", str(self.is_derangement()))
+            .add("inverse", str(self.inverse()))
+            .add("parity", "+1 (even)" if self.sgn() > 0 else "-1 (odd)")
+            .add("cycle_notation", self.cycle_notation())
+            .add("inversions", str(self.inversions()))
+            .build()
         )
 
     @property
