@@ -35,6 +35,7 @@ classifiers = [
     "Programming Language :: Python :: 3.12",
 ]
 dependencies = [
+    "pip>=25.2",
     "typing-extensions>=4.15.0",
 ]
 
