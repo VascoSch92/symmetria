@@ -4,16 +4,16 @@ from dataclasses import field, dataclass
 from typing_extensions import Self
 
 
-@dataclass(kw_only=True)
+@dataclass
 class Table:
     title: str
-    rows: Dict[str, str] = field(default_factory=dict)
+    _rows: Dict[str, str] = field(default_factory=dict)
 
     _max_length_row: int = 0
 
     def add(self, attribute: str, value: str) -> Self:
         self._max_length_row = max(self._max_length_row, len(attribute) + len(value))
-        self.rows[attribute] = value
+        self._rows[attribute] = value
         return self
 
     def build(self) -> str:
@@ -22,7 +22,7 @@ class Table:
         table: List[str] = []
         table.append(self._get_header(length_table=length_table))
 
-        for key, value in self.rows.items():
+        for key, value in self._rows.items():
             table.append(self._get_row(length_table // 2, a=key, b=value))
             table.append(self._get_separation_for_rows(length_table=length_table))
 
