@@ -1,5 +1,5 @@
 from math import lcm, prod
-from typing import TYPE_CHECKING, Any, Set, Dict, List, Tuple, Union, Iterable
+from typing import TYPE_CHECKING, Any, Union, Iterable
 
 import symmetria.elements.cycle
 import symmetria.elements.permutation
@@ -53,14 +53,14 @@ class CycleDecomposition(_Element):
         return super().__new__(cls)
 
     def __init__(self, *cycles: "Cycle") -> None:
-        self._cycles: Tuple["Cycle", ...] = self._standardization(cycles=cycles)
+        self._cycles: tuple["Cycle", ...] = self._standardization(cycles=cycles)
         self._domain: Iterable[int] = range(
             1,
             max(max(cycle.elements) for cycle in self._cycles) + 1,
         )
 
     @staticmethod
-    def _standardization(cycles: Tuple["Cycle", ...]) -> Tuple["Cycle", ...]:
+    def _standardization(cycles: tuple["Cycle", ...]) -> tuple["Cycle", ...]:
         """Private method to standardize a tuple of cycles to become a cycle decomposition.
 
         A cycle decomposition is standardized if the cycles are ordered by increasingly the first element of each cycle.
@@ -145,7 +145,7 @@ class CycleDecomposition(_Element):
             return self.map[original]
         return original
 
-    def _call_on_str_list_tuple(self, original: Union[str, Tuple, List]) -> Union[str, Tuple, List]:
+    def _call_on_str_list_tuple(self, original: Union[str, tuple, list]) -> Union[str, tuple, list]:
         """Private method for calls on string, list and tuple."""
         permuted = list(_ for _ in original)
         for idx, w in enumerate(original, 1):
@@ -343,7 +343,7 @@ class CycleDecomposition(_Element):
         """
         return "".join([str(c) for c in iter(self)])
 
-    def ascents(self) -> List[int]:
+    def ascents(self) -> list[int]:
         r"""Return the ascents of the cycle decomposition.
 
         Recall that an ascent of a permutation :math:`\sigma \in S_n`, where :math:`n \in \mathbb{N}`, is any position
@@ -394,7 +394,7 @@ class CycleDecomposition(_Element):
         """
         return str(self)
 
-    def cycle_type(self) -> Tuple[int, ...]:
+    def cycle_type(self) -> tuple[int, ...]:
         r"""Return the cycle type of the cycle decomposition.
 
         Recall that the cycle type of the permutation :math:`\sigma` is a sequence of integer, where
@@ -439,7 +439,7 @@ class CycleDecomposition(_Element):
         """
         return max(max(cycle.elements) for cycle in self._cycles)
 
-    def descents(self) -> List[int]:
+    def descents(self) -> list[int]:
         r"""Return the descents of the cycle decomposition.
 
         Recall that a descent of a permutation :math:`\sigma \in S_n`, where :math:`n \in \mathbb{N}`, is any position
@@ -577,7 +577,7 @@ class CycleDecomposition(_Element):
             return symmetria.elements.permutation.Permutation.from_cycle_decomposition(self) == other
         return False
 
-    def exceedances(self, weakly: bool = False) -> List[int]:
+    def exceedances(self, weakly: bool = False) -> list[int]:
         r"""Return the exceedances of the cycle decomposition.
 
         Recall that an exceedance of a permutation :math:`\sigma \in S_n`, where :math:`n \in \mathbb{N}`, is any
@@ -626,7 +626,7 @@ class CycleDecomposition(_Element):
         """
         return CycleDecomposition(*[cycle.inverse() for cycle in iter(self)])
 
-    def inversions(self) -> List[Tuple[int, int]]:
+    def inversions(self) -> list[tuple[int, int]]:
         r"""Return the inversions of the cycle decomposition.
 
         Recall that an inversion of a permutation :math:`\sigma \in S_n`, for :math:`n \in \mathbb{N}`, is a pair
@@ -763,7 +763,7 @@ class CycleDecomposition(_Element):
         """
         return all(len(cycle) == len(self[0]) for cycle in iter(self))
 
-    def lehmer_code(self) -> List[int]:
+    def lehmer_code(self) -> list[int]:
         """Return the Lehmer code of the cycle decomposition.
 
         Recall that the Lehmer code of a permutation is a sequence that encodes the permutation as a series of integers.
@@ -806,7 +806,7 @@ class CycleDecomposition(_Element):
         return symmetria.elements.permutation.Permutation.from_cycle_decomposition(self).lexicographic_rank()
 
     @property
-    def map(self) -> Dict[int, int]:
+    def map(self) -> dict[int, int]:
         """Return a dictionary representing the mapping of the cycle decomposition,
         where keys are indices and values are the corresponding elements after permutation.
 
@@ -826,7 +826,7 @@ class CycleDecomposition(_Element):
             _map.update(cycle.map)
         return _map
 
-    def orbit(self, item: Any) -> List[Any]:
+    def orbit(self, item: Any) -> list[Any]:
         r"""Compute the orbit of `item` object under the action of the cycle decomposition.
 
         Recall that the orbit of the action of a cycle decomposition :math:`\sigma` on an element x is given by the set
@@ -868,7 +868,7 @@ class CycleDecomposition(_Element):
         """
         return lcm(*[len(cycle) for cycle in iter(self)])
 
-    def records(self) -> List[int]:
+    def records(self) -> list[int]:
         r"""Return the records of the cycle decomposition.
 
         Recall that a record of a permutation :math:`\sigma \in S_n`, where :math:`n \in \mathbb{N}`, is a position
@@ -917,7 +917,7 @@ class CycleDecomposition(_Element):
         """
         return prod([cycle.sgn() for cycle in iter(self)])
 
-    def support(self) -> Set[int]:
+    def support(self) -> set[int]:
         r"""Return a set containing the indices in the domain of the permutation whose images are different from
         their respective indices, i.e., the set of :math:`n \in \mathbb{N}` in the permutation domain which are
         not mapped to itself.

@@ -1,11 +1,11 @@
-from typing import TYPE_CHECKING, Tuple
+from typing import TYPE_CHECKING
 from itertools import combinations
 
 if TYPE_CHECKING:
     from symmetria.elements.cycle import Cycle
 
 
-def _validate_cycle(cycle: Tuple[int, ...]) -> None:
+def _validate_cycle(cycle: tuple[int, ...]) -> None:
     """Private method to validate and standardize a set of integers to form a cycle.
 
     A tuple is eligible to be a cycle if it contains only strictly positive integers.
@@ -17,7 +17,7 @@ def _validate_cycle(cycle: Tuple[int, ...]) -> None:
             raise ValueError(f"Expected all strictly positive values, but got {element}.")
 
 
-def _validate_cycle_decomposition(cycles: Tuple["Cycle", ...]) -> None:
+def _validate_cycle_decomposition(cycles: tuple["Cycle", ...]) -> None:
     """Private method to validate and standardize a tuple of cycles to become a cycle decomposition.
 
     A tuple of cycles is eligible to be a cycle decomposition if and only if:
@@ -38,7 +38,7 @@ def _validate_cycle_decomposition(cycles: Tuple["Cycle", ...]) -> None:
         )
 
 
-def _validate_permutation(image: Tuple[int, ...]) -> None:
+def _validate_permutation(image: tuple[int, ...]) -> None:
     """Private method to check if a set of integers is eligible as image for a permutation.
 
     Recall that, a tuple of integers represent the image of a permutation if the following conditions hold:

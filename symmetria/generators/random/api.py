@@ -1,5 +1,5 @@
 import warnings
-from typing import Dict, Final, Callable, Generator
+from typing import Final, Callable, Generator
 
 from symmetria import Permutation
 from symmetria.generators._validators import _check_degree_parameter, _check_algorithm_parameter
@@ -12,7 +12,7 @@ from symmetria.generators.random._algorithms import (
 
 __all__ = ["random", "random_generator", "random_permutation"]
 
-_SUPPORTED_ALGORITHM: Final[Dict[str, Dict[str, Callable]]] = {
+_SUPPORTED_ALGORITHM: Final[dict[str, dict[str, Callable]]] = {
     "random": {
         "random": _random_shuffle,
         "fisher-yates": _fisher_yates_shuffle,
