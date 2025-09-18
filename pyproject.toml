@@ -36,6 +36,7 @@ classifiers = [
 ]
 dependencies = [
     "pip>=25.2",
+    "symmetria-core==0.2.0",
     "typing-extensions>=4.15.0",
 ]
 
