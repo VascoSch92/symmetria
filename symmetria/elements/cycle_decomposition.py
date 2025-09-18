@@ -10,7 +10,6 @@ from symmetria.elements._utils import Table
 
 if TYPE_CHECKING:
     from symmetria.elements.cycle import Cycle
-    from symmetria.elements._types import Permutable, PermutationLike
     from symmetria.elements.permutation import Permutation
 
 __all__ = ["CycleDecomposition"]
@@ -43,9 +42,9 @@ class CycleDecomposition(_Element):
     :example:
         >>> from symmetria import Cycle, CycleDecomposition
         ...
-        >>> cycle_a = CycleDecomposition(Cycle(2, 1), Cycle(4, 3))
-        >>> cycle_b = CycleDecomposition(*[Cycle(2, 1), Cycle(4, 3)])
-        >>> cycle_c = CycleDecomposition(*(Cycle(2, 1), Cycle(4, 3)))
+        >>> cycle = CycleDecomposition(Cycle(2, 1), Cycle(4, 3))
+        >>> cycle = CycleDecomposition(*[Cycle(2, 1), Cycle(4, 3)])
+        >>> cycle = CycleDecomposition(*(Cycle(2, 1), Cycle(4, 3)))
     """
 
     __slots__ = ["_cycles", "_domain"]
@@ -92,7 +91,7 @@ class CycleDecomposition(_Element):
         """
         return any(bool(cycle) for cycle in iter(self))
 
-    def __call__(self, item: "Permutable") -> "Permutable":
+    def __call__(self, item: Any) -> Any:
         """Call the cycle decomposition on the `item` object, i.e., mimic a cycle decomposition action on the
         element `item`.
 
@@ -102,10 +101,10 @@ class CycleDecomposition(_Element):
         - If `item` is a cycle or a cycle decomposition, it returns the composition in cycle decomposition.
 
         :param item: The object on which the cycle acts.
-        :type item: Permutable
+        :type item: Any
 
         :return: The permuted object.
-        :rtype: Permutable
+        :rtype: Any
 
         :raises ValueError: If there are not enough elements in the item to perform the permutation.
         :raises ValueError: If attempting to compose the cycle decomposition with a permutation, cycle, or cycle
@@ -181,15 +180,14 @@ class CycleDecomposition(_Element):
             >>> CycleDecomposition(Cycle(1), Cycle(2, 3)) == CycleDecomposition(Cycle(1))
             False
         """
-        if not isinstance(other, CycleDecomposition):
-            raise NotImplementedError(f"Comparison between `CycleDecomposition` and {type(other)} not supported.")
-
-        if len(self) != len(other):
-            return False
-        for cycle_a, cycle_b in zip(iter(self), iter(other)):
-            if cycle_a.elements != cycle_b.elements:
+        if isinstance(other, CycleDecomposition):
+            if len(self) != len(other):
                 return False
-        return True
+            for cycle_a, cycle_b in zip(iter(self), iter(other)):
+                if cycle_a.elements != cycle_b.elements:
+                    return False
+            return True
+        return False
 
     def __getitem__(self, idx: int) -> "Cycle":
         """Return the cycle of the cycle decomposition at the given index `item`.
@@ -541,14 +539,14 @@ class CycleDecomposition(_Element):
         """
         return self._domain
 
-    def equivalent(self, other: "PermutationLike") -> bool:
+    def equivalent(self, other: Any) -> bool:
         """Check if the cycle decomposition is equivalent to another object.
 
         This method is introduced because we can have different representation of the same cycle decomposition, e.g.,
         as a cycle, or as permutation.
 
         :param other: The object to compare with.
-        :type other: PermutationLike
+        :type other: Any
 
         :return: True if the cycle decomposition is equivalent to the other object, False otherwise.
         :rtype: bool
@@ -829,7 +827,7 @@ class CycleDecomposition(_Element):
             _map.update(cycle.map)
         return _map
 
-    def orbit(self, item: "Permutable") -> list["Permutable"]:
+    def orbit(self, item: Any) -> list[Any]:
         r"""Compute the orbit of `item` object under the action of the cycle decomposition.
 
         Recall that the orbit of the action of a cycle decomposition :math:`\sigma` on an element x is given by the set
@@ -837,14 +835,14 @@ class CycleDecomposition(_Element):
         ..math:: \{ \sigma^n(x): n \in \mathbb{N}\}.
 
         :param item: The initial element or iterable to compute the orbit for.
-        :type item: Permutable
+        :type item: Any
 
         :return: The orbit of the specified element under the permutation.
-        :rtype: List[Permutable]
+        :rtype: List[Any]
         """
         if isinstance(item, symmetria.elements.cycle.Cycle):
             item = item.cycle_decomposition()
-        orbit: list["Permutable"] = [item]
+        orbit = [item]
         next_element = self(item)
         while next_element != item:
             orbit.append(next_element)
