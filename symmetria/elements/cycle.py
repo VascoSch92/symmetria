@@ -1,10 +1,11 @@
 from typing import TYPE_CHECKING, Any, Union, Iterable, Iterator
 
-import symmetria.elements.permutation
+from symmetria_core import validators
+
 import symmetria.elements.cycle_decomposition
+import symmetria.elements.permutation
 from symmetria.elements._base import _Element
 from symmetria.elements._utils import Table
-from symmetria.elements._validators import _validate_cycle
 
 if TYPE_CHECKING:
     from symmetria.elements._types import Permutable, PermutationLike
@@ -48,7 +49,7 @@ class Cycle(_Element):
     __slots__ = ["_cycle", "_domain"]
 
     def __new__(cls, *cycle: int) -> "Cycle":
-        _validate_cycle(cycle=cycle)
+        validators.validate_cycle(cycle)
         return super().__new__(cls)
 
     def __init__(self, *cycle: int) -> None:
@@ -161,8 +162,7 @@ class Cycle(_Element):
             return "".join(permuted)
         elif isinstance(original, tuple):
             return tuple(p for p in permuted)
-        else:
-            return permuted
+        return permuted
 
     def _call_on_permutation(self, original: "Permutation") -> "Permutation":
         """Private method for calls on permutation."""
