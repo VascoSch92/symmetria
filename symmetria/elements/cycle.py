@@ -1,4 +1,4 @@
-from typing import TYPE_CHECKING, Any, Set, Dict, List, Tuple, Union, Iterable, Iterator
+from typing import TYPE_CHECKING, Any, Union, Iterable, Iterator
 
 import symmetria.elements.permutation
 import symmetria.elements.cycle_decomposition
@@ -51,11 +51,11 @@ class Cycle(_Element):
         return super().__new__(cls)
 
     def __init__(self, *cycle: int) -> None:
-        self._cycle: Tuple[int, ...] = self._standardization(cycle=cycle)
+        self._cycle: tuple[int, ...] = self._standardization(cycle=cycle)
         self._domain: Iterable[int] = range(1, max(self._cycle) + 1)
 
     @staticmethod
-    def _standardization(cycle: Tuple[int, ...]) -> Tuple[int, ...]:
+    def _standardization(cycle: tuple[int, ...]) -> tuple[int, ...]:
         """Private method to standardize a set of integers to form a cycle.
 
         The standard form for a cycle is the (unique) one where the first element is the smallest.
@@ -151,7 +151,7 @@ class Cycle(_Element):
             return self[(self.elements.index(original) + 1) % len(self)]
         return original
 
-    def _call_on_str_list_tuple(self, original: Union[str, Tuple, List]) -> Union[str, Tuple, List]:
+    def _call_on_str_list_tuple(self, original: Union[str, tuple, list]) -> Union[str, tuple, list]:
         """Private method for calls on string, list and tuple."""
         permuted = list(_ for _ in original)
         for idx, w in enumerate(original, 1):
@@ -491,7 +491,7 @@ class Cycle(_Element):
         return self._domain
 
     @property
-    def elements(self) -> Tuple[int, ...]:
+    def elements(self) -> tuple[int, ...]:
         """Return a tuple containing the elements of the cycle in its standard form.
 
         :return: The elements of the cycle.
@@ -574,7 +574,7 @@ class Cycle(_Element):
         """
         return Cycle(*self.elements[::-1])
 
-    def inversions(self) -> List[Tuple[int, int]]:
+    def inversions(self) -> list[tuple[int, int]]:
         r"""Return the inversions of the cycle.
 
         Recall that an inversion of a permutation :math:`\sigma \in S_n`, for :math:`n \in \mathbb{N}`, is a pair
@@ -678,7 +678,7 @@ class Cycle(_Element):
         return self.sgn() == -1
 
     @property
-    def map(self) -> Dict[int, int]:
+    def map(self) -> dict[int, int]:
         """Return a dictionary representing the mapping of the cycle,
         where keys are indices and values are the corresponding elements after the permutation.
 
@@ -697,7 +697,7 @@ class Cycle(_Element):
         """
         return {element: self[(idx + 1) % len(self)] for idx, element in enumerate(self.elements)}
 
-    def orbit(self, item: Any) -> List[Any]:
+    def orbit(self, item: Any) -> list[Any]:
         r"""Compute the orbit of `item` object under the action of the cycle.
 
         Recall that the orbit of the action of a cycle :math:`\sigma` on an element x is given by the set
@@ -778,7 +778,7 @@ class Cycle(_Element):
         """
         return -1 if len(self) % 2 == 0 else 1
 
-    def support(self) -> Set[int]:
+    def support(self) -> set[int]:
         """Return a set containing the indices in the domain of the cycle whose images are different from their
         respective indices, i.e., the set of :math:`n` in the cycle domain which are not mapped to itself.
 
