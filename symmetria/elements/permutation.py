@@ -1,12 +1,11 @@
 from math import factorial
-from typing import TYPE_CHECKING, Any, Set, Dict, List, Tuple, Union, Iterable
-
-from symmetria_core import permutation, validators
+from typing import TYPE_CHECKING, Any, Union, Iterable
 
 import symmetria.elements.cycle
 import symmetria.elements.cycle_decomposition
 from symmetria.elements._base import _Element
 from symmetria.elements._utils import Table
+from symmetria.elements._validators import _validate_permutation
 
 if TYPE_CHECKING:
     from symmetria.elements.cycle import Cycle
@@ -34,21 +33,21 @@ class Permutation(_Element):
     :example:
         >>> from symmetria import Permutation
         ...
-        >>> permutation_a = Permutation(3, 1, 2)
-        >>> permutation_b = Permutation(*[3, 1, 2])
-        >>> permutation_c = Permutation(*(3, 1, 2))
+        >>> permutation = Permutation(3, 1, 2)
+        >>> permutation = Permutation(*[3, 1, 2])
+        >>> permutation = Permutation(*(3, 1, 2))
     """
 
     __slots__ = ["_map", "_domain", "_image"]
 
     def __new__(cls, *image: int) -> "Permutation":
-        validators.validate_permutation(image)
+        _validate_permutation(image=image)
         return super().__new__(cls)
 
     def __init__(self, *image: int) -> None:
-        self._map: Dict[int, int] = dict(enumerate(image, 1))
+        self._map: dict[int, int] = dict(enumerate(image, 1))
         self._domain: Iterable[int] = range(1, len(self._map) + 1)
-        self._image: Tuple[int, ...] = tuple(image)
+        self._image: tuple[int, ...] = tuple(image)
 
     def __bool__(self) -> bool:
         """Check if the permutation is different from the identity permutation.
@@ -126,7 +125,7 @@ class Permutation(_Element):
         """Private method for calls on integer."""
         return self[idx] if 1 <= idx <= len(self) else idx
 
-    def _call_on_str_list_tuple(self, original: Union[str, Tuple, List]) -> Union[str, Tuple, List]:
+    def _call_on_str_list_tuple(self, original: Union[str, tuple, list]) -> Union[str, tuple, list]:
         """Private method for calls on strings, tuples and lists."""
         permuted = list(_ for _ in original)
         for idx, w in enumerate(original, 1):
@@ -174,7 +173,9 @@ class Permutation(_Element):
             >>> Permutation(1, 2, 3) == 12
             False
         """
-        return self.map == other.map if isinstance(other, Permutation) else False
+        if isinstance(other, Permutation):
+            return self.map == other.map
+        return False
 
     def __getitem__(self, item: int) -> int:
         """Return the value of the permutation at the given index `item`.
@@ -218,7 +219,7 @@ class Permutation(_Element):
             >>> int(Permutation(1, 3, 4, 5, 2, 6))
             134526
         """
-        return permutation.int_repr(image=self.image)
+        return sum([self[element] * 10 ** (len(self) - element) for element in self.domain])
 
     def __len__(self) -> int:
         """Return the length of the permutation, which is the number of elements in its domain.
@@ -236,7 +237,7 @@ class Permutation(_Element):
             >>> len(Permutation(1, 3, 4, 5, 2, 6))
             6
         """
-        return len(self.image)
+        return len(list(self.domain))
 
     def __mul__(self, other: "Permutation") -> "Permutation":
         """Multiply the permutation with another permutation, resulting in a new permutation
@@ -319,7 +320,7 @@ class Permutation(_Element):
             >>> Permutation(1, 3, 4, 5, 2, 6).__repr__()
             'Permutation(1, 3, 4, 5, 2, 6)'
         """
-        return permutation.repr(image=self.image)
+        return f"Permutation({', '.join([str(self._map[idx]) for idx in self.domain])})"
 
     def __str__(self) -> str:
         """Return a string representation of the permutation in the form of a tuple.
@@ -339,7 +340,7 @@ class Permutation(_Element):
         """
         return str(self.image) if len(self.image) > 1 else f"({self.image[0]})"
 
-    def ascents(self) -> List[int]:
+    def ascents(self) -> list[int]:
         r"""Return the ascents of the permutation.
 
         Recall that an ascent of a permutation :math:`\sigma \in S_n`, where :math:`n \in \mathbb{N}`, is any position
@@ -358,7 +359,7 @@ class Permutation(_Element):
             >>> Permutation(4, 3, 2, 1).ascents()
             []
         """
-        return permutation.ascents(image=self.image)
+        return [idx + 1 for idx in range(len(self) - 1) if self.image[idx] < self.image[idx + 1]]
 
     def cycle_decomposition(self) -> "CycleDecomposition":
         """Decompose the permutation into its cycle decomposition.
@@ -402,7 +403,7 @@ class Permutation(_Element):
         """
         return self.cycle_decomposition().cycle_notation()
 
-    def cycle_type(self) -> Tuple[int, ...]:
+    def cycle_type(self) -> tuple[int, ...]:
         r"""Return the cycle type of the permutation.
 
         Recall that the cycle type of the permutation :math:`\sigma` is a sequence of integer, where
@@ -447,7 +448,7 @@ class Permutation(_Element):
         """
         return len(self)
 
-    def descents(self) -> List[int]:
+    def descents(self) -> list[int]:
         r"""Return the descents of the permutation.
 
         Recall that a descent of a permutation :math:`\sigma \in S_n`, where :math:`n \in \mathbb{N}`, is any position
@@ -466,7 +467,7 @@ class Permutation(_Element):
             >>> Permutation(4, 3, 2, 1).descents()
             [1, 2, 3]
         """
-        return permutation.descents(self.image)
+        return [idx + 1 for idx in range(len(self) - 1) if self.image[idx] > self.image[idx + 1]]
 
     def describe(self) -> str:
         """Return a table describing the permutation.
@@ -576,7 +577,7 @@ class Permutation(_Element):
             return self == Permutation.from_cycle_decomposition(other)
         return False
 
-    def exceedances(self, weakly: bool = False) -> List[int]:
+    def exceedances(self, weakly: bool = False) -> list[int]:
         r"""Return the exceedances of the permutation.
 
         Recall that an exceedance of a permutation :math:`\sigma \in S_n`, where :math:`n \in \mathbb{N}`, is any
@@ -603,7 +604,9 @@ class Permutation(_Element):
             >>> Permutation(3, 4, 5, 2, 1, 6, 7).exceedances(weakly=True)
             [1, 2, 3, 6, 7]
         """
-        return permutation.exceedances(image=self.image, weakly=weakly)
+        if weakly:
+            return [i for i, p in enumerate(self.image, 1) if p >= i]
+        return [i for i, p in enumerate(self.image, 1) if p > i]
 
     @classmethod
     def from_cycle(cls, cycle: "Cycle") -> "Permutation":
@@ -660,7 +663,7 @@ class Permutation(_Element):
         return cls.from_dict(p=cycle_decomposition.map)
 
     @classmethod
-    def from_dict(cls, p: Dict[int, int]) -> "Permutation":
+    def from_dict(cls, p: dict[int, int]) -> "Permutation":
         """Create a permutation object from a dictionary where keys represent indices and values represent the
         images of the indeces.
 
@@ -681,7 +684,7 @@ class Permutation(_Element):
         return cls(*[p[idx] for idx in range(1, len(p) + 1)])
 
     @property
-    def image(self) -> Tuple[int, ...]:
+    def image(self) -> tuple[int, ...]:
         r"""Return the image of the permutation.
 
         For example, consider the permutation :math:`\sigma \in S_3` given by :math:`\sigma(1)=3, \sigma(2)=1`, and
@@ -724,7 +727,7 @@ class Permutation(_Element):
         """
         return Permutation.from_dict({item: key for key, item in self.map.items()})
 
-    def inversions(self) -> List[Tuple[int, int]]:
+    def inversions(self) -> list[tuple[int, int]]:
         r"""Return the inversions of the permutation.
 
         Recall that an inversion of a permutation :math:`\sigma \in S_n`, for :math:`n \in \mathbb{N}`, is a pair
@@ -802,7 +805,10 @@ class Permutation(_Element):
             >>> Permutation(1, 3, 4, 5, 2, 6).is_derangement()
             False
         """
-        return permutation.is_derangement(image=self.image)
+        for idx in self.domain:
+            if self(idx) == idx:
+                return False
+        return True
 
     def is_even(self) -> bool:
         """Check if the permutation is even.
@@ -871,7 +877,7 @@ class Permutation(_Element):
         cycle_decomposition = self.cycle_decomposition()
         return all(len(cycle) == len(cycle_decomposition[0]) for cycle in iter(cycle_decomposition))
 
-    def lehmer_code(self) -> List[int]:
+    def lehmer_code(self) -> list[int]:
         """Return the Lehmer code of the permutation.
 
         Recall that the Lehmer code of a permutation is a sequence that encodes the permutation as a series of integers.
@@ -892,7 +898,19 @@ class Permutation(_Element):
             >>> Permutation(4, 1, 3, 2, 7, 6, 5, 8).lehmer_code()
             [3, 0, 1, 0, 2, 1, 0, 0]
         """
-        return permutation.lehmer_code(image=self.image)
+        n = len(self)
+        lehmer_code = [0] * n
+        stack: list[tuple[int, int]] = []  # (value, count)
+
+        for i in range(n, 0, -1):
+            count = 0
+            while stack and stack[-1][0] < self[i]:
+                _, old_count = stack.pop()
+                count += 1 + old_count
+            lehmer_code[i - 1] = count
+            stack.append((self[i], count))
+
+        return lehmer_code
 
     def lexicographic_rank(self) -> int:
         """Return the lexicographic rank of the permutation.
@@ -915,10 +933,20 @@ class Permutation(_Element):
             >>> Permutation(3, 2, 1, 4).lexicographic_rank()
             15
         """
-        return permutation.lexicographic_rank(image=self.image)
+        n = self.__len__()
+        rank = 1
+
+        for i in range(n):
+            right_smaller = 0
+            for j in range(i + 1, n):
+                if self[i + 1] > self[j + 1]:
+                    right_smaller += 1
+            rank += right_smaller * factorial(n - i - 1)
+
+        return rank
 
     @property
-    def map(self) -> Dict[int, int]:
+    def map(self) -> dict[int, int]:
         """Return a dictionary representing the mapping of the permutation.
 
         The keys of the dictionary are indices, while the values are the corresponding elements after permutation.
@@ -956,7 +984,7 @@ class Permutation(_Element):
         """
         return str(int(self))
 
-    def orbit(self, item: Any) -> List[Any]:
+    def orbit(self, item: Any) -> list[Any]:
         r"""Compute the orbit of `item` object under the action of the cycle.
 
         Recall that the orbit of the action of a permutation :math:`\sigma` on an element x is given by the set
@@ -1012,7 +1040,7 @@ class Permutation(_Element):
         """
         return self.cycle_decomposition().order()
 
-    def records(self) -> List[int]:
+    def records(self) -> list[int]:
         r"""Return the records of the permutation.
 
         Recall that a record of a permutation :math:`\sigma \in S_n`, where :math:`n \in \mathbb{N}`, is a position
@@ -1065,7 +1093,7 @@ class Permutation(_Element):
         """
         return -1 if len(self.inversions()) % 2 else 1
 
-    def support(self) -> Set[int]:
+    def support(self) -> set[int]:
         r"""Return a set containing the indices in the domain of the permutation whose images are different from their
         respective indices, i.e., the set of :math:`n` in the permutation domain which are not mapped to itself.
 

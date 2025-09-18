@@ -1,7 +1,4 @@
-from typing import List
-
-
-def _check_algorithm_parameter(value: str, supported: List[str]) -> None:
+def _check_algorithm_parameter(value: str, supported: list[str]) -> None:
     """Private method to check the value provided for the parameter `algorithm`.
 
     Recall that the parameter `algorithm` must be a string present in the list `supported`.

@@ -1,4 +1,3 @@
-from typing import Dict, List
 from dataclasses import field, dataclass
 
 from typing_extensions import Self
@@ -7,7 +6,7 @@ from typing_extensions import Self
 @dataclass
 class Table:
     title: str
-    _rows: Dict[str, str] = field(default_factory=dict)
+    _rows: dict[str, str] = field(default_factory=dict)
 
     _max_length_row: int = 0
 
@@ -19,7 +18,7 @@ class Table:
     def build(self) -> str:
         length_table = len(self.title) + self._max_length_row + 20 + (len(self.title) + self._max_length_row) % 2
 
-        table: List[str] = []
+        table: list[str] = []
         table.append(self._get_header(length_table=length_table))
 
         for key, value in self._rows.items():

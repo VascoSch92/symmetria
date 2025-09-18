@@ -1,5 +1,5 @@
 import warnings
-from typing import Dict, Final, Callable, Generator
+from typing import Final, Callable, Generator
 
 from symmetria import Permutation
 from symmetria.generators._validators import _check_degree_parameter, _check_algorithm_parameter
@@ -12,7 +12,7 @@ from symmetria.generators.algorithm._algorithms import (
 
 __all__ = ["generate", "permutation_generator"]
 
-_SUPPORTED_ALGORITHMS: Final[Dict[str, Callable]] = {
+_SUPPORTED_ALGORITHMS: Final[dict[str, Callable]] = {
     "lexicographic": _lexicographic,
     "heap": _heap,
     "steinhaus-johnson-trotter": _steinhaus_johnson_trotter,

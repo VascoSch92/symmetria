@@ -1,4 +1,4 @@
-from typing import List, Generator
+from typing import Generator
 
 import symmetria.elements.permutation
 from symmetria import Permutation
@@ -37,7 +37,7 @@ def _heap(degree: int) -> Generator[Permutation, None, None]:
         `Permutations by interchanges.` B. R. Heap, The Computer Journal, 6(3) (1963), pp. 293-298
     """
 
-    def _heap_recursion(degree: int, permutation: List[int]) -> Generator[Permutation, None, None]:
+    def _heap_recursion(degree: int, permutation: list[int]) -> Generator[Permutation, None, None]:
         if degree == 1:
             yield symmetria.Permutation(*permutation)
         else:
@@ -98,7 +98,7 @@ def _zaks(degree: int) -> Generator[Permutation, None, None]:
         Zaks, S. A new algorithm for generation of permutations. BIT 24, 196–204 (1984).
     """
 
-    def _zaks_recursion(elements: List[int]) -> List[List[int]]:
+    def _zaks_recursion(elements: list[int]) -> list[list[int]]:
         """Generate permutations in the specific Zaks order."""
         n = len(elements)
 
