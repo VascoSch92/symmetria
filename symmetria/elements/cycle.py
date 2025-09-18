@@ -1,13 +1,13 @@
-from typing import TYPE_CHECKING, Any, Union, Iterable, Iterator
+from typing import TYPE_CHECKING, Any, Set, Dict, List, Tuple, Union, Iterable, Iterator
 
-import symmetria.elements.permutation
+from symmetria_core import validators
+
 import symmetria.elements.cycle_decomposition
+import symmetria.elements.permutation
 from symmetria.elements._base import _Element
 from symmetria.elements._utils import Table
-from symmetria.elements._validators import _validate_cycle
 
 if TYPE_CHECKING:
-    from symmetria.elements._types import Permutable, PermutationLike
     from symmetria.elements.permutation import Permutation
     from symmetria.elements.cycle_decomposition import CycleDecomposition
 
@@ -48,15 +48,15 @@ class Cycle(_Element):
     __slots__ = ["_cycle", "_domain"]
 
     def __new__(cls, *cycle: int) -> "Cycle":
-        _validate_cycle(cycle=cycle)
+        validators.validate_cycle(cycle)
         return super().__new__(cls)
 
     def __init__(self, *cycle: int) -> None:
-        self._cycle: tuple[int, ...] = self._standardization(cycle=cycle)
+        self._cycle: Tuple[int, ...] = self._standardization(cycle=cycle)
         self._domain: Iterable[int] = range(1, max(self._cycle) + 1)
 
     @staticmethod
-    def _standardization(cycle: tuple[int, ...]) -> tuple[int, ...]:
+    def _standardization(cycle: Tuple[int, ...]) -> Tuple[int, ...]:
         """Private method to standardize a set of integers to form a cycle.
 
         The standard form for a cycle is the (unique) one where the first element is the smallest.
@@ -85,7 +85,7 @@ class Cycle(_Element):
         """
         return len(self.elements) != 1
 
-    def __call__(self, item: "Permutable") -> "Permutable":
+    def __call__(self, item: Any) -> Any:
         """Call the cycle on the `item` object, i.e., mimic a cycle action on the element `item`.
 
         - If `item` is an integer, it applies the cycle to the integer.
@@ -94,10 +94,10 @@ class Cycle(_Element):
         - If `item` is a cycle or a cycle decomposition, it returns the composition in cycle decomposition.
 
         :param item: The object on which the cycle acts.
-        :type item: Permutable
+        :type item: Any
 
         :return: The permuted object.
-        :rtype: Permutable
+        :rtype: Any
 
         :raises AssertionError: If the largest element moved by the cycle is greater than the length of `item`, i.e.,
             the cycle cannot permute the `item`.
@@ -152,7 +152,7 @@ class Cycle(_Element):
             return self[(self.elements.index(original) + 1) % len(self)]
         return original
 
-    def _call_on_str_list_tuple(self, original: Union[str, tuple, list]) -> Union[str, tuple, list]:
+    def _call_on_str_list_tuple(self, original: Union[str, Tuple, List]) -> Union[str, Tuple, List]:
         """Private method for calls on string, list and tuple."""
         permuted = list(_ for _ in original)
         for idx, w in enumerate(original, 1):
@@ -161,8 +161,7 @@ class Cycle(_Element):
             return "".join(permuted)
         elif isinstance(original, tuple):
             return tuple(p for p in permuted)
-        else:
-            return permuted
+        return permuted
 
     def _call_on_permutation(self, original: "Permutation") -> "Permutation":
         """Private method for calls on permutation."""
@@ -182,11 +181,11 @@ class Cycle(_Element):
         cycle_decomposition = symmetria.elements.cycle_decomposition.CycleDecomposition(*cycles)
         return cycle_decomposition * original
 
-    def __contains__(self, item: int) -> bool:
+    def __contains__(self, item: Any) -> bool:
         """Membership check, i.e., if an element is contained in the cycle.
 
         :param item: The object to check membership for.
-        :type item: int
+        :type item: Any
 
         :return: True if the given element is in the cycle. Otherwise, False.
         :rtype: bool
@@ -217,18 +216,18 @@ class Cycle(_Element):
             True
             >>> Cycle(1, 3, 2) == Cycle(1, 2, 3)
             False
+            >>> Cycle(1, 2, 3) == 13
+            False
         """
-        if not isinstance(other, Cycle):
-            raise NotImplementedError(f"Comparison between `Cycle` and {type(other)} not supported.")
-
-        lhs_length, rhs_length = len(self), len(other)
-        if lhs_length != rhs_length:
-            return False
-        else:
-            # in this case we have the identity on both side
+        if isinstance(other, Cycle):
+            lhs_length, rhs_length = len(self), len(other)
+            if lhs_length != rhs_length:
+                return False
+            # case where identity on both sides
             if lhs_length == 1:
                 return True
             return self.map == other.map
+        return False
 
     def __getitem__(self, item: int) -> int:
         """Return the value of the cycle at the given index `item`.
@@ -491,7 +490,7 @@ class Cycle(_Element):
         return self._domain
 
     @property
-    def elements(self) -> tuple[int, ...]:
+    def elements(self) -> Tuple[int, ...]:
         """Return a tuple containing the elements of the cycle in its standard form.
 
         :return: The elements of the cycle.
@@ -509,7 +508,7 @@ class Cycle(_Element):
         """
         return self._cycle
 
-    def equivalent(self, other: "PermutationLike") -> bool:
+    def equivalent(self, other: Any) -> bool:
         """Check if the cycle is equivalent to the `other` object.
 
         In `symmetria`, a permutation of the symmetric group can have different representations. For example,
@@ -517,7 +516,7 @@ class Cycle(_Element):
         cycle is representing the same permutation of the `other` object.
 
         :param other:
-        :type other: PermutationLike
+        :type other: Any
 
         :return: True if the cycle is equivalent to the `other` object.
         :rtype bool:
@@ -574,7 +573,7 @@ class Cycle(_Element):
         """
         return Cycle(*self.elements[::-1])
 
-    def inversions(self) -> list[tuple[int, int]]:
+    def inversions(self) -> List[Tuple[int, int]]:
         r"""Return the inversions of the cycle.
 
         Recall that an inversion of a permutation :math:`\sigma \in S_n`, for :math:`n \in \mathbb{N}`, is a pair
@@ -678,7 +677,7 @@ class Cycle(_Element):
         return self.sgn() == -1
 
     @property
-    def map(self) -> dict[int, int]:
+    def map(self) -> Dict[int, int]:
         """Return a dictionary representing the mapping of the cycle,
         where keys are indices and values are the corresponding elements after the permutation.
 
@@ -697,7 +696,7 @@ class Cycle(_Element):
         """
         return {element: self[(idx + 1) % len(self)] for idx, element in enumerate(self.elements)}
 
-    def orbit(self, item: "Permutable") -> list["Permutable"]:
+    def orbit(self, item: Any) -> List[Any]:
         r"""Compute the orbit of `item` object under the action of the cycle.
 
         Recall that the orbit of the action of a cycle :math:`\sigma` on an element x is given by the set
@@ -705,10 +704,10 @@ class Cycle(_Element):
         .. math:: \{ \sigma^n(x): n \in \mathbb{N}\}.
 
         :param item: The initial element or iterable to compute the orbit for.
-        :type item: Permutable
+        :type item: Any
 
         :return: The orbit of the specified element under the permutation.
-        :rtype: List[Permutable]
+        :rtype: List[Any]
 
         :example:
             >>> from symmetria import Cycle, CycleDecomposition, Permutation
@@ -724,10 +723,10 @@ class Cycle(_Element):
         """
         if isinstance(item, Cycle):
             item = item.cycle_decomposition()
-        orbit: list["Permutable"] = [item]
+        orbit = [item]
         next_element = self(item)
         while next_element != item:
-            orbit.append(next_element)  # type: ignore[arg-type]
+            orbit.append(next_element)
             next_element = self(next_element)
         return orbit
 
@@ -778,7 +777,7 @@ class Cycle(_Element):
         """
         return -1 if len(self) % 2 == 0 else 1
 
-    def support(self) -> set[int]:
+    def support(self) -> Set[int]:
         """Return a set containing the indices in the domain of the cycle whose images are different from their
         respective indices, i.e., the set of :math:`n` in the cycle domain which are not mapped to itself.
 

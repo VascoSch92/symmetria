@@ -1,11 +1,12 @@
 from math import lcm, prod
 from typing import TYPE_CHECKING, Any, Union, Iterable
 
+from symmetria_core import validators
+
 import symmetria.elements.cycle
 import symmetria.elements.permutation
 from symmetria.elements._base import _Element
 from symmetria.elements._utils import Table
-from symmetria.elements._validators import _validate_cycle_decomposition
 
 if TYPE_CHECKING:
     from symmetria.elements.cycle import Cycle
@@ -50,7 +51,7 @@ class CycleDecomposition(_Element):
     __slots__ = ["_cycles", "_domain"]
 
     def __new__(cls, *cycles: "Cycle") -> "CycleDecomposition":
-        _validate_cycle_decomposition(cycles=cycles)
+        validators.validate_cycle_decomposition(tuple(c._cycle for c in cycles))
         return super().__new__(cls)
 
     def __init__(self, *cycles: "Cycle") -> None:
