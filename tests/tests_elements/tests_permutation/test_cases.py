@@ -347,8 +347,6 @@ TEST_CALL_ERROR = [
 TEST_EQ = [
     (Permutation(1), Permutation(1), True),
     (Permutation(1), Permutation(1, 2), False),
-    (Permutation(1, 2, 3), 123, False),
-    (Permutation(1, 3, 2, 4), "hello-world", False),
 ]
 TEST_INT = [
     (Permutation(1), 1),

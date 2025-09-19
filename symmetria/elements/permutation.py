@@ -9,6 +9,7 @@ from symmetria.elements._validators import _validate_permutation
 
 if TYPE_CHECKING:
     from symmetria.elements.cycle import Cycle
+    from symmetria.elements._types import Permutable, PermutationLike
     from symmetria.elements.cycle_decomposition import CycleDecomposition
 
 __all__ = ["Permutation"]
@@ -65,7 +66,7 @@ class Permutation(_Element):
         """
         return self != Permutation(*self.domain)
 
-    def __call__(self, item: Any) -> Any:
+    def __call__(self, item: "Permutable") -> "Permutable":
         """Call the permutation on the `item` object, i.e., mimic a permutation action on the element `item`.
 
         - If `item` is an integer, it applies the permutation to the integer.
@@ -74,10 +75,10 @@ class Permutation(_Element):
         - If `item` is a cycle or a cycle decomposition, it returns the composition in cycle decomposition.
 
         :param item: The object on which the permutation acts.
-        :type item: Any
+        :type item: Permutable
 
         :return: The permuted object.
-        :rtype: Any
+        :rtype: Permutable
 
         :raises AssertionError: If the length of the permutation is greater than the length of `item`, i.e.,
             the permutation cannot permute the `item`.
@@ -170,12 +171,10 @@ class Permutation(_Element):
             True
             >>> Permutation(1, 2, 3) == Permutation(3, 2, 1)
             False
-            >>> Permutation(1, 2, 3) == 12
-            False
         """
         if isinstance(other, Permutation):
             return self.map == other.map
-        return False
+        raise NotImplementedError(f"Comparison between `Permutation` and {type(other)} not supported.")
 
     def __getitem__(self, item: int) -> int:
         """Return the value of the permutation at the given index `item`.
@@ -381,7 +380,7 @@ class Permutation(_Element):
         for idx in self.domain:
             if idx not in visited:
                 orbit = self.orbit(idx)
-                cycles.append(symmetria.elements.cycle.Cycle(*orbit))
+                cycles.append(symmetria.elements.cycle.Cycle(*orbit))  # type: ignore[arg-type]
                 visited.update(orbit)
         return symmetria.elements.cycle_decomposition.CycleDecomposition(*cycles)
 
@@ -546,14 +545,14 @@ class Permutation(_Element):
         """
         return self._domain
 
-    def equivalent(self, other: Any) -> bool:
+    def equivalent(self, other: "PermutationLike") -> bool:
         """Check if the permutation is equivalent to another object.
 
         This method is introduced because we can have different representation of the same permutation, e.g., as a
         cycle, or as cycle decomposition.
 
         :param other: The object to compare with.
-        :type other: Any
+        :type other: PermutationLike
 
         :return: True if the permutation is equivalent to the other object, False otherwise.
         :rtype: bool
@@ -984,7 +983,7 @@ class Permutation(_Element):
         """
         return str(int(self))
 
-    def orbit(self, item: Any) -> list[Any]:
+    def orbit(self, item: "Permutable") -> list["Permutable"]:
         r"""Compute the orbit of `item` object under the action of the cycle.
 
         Recall that the orbit of the action of a permutation :math:`\sigma` on an element x is given by the set
@@ -992,10 +991,10 @@ class Permutation(_Element):
         .. math:: \{ \sigma^n(x): n \in \mathbb{N}\}
 
         :param item: The initial element or iterable to compute the orbit for.
-        :type item: Any
+        :type item: Permutable
 
         :return: The orbit of the specified element under the permutation.
-        :rtype: List[Any]
+        :rtype: List[Permutable]
 
         :example:
             >>> from symmetria import Cycle, CycleDecomposition, Permutation
@@ -1012,7 +1011,7 @@ class Permutation(_Element):
         """
         if isinstance(item, symmetria.elements.cycle.Cycle):
             item = item.cycle_decomposition()
-        orbit = [item]
+        orbit: list["Permutable"] = [item]
         next_element = self(item)
         while next_element != item:
             orbit.append(next_element)
