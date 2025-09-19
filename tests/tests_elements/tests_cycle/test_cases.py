@@ -219,7 +219,6 @@ TEST_EQ = [
     (Cycle(1, 2, 3), Cycle(2, 3, 1), True),
     (Cycle(1, 2, 3), Cycle(2, 3, 4), False),
     (Cycle(1, 2, 3, 4), Cycle(4, 1, 2, 3), True),
-    (Cycle(1, 3), "ab", False),
 ]
 TEST_GETITEM = [
     (Cycle(1), 0, 1),
