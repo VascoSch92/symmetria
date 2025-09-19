@@ -22,6 +22,11 @@ The version is represented by three digits: a.b.c.
 
 ## Unreleased
 
+ENHANCEMENT:
+- removed use of type hint `Any`.
+- magic method `__eq__` slight change of behaviour, i.e., if not a permutation like object is given, then
+a `NotImplementedError` is raised
+
 ## \[0.3.4\] - 2025-09-09
 
 ENHANCEMENT:

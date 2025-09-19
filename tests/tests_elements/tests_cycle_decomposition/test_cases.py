@@ -297,7 +297,6 @@ TEST_EQ = [
         CycleDecomposition(Cycle(1), Cycle(2, 3)),
         False,
     ),
-    (CycleDecomposition(Cycle(1)), "abc", False),
 ]
 TEST_GETITEM = [
     (CycleDecomposition(Cycle(1)), 0, Cycle(1)),

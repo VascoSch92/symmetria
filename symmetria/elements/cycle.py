@@ -1,13 +1,13 @@
 from typing import TYPE_CHECKING, Any, Union, Iterable, Iterator
 
-from symmetria_core import validators
-
-import symmetria.elements.cycle_decomposition
 import symmetria.elements.permutation
+import symmetria.elements.cycle_decomposition
 from symmetria.elements._base import _Element
 from symmetria.elements._utils import Table
+from symmetria.elements._validators import _validate_cycle
 
 if TYPE_CHECKING:
+    from symmetria.elements._types import Permutable, PermutationLike
     from symmetria.elements.permutation import Permutation
     from symmetria.elements.cycle_decomposition import CycleDecomposition
 
@@ -48,7 +48,7 @@ class Cycle(_Element):
     __slots__ = ["_cycle", "_domain"]
 
     def __new__(cls, *cycle: int) -> "Cycle":
-        validators.validate_cycle(cycle)
+        _validate_cycle(cycle=cycle)
         return super().__new__(cls)
 
     def __init__(self, *cycle: int) -> None:
@@ -85,7 +85,7 @@ class Cycle(_Element):
         """
         return len(self.elements) != 1
 
-    def __call__(self, item: Any) -> Any:
+    def __call__(self, item: "Permutable") -> "Permutable":
         """Call the cycle on the `item` object, i.e., mimic a cycle action on the element `item`.
 
         - If `item` is an integer, it applies the cycle to the integer.
@@ -94,10 +94,10 @@ class Cycle(_Element):
         - If `item` is a cycle or a cycle decomposition, it returns the composition in cycle decomposition.
 
         :param item: The object on which the cycle acts.
-        :type item: Any
+        :type item: Permutable
 
         :return: The permuted object.
-        :rtype: Any
+        :rtype: Permutable
 
         :raises AssertionError: If the largest element moved by the cycle is greater than the length of `item`, i.e.,
             the cycle cannot permute the `item`.
@@ -161,7 +161,8 @@ class Cycle(_Element):
             return "".join(permuted)
         elif isinstance(original, tuple):
             return tuple(p for p in permuted)
-        return permuted
+        else:
+            return permuted
 
     def _call_on_permutation(self, original: "Permutation") -> "Permutation":
         """Private method for calls on permutation."""
@@ -181,11 +182,11 @@ class Cycle(_Element):
         cycle_decomposition = symmetria.elements.cycle_decomposition.CycleDecomposition(*cycles)
         return cycle_decomposition * original
 
-    def __contains__(self, item: Any) -> bool:
+    def __contains__(self, item: int) -> bool:
         """Membership check, i.e., if an element is contained in the cycle.
 
         :param item: The object to check membership for.
-        :type item: Any
+        :type item: int
 
         :return: True if the given element is in the cycle. Otherwise, False.
         :rtype: bool
@@ -216,18 +217,18 @@ class Cycle(_Element):
             True
             >>> Cycle(1, 3, 2) == Cycle(1, 2, 3)
             False
-            >>> Cycle(1, 2, 3) == 13
-            False
         """
-        if isinstance(other, Cycle):
-            lhs_length, rhs_length = len(self), len(other)
-            if lhs_length != rhs_length:
-                return False
-            # case where identity on both sides
+        if not isinstance(other, Cycle):
+            raise NotImplementedError(f"Comparison between `Cycle` and {type(other)} not supported.")
+
+        lhs_length, rhs_length = len(self), len(other)
+        if lhs_length != rhs_length:
+            return False
+        else:
+            # in this case we have the identity on both side
             if lhs_length == 1:
                 return True
             return self.map == other.map
-        return False
 
     def __getitem__(self, item: int) -> int:
         """Return the value of the cycle at the given index `item`.
@@ -508,7 +509,7 @@ class Cycle(_Element):
         """
         return self._cycle
 
-    def equivalent(self, other: Any) -> bool:
+    def equivalent(self, other: "PermutationLike") -> bool:
         """Check if the cycle is equivalent to the `other` object.
 
         In `symmetria`, a permutation of the symmetric group can have different representations. For example,
@@ -516,7 +517,7 @@ class Cycle(_Element):
         cycle is representing the same permutation of the `other` object.
 
         :param other:
-        :type other: Any
+        :type other: PermutationLike
 
         :return: True if the cycle is equivalent to the `other` object.
         :rtype bool:
@@ -696,7 +697,7 @@ class Cycle(_Element):
         """
         return {element: self[(idx + 1) % len(self)] for idx, element in enumerate(self.elements)}
 
-    def orbit(self, item: Any) -> list[Any]:
+    def orbit(self, item: "Permutable") -> list["Permutable"]:
         r"""Compute the orbit of `item` object under the action of the cycle.
 
         Recall that the orbit of the action of a cycle :math:`\sigma` on an element x is given by the set
@@ -704,10 +705,10 @@ class Cycle(_Element):
         .. math:: \{ \sigma^n(x): n \in \mathbb{N}\}.
 
         :param item: The initial element or iterable to compute the orbit for.
-        :type item: Any
+        :type item: Permutable
 
         :return: The orbit of the specified element under the permutation.
-        :rtype: List[Any]
+        :rtype: List[Permutable]
 
         :example:
             >>> from symmetria import Cycle, CycleDecomposition, Permutation
@@ -723,10 +724,10 @@ class Cycle(_Element):
         """
         if isinstance(item, Cycle):
             item = item.cycle_decomposition()
-        orbit = [item]
+        orbit: list["Permutable"] = [item]
         next_element = self(item)
         while next_element != item:
-            orbit.append(next_element)
+            orbit.append(next_element)  # type: ignore[arg-type]
             next_element = self(next_element)
         return orbit
 
