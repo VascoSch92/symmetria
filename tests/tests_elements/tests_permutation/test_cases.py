@@ -6,17 +6,17 @@ from symmetria import Cycle, Permutation, CycleDecomposition
 
 TEST_CONSTRUCTOR = [[1], [1, 2], [3, 2, 1], [4, 5, 6, 3, 2, 1], [4, 3, 2, 1]]
 TEST_CONSTRUCTOR_ERROR = [
-    (["1"], ValueError, f"Expected `int` type, but got {str}"),
+    (["1"], TypeError, "argument 'image': 'str' object cannot be interpreted as an integer"),
     ([-1], ValueError, "Expected all strictly positive values, but got -1"),
     (
         [1, 3],
         ValueError,
-        "The permutation is not injecting on its image. Indeed, 3 is not in the image.",
+        "The permutation is not injecting on its image. 3 is out of bounds.",
     ),
     (
         [1, 1],
         ValueError,
-        "It seems that the permutation is not bijective. Indeed, 1 has two, or more, pre-images.",
+        "It seems that the permutation is not bijective. 1 appears multiple times.",
     ),
 ]
 TEST_CONSTRUCTOR_FROM_DICT = [
