@@ -100,13 +100,15 @@ class Permutation(_Element):
             Permutation(2, 3, 1)
         """
         if isinstance(item, int):
-            return self._call_on_integer(idx=item)
-        elif isinstance(item, (str, list, tuple)):
+            return permutation.call_on_int(image=self.image, idx=item)
+        elif isinstance(item, str):
+            return permutation.call_on_str(image=self.image, string=item)
+        elif isinstance(item, (list, tuple)):
             if len(self) > len(item):
                 raise ValueError(f"Not enough object to permute {item} using the permutation {self}.")
-            return self._call_on_str_list_tuple(original=item)
+            return self._call_on_list_tuple(original=item)
         elif isinstance(item, Permutation):
-            return self * item
+            return Permutation(*permutation.multiplication(lhs=self.image, rhs=item.image))
         elif isinstance(item, symmetria.elements.cycle.Cycle):
             if set(item.domain).issubset(set(self.domain)) is False:
                 raise ValueError(
@@ -127,17 +129,15 @@ class Permutation(_Element):
         """Private method for calls on integer."""
         return self[idx] if 1 <= idx <= len(self) else idx
 
-    def _call_on_str_list_tuple(self, original: Union[str, tuple, list]) -> Union[str, tuple, list]:
+    def _call_on_list_tuple(self, original: Union[str, tuple, list]) -> Union[str, tuple, list]:
         """Private method for calls on strings, tuples and lists."""
         permuted = list(_ for _ in original)
         for idx, w in enumerate(original, 1):
             permuted[self._call_on_integer(idx=idx) - 1] = w
-        if isinstance(original, str):
-            return "".join(permuted)
-        elif isinstance(original, tuple):
+
+        if isinstance(original, tuple):
             return tuple(p for p in permuted)
-        else:
-            return permuted
+        return permuted
 
     def _call_on_cycle(self, cycle: "Cycle") -> "CycleDecomposition":
         """Private method for calls on cycles."""
@@ -262,14 +262,9 @@ class Permutation(_Element):
             >>> Permutation(3, 4, 5, 1, 2) * Permutation(3, 5, 1, 2, 4)
             Permutation(5, 2, 3, 4, 1)
         """
-        if isinstance(other, Permutation):
-            if self.domain != other.domain:
-                raise ValueError(
-                    f"Cannot compose permutation {self} with permutation {other},"
-                    " because they don't live in the same Symmetric group."
-                )
-            return Permutation.from_dict(p={idx: self._map[other._map[idx]] for idx in self.domain})
-        raise TypeError(f"Product between types `Permutation` and {type(other)} is not implemented.")
+        if not isinstance(other, Permutation):
+            raise TypeError(f"Product between types `Permutation` and {type(other)} is not implemented.")
+        return Permutation(*permutation.multiplication(lhs=self.image, rhs=other.image))
 
     def __pow__(self, power: int) -> "Permutation":
         """Return the permutation object to the chosen power.
@@ -745,16 +740,7 @@ class Permutation(_Element):
             >>> Permutation(3, 1, 2, 5, 4).inversions()
             [(1, 2), (1, 3), (4, 5)]
         """
-        inversions, image = [], list(self.image)
-        min_element = 1
-        for i, p in enumerate(image, 1):
-            if p == min_element:
-                min_element += 1
-            else:
-                for j, q in enumerate(image[i:], 1):
-                    if p > q:
-                        inversions.append((i, i + j))
-        return inversions
+        return permutation.inversions(image=self.image)
 
     def is_conjugate(self, other: "Permutation") -> bool:
         r"""Check if two permutations are conjugated.
@@ -1036,13 +1022,7 @@ class Permutation(_Element):
             >>> Permutation(1, 3, 4, 5, 2, 6).records()
             [1, 2, 3, 4, 6]
         """
-        records = [1]
-        tmp_max = self[1]
-        for i in self.domain:
-            if self[i] > tmp_max:
-                records.append(i)
-                tmp_max = self[i]
-        return records
+        return permutation.records(image=self.image)
 
     def sgn(self) -> int:
         r"""Return the sign of the permutation.
@@ -1083,4 +1063,9 @@ class Permutation(_Element):
             >>> Permutation(1, 3, 4, 5, 2, 6).support()
             {2, 3, 4, 5}
         """
-        return {idx for idx in self.domain if self(idx) != idx}
+        return permutation.support(image=self.image)
+
+
+if __name__ == "__main__":
+    a = Permutation(2,1)(2)
+    print(a)
