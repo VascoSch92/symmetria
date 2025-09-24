@@ -1,12 +1,11 @@
 from math import lcm, prod
 from typing import TYPE_CHECKING, Any, Union, Iterable
 
-from symmetria_core import validators
+from symmetria_core import validators, table
 
 import symmetria.elements.cycle
 import symmetria.elements.permutation
 from symmetria.elements._base import _Element
-from symmetria.elements._utils import Table
 
 if TYPE_CHECKING:
     from symmetria.elements.cycle import Cycle
@@ -301,8 +300,7 @@ class CycleDecomposition(_Element):
             return self
         elif power <= -1:
             return self.inverse() ** abs(power)
-        else:
-            return self * (self ** (power - 1))
+        return self * (self ** (power - 1))
 
     def __repr__(self) -> str:
         r"""Return a string representation of the cycle decomposition.
@@ -503,22 +501,20 @@ class CycleDecomposition(_Element):
             | records                                        |                      [1]                      |
             +------------------------------------------------+-----------------------------------------------+
         """
-        return (
-            Table(title=self.rep())
-            .add("order", str(self.order()))
-            .add("degree", str(len(self)))
-            .add("is_derangement", str(self.is_derangement()))
-            .add("inverse", str(self.inverse()))
-            .add("parity", "+1 (even)" if self.sgn() > 0 else "-1 (odd)")
-            .add("cycle_notation", self.cycle_notation())
-            .add("cycle_type", str(self.cycle_type()))
-            .add("inversions", str(self.inversions()))
-            .add("ascents", str(self.ascents()))
-            .add("descents", str(self.descents()))
-            .add("excedencees", str(self.exceedances()))
-            .add("records", str(self.records()))
-            .build()
-        )
+        cd_table = table.Table(title=self.rep())
+        cd_table.add("order", str(self.order()))
+        cd_table.add("degree", str(len(self)))
+        cd_table.add("is_derangement", str(self.is_derangement()))
+        cd_table.add("inverse", str(self.inverse()))
+        cd_table.add("parity", "+1 (even)" if self.sgn() > 0 else "-1 (odd)")
+        cd_table.add("cycle_notation", self.cycle_notation())
+        cd_table.add("cycle_type", str(self.cycle_type()))
+        cd_table.add("inversions", str(self.inversions()))
+        cd_table.add("ascents", str(self.ascents()))
+        cd_table.add("descents", str(self.descents()))
+        cd_table.add("excedencees", str(self.exceedances()))
+        cd_table.add("records", str(self.records()))
+        return cd_table.build()
 
     @property
     def domain(self) -> Iterable[int]:
@@ -821,13 +817,11 @@ class CycleDecomposition(_Element):
             ...
             >>> CycleDecomposition(Cycle(1)).map
             {1: 1}
-            >>> CycleDecomposition(Cycle(1, 2), Cycle(3, 4)).map
-            {1: 2, 2: 1, 3: 4, 4: 3}
+            >>> cd_map = CycleDecomposition(Cycle(1, 2), Cycle(3, 4)).map
+            >>> cd_map[1], cd_map[2], cd_map[3], cd_map[4]
+            (2, 1, 4, 3)
         """
-        _map = {}
-        for cycle in iter(self):
-            _map.update(cycle.map)
-        return _map
+        return {k: v for cycle in self for k, v in cycle.map.items()}
 
     def orbit(self, item: "Permutable") -> list["Permutable"]:
         r"""Compute the orbit of `item` object under the action of the cycle decomposition.

@@ -1,12 +1,11 @@
 from math import factorial
 from typing import TYPE_CHECKING, Any, Union, Iterable
 
-from symmetria_core import permutation, validators
+from symmetria_core import permutation, validators, table
 
 import symmetria.elements.cycle
 import symmetria.elements.cycle_decomposition
 from symmetria.elements._base import _Element
-from symmetria.elements._utils import Table
 
 if TYPE_CHECKING:
     from symmetria.elements.cycle import Cycle
@@ -503,22 +502,20 @@ class Permutation(_Element):
             | records                                |               [1, 2, 5]               |
             +----------------------------------------+---------------------------------------+
         """
-        return (
-            Table(title=self.rep())
-            .add("order", str(self.order()))
-            .add("degree", str(self.degree()))
-            .add("is_derangement", str(self.is_derangement()))
-            .add("inverse", str(self.inverse()))
-            .add("parity", "+1 (even)" if self.sgn() > 0 else "-1 (odd)")
-            .add("cycle_notation", self.cycle_notation())
-            .add("cycle_type", str(self.cycle_type()))
-            .add("inversions", str(self.inversions()))
-            .add("ascents", str(self.ascents()))
-            .add("descents", str(self.descents()))
-            .add("excedencees", str(self.exceedances()))
-            .add("records", str(self.records()))
-            .build()
-        )
+        permutation_table = table.Table(title=self.rep())
+        permutation_table.add("order", str(self.order()))
+        permutation_table.add("degree", str(self.degree()))
+        permutation_table.add("is_derangement", str(self.is_derangement()))
+        permutation_table.add("inverse", str(self.inverse()))
+        permutation_table.add("parity", "+1 (even)" if self.sgn() > 0 else "-1 (odd)")
+        permutation_table.add("cycle_notation", self.cycle_notation())
+        permutation_table.add("cycle_type", str(self.cycle_type()))
+        permutation_table.add("inversions", str(self.inversions()))
+        permutation_table.add("ascents", str(self.ascents()))
+        permutation_table.add("descents", str(self.descents()))
+        permutation_table.add("excedencees", str(self.exceedances()))
+        permutation_table.add("records", str(self.records()))
+        return permutation_table.build()
 
     @property
     def domain(self) -> Iterable[int]:
@@ -1067,5 +1064,9 @@ class Permutation(_Element):
 
 
 if __name__ == "__main__":
-    a = Permutation(2,1)(2)
-    print(a)
+    from symmetria_core import table
+    table = table.Table("example")
+    table.add('ciao', 'io')
+    table.add('ciao', 'io')
+    print(table.build())
+
