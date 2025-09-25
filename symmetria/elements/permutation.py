@@ -1,7 +1,6 @@
-from math import factorial
 from typing import TYPE_CHECKING, Any, Union, Iterable
 
-from symmetria_core import permutation, validators, table
+from symmetria_core import table, validators, permutation
 
 import symmetria.elements.cycle
 import symmetria.elements.cycle_decomposition
@@ -1065,8 +1064,8 @@ class Permutation(_Element):
 
 if __name__ == "__main__":
     from symmetria_core import table
-    table = table.Table("example")
-    table.add('ciao', 'io')
-    table.add('ciao', 'io')
-    print(table.build())
 
+    table = table.Table("example")
+    table.add("ciao", "io")
+    table.add("ciao", "io")
+    print(table.build())

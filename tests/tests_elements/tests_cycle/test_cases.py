@@ -6,7 +6,7 @@ from symmetria import Cycle, Permutation, CycleDecomposition
 
 TEST_CONSTRUCTOR = [[1], [1, 2], [3, 2, 1], [4, 5, 6, 3, 2, 1], [4, 3, 2, 1]]
 TEST_CONSTRUCTOR_ERROR = [
-    (["1"], TypeError,  "argument 'cycle': 'str' object cannot be interpreted as an integer"),
+    (["1"], TypeError, "argument 'cycle': 'str' object cannot be interpreted as an integer"),
     ([1, 2, 3.4], TypeError, "argument 'cycle': 'float' object cannot be interpreted as an integer"),
     ([1, 0], ValueError, f"Expected all strictly positive values, but got {0}."),
     ([1, -1], ValueError, f"Expected all strictly positive values, but got {-1}."),

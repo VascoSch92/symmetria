@@ -1,9 +1,9 @@
 from typing import TYPE_CHECKING, Any, Union, Iterable, Iterator
 
-from symmetria_core import validators, cycle as core_cycle, table
+from symmetria_core import cycle as core_cycle, table, validators
 
-import symmetria.elements.cycle_decomposition
 import symmetria.elements.permutation
+import symmetria.elements.cycle_decomposition
 from symmetria.elements._base import _Element
 
 if TYPE_CHECKING:
@@ -441,7 +441,6 @@ class Cycle(_Element):
         cycle_table.add("cycle_notation", self.cycle_notation())
         cycle_table.add("inversions", str(self.inversions()))
         return cycle_table.build()
-
 
     @property
     def domain(self) -> Iterable[int]:

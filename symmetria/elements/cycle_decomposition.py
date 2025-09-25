@@ -1,7 +1,7 @@
 from math import lcm, prod
 from typing import TYPE_CHECKING, Any, Union, Iterable
 
-from symmetria_core import validators, table
+from symmetria_core import table, validators
 
 import symmetria.elements.cycle
 import symmetria.elements.permutation
@@ -821,7 +821,7 @@ class CycleDecomposition(_Element):
             >>> cd_map[1], cd_map[2], cd_map[3], cd_map[4]
             (2, 1, 4, 3)
         """
-        return {k: v for cycle in self for k, v in cycle.map.items()}
+        return {k: v for cycle in iter(self) for k, v in cycle.map.items()}
 
     def orbit(self, item: "Permutable") -> list["Permutable"]:
         r"""Compute the orbit of `item` object under the action of the cycle decomposition.
