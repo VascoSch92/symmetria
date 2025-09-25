@@ -1,11 +1,10 @@
-from math import factorial
 from typing import TYPE_CHECKING, Any, Union, Iterable
+
+from symmetria_core import table, validators, permutation
 
 import symmetria.elements.cycle
 import symmetria.elements.cycle_decomposition
 from symmetria.elements._base import _Element
-from symmetria.elements._utils import Table
-from symmetria.elements._validators import _validate_permutation
 
 if TYPE_CHECKING:
     from symmetria.elements.cycle import Cycle
@@ -34,15 +33,15 @@ class Permutation(_Element):
     :example:
         >>> from symmetria import Permutation
         ...
-        >>> permutation = Permutation(3, 1, 2)
-        >>> permutation = Permutation(*[3, 1, 2])
-        >>> permutation = Permutation(*(3, 1, 2))
+        >>> permutation_a = Permutation(3, 1, 2)
+        >>> permutation_b = Permutation(*[3, 1, 2])
+        >>> permutation_c = Permutation(*(3, 1, 2))
     """
 
     __slots__ = ["_map", "_domain", "_image"]
 
     def __new__(cls, *image: int) -> "Permutation":
-        _validate_permutation(image=image)
+        validators.validate_permutation(image)
         return super().__new__(cls)
 
     def __init__(self, *image: int) -> None:
@@ -99,13 +98,15 @@ class Permutation(_Element):
             Permutation(2, 3, 1)
         """
         if isinstance(item, int):
-            return self._call_on_integer(idx=item)
-        elif isinstance(item, (str, list, tuple)):
+            return permutation.call_on_int(image=self.image, idx=item)
+        elif isinstance(item, str):
+            return permutation.call_on_str(image=self.image, string=item)
+        elif isinstance(item, (list, tuple)):
             if len(self) > len(item):
                 raise ValueError(f"Not enough object to permute {item} using the permutation {self}.")
-            return self._call_on_str_list_tuple(original=item)
+            return self._call_on_list_tuple(original=item)
         elif isinstance(item, Permutation):
-            return self * item
+            return Permutation(*permutation.multiplication(lhs=self.image, rhs=item.image))
         elif isinstance(item, symmetria.elements.cycle.Cycle):
             if set(item.domain).issubset(set(self.domain)) is False:
                 raise ValueError(
@@ -126,17 +127,15 @@ class Permutation(_Element):
         """Private method for calls on integer."""
         return self[idx] if 1 <= idx <= len(self) else idx
 
-    def _call_on_str_list_tuple(self, original: Union[str, tuple, list]) -> Union[str, tuple, list]:
+    def _call_on_list_tuple(self, original: Union[str, tuple, list]) -> Union[str, tuple, list]:
         """Private method for calls on strings, tuples and lists."""
         permuted = list(_ for _ in original)
         for idx, w in enumerate(original, 1):
             permuted[self._call_on_integer(idx=idx) - 1] = w
-        if isinstance(original, str):
-            return "".join(permuted)
-        elif isinstance(original, tuple):
+
+        if isinstance(original, tuple):
             return tuple(p for p in permuted)
-        else:
-            return permuted
+        return permuted
 
     def _call_on_cycle(self, cycle: "Cycle") -> "CycleDecomposition":
         """Private method for calls on cycles."""
@@ -218,7 +217,7 @@ class Permutation(_Element):
             >>> int(Permutation(1, 3, 4, 5, 2, 6))
             134526
         """
-        return sum([self[element] * 10 ** (len(self) - element) for element in self.domain])
+        return permutation.int_repr(image=self.image)
 
     def __len__(self) -> int:
         """Return the length of the permutation, which is the number of elements in its domain.
@@ -236,7 +235,7 @@ class Permutation(_Element):
             >>> len(Permutation(1, 3, 4, 5, 2, 6))
             6
         """
-        return len(list(self.domain))
+        return len(self.image)
 
     def __mul__(self, other: "Permutation") -> "Permutation":
         """Multiply the permutation with another permutation, resulting in a new permutation
@@ -261,14 +260,9 @@ class Permutation(_Element):
             >>> Permutation(3, 4, 5, 1, 2) * Permutation(3, 5, 1, 2, 4)
             Permutation(5, 2, 3, 4, 1)
         """
-        if isinstance(other, Permutation):
-            if self.domain != other.domain:
-                raise ValueError(
-                    f"Cannot compose permutation {self} with permutation {other},"
-                    " because they don't live in the same Symmetric group."
-                )
-            return Permutation.from_dict(p={idx: self._map[other._map[idx]] for idx in self.domain})
-        raise TypeError(f"Product between types `Permutation` and {type(other)} is not implemented.")
+        if not isinstance(other, Permutation):
+            raise TypeError(f"Product between types `Permutation` and {type(other)} is not implemented.")
+        return Permutation(*permutation.multiplication(lhs=self.image, rhs=other.image))
 
     def __pow__(self, power: int) -> "Permutation":
         """Return the permutation object to the chosen power.
@@ -319,7 +313,7 @@ class Permutation(_Element):
             >>> Permutation(1, 3, 4, 5, 2, 6).__repr__()
             'Permutation(1, 3, 4, 5, 2, 6)'
         """
-        return f"Permutation({', '.join([str(self._map[idx]) for idx in self.domain])})"
+        return permutation.repr(image=self.image)
 
     def __str__(self) -> str:
         """Return a string representation of the permutation in the form of a tuple.
@@ -358,7 +352,7 @@ class Permutation(_Element):
             >>> Permutation(4, 3, 2, 1).ascents()
             []
         """
-        return [idx + 1 for idx in range(len(self) - 1) if self.image[idx] < self.image[idx + 1]]
+        return permutation.ascents(image=self.image)
 
     def cycle_decomposition(self) -> "CycleDecomposition":
         """Decompose the permutation into its cycle decomposition.
@@ -466,7 +460,7 @@ class Permutation(_Element):
             >>> Permutation(4, 3, 2, 1).descents()
             [1, 2, 3]
         """
-        return [idx + 1 for idx in range(len(self) - 1) if self.image[idx] > self.image[idx + 1]]
+        return permutation.descents(self.image)
 
     def describe(self) -> str:
         """Return a table describing the permutation.
@@ -507,22 +501,20 @@ class Permutation(_Element):
             | records                                |               [1, 2, 5]               |
             +----------------------------------------+---------------------------------------+
         """
-        return (
-            Table(title=self.rep())
-            .add("order", str(self.order()))
-            .add("degree", str(self.degree()))
-            .add("is_derangement", str(self.is_derangement()))
-            .add("inverse", str(self.inverse()))
-            .add("parity", "+1 (even)" if self.sgn() > 0 else "-1 (odd)")
-            .add("cycle_notation", self.cycle_notation())
-            .add("cycle_type", str(self.cycle_type()))
-            .add("inversions", str(self.inversions()))
-            .add("ascents", str(self.ascents()))
-            .add("descents", str(self.descents()))
-            .add("excedencees", str(self.exceedances()))
-            .add("records", str(self.records()))
-            .build()
-        )
+        permutation_table = table.Table(title=self.rep())
+        permutation_table.add("order", str(self.order()))
+        permutation_table.add("degree", str(self.degree()))
+        permutation_table.add("is_derangement", str(self.is_derangement()))
+        permutation_table.add("inverse", str(self.inverse()))
+        permutation_table.add("parity", "+1 (even)" if self.sgn() > 0 else "-1 (odd)")
+        permutation_table.add("cycle_notation", self.cycle_notation())
+        permutation_table.add("cycle_type", str(self.cycle_type()))
+        permutation_table.add("inversions", str(self.inversions()))
+        permutation_table.add("ascents", str(self.ascents()))
+        permutation_table.add("descents", str(self.descents()))
+        permutation_table.add("excedencees", str(self.exceedances()))
+        permutation_table.add("records", str(self.records()))
+        return permutation_table.build()
 
     @property
     def domain(self) -> Iterable[int]:
@@ -603,9 +595,7 @@ class Permutation(_Element):
             >>> Permutation(3, 4, 5, 2, 1, 6, 7).exceedances(weakly=True)
             [1, 2, 3, 6, 7]
         """
-        if weakly:
-            return [i for i, p in enumerate(self.image, 1) if p >= i]
-        return [i for i, p in enumerate(self.image, 1) if p > i]
+        return permutation.exceedances(image=self.image, weakly=weakly)
 
     @classmethod
     def from_cycle(cls, cycle: "Cycle") -> "Permutation":
@@ -746,16 +736,7 @@ class Permutation(_Element):
             >>> Permutation(3, 1, 2, 5, 4).inversions()
             [(1, 2), (1, 3), (4, 5)]
         """
-        inversions, image = [], list(self.image)
-        min_element = 1
-        for i, p in enumerate(image, 1):
-            if p == min_element:
-                min_element += 1
-            else:
-                for j, q in enumerate(image[i:], 1):
-                    if p > q:
-                        inversions.append((i, i + j))
-        return inversions
+        return permutation.inversions(image=self.image)
 
     def is_conjugate(self, other: "Permutation") -> bool:
         r"""Check if two permutations are conjugated.
@@ -804,10 +785,7 @@ class Permutation(_Element):
             >>> Permutation(1, 3, 4, 5, 2, 6).is_derangement()
             False
         """
-        for idx in self.domain:
-            if self(idx) == idx:
-                return False
-        return True
+        return permutation.is_derangement(image=self.image)
 
     def is_even(self) -> bool:
         """Check if the permutation is even.
@@ -897,19 +875,7 @@ class Permutation(_Element):
             >>> Permutation(4, 1, 3, 2, 7, 6, 5, 8).lehmer_code()
             [3, 0, 1, 0, 2, 1, 0, 0]
         """
-        n = len(self)
-        lehmer_code = [0] * n
-        stack: list[tuple[int, int]] = []  # (value, count)
-
-        for i in range(n, 0, -1):
-            count = 0
-            while stack and stack[-1][0] < self[i]:
-                _, old_count = stack.pop()
-                count += 1 + old_count
-            lehmer_code[i - 1] = count
-            stack.append((self[i], count))
-
-        return lehmer_code
+        return permutation.lehmer_code(image=self.image)
 
     def lexicographic_rank(self) -> int:
         """Return the lexicographic rank of the permutation.
@@ -932,17 +898,7 @@ class Permutation(_Element):
             >>> Permutation(3, 2, 1, 4).lexicographic_rank()
             15
         """
-        n = self.__len__()
-        rank = 1
-
-        for i in range(n):
-            right_smaller = 0
-            for j in range(i + 1, n):
-                if self[i + 1] > self[j + 1]:
-                    right_smaller += 1
-            rank += right_smaller * factorial(n - i - 1)
-
-        return rank
+        return permutation.lexicographic_rank(image=self.image)
 
     @property
     def map(self) -> dict[int, int]:
@@ -1062,13 +1018,7 @@ class Permutation(_Element):
             >>> Permutation(1, 3, 4, 5, 2, 6).records()
             [1, 2, 3, 4, 6]
         """
-        records = [1]
-        tmp_max = self[1]
-        for i in self.domain:
-            if self[i] > tmp_max:
-                records.append(i)
-                tmp_max = self[i]
-        return records
+        return permutation.records(image=self.image)
 
     def sgn(self) -> int:
         r"""Return the sign of the permutation.
@@ -1109,4 +1059,13 @@ class Permutation(_Element):
             >>> Permutation(1, 3, 4, 5, 2, 6).support()
             {2, 3, 4, 5}
         """
-        return {idx for idx in self.domain if self(idx) != idx}
+        return permutation.support(image=self.image)
+
+
+if __name__ == "__main__":
+    from symmetria_core import table
+
+    table = table.Table("example")
+    table.add("ciao", "io")
+    table.add("ciao", "io")
+    print(table.build())

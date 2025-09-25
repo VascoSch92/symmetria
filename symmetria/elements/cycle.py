@@ -1,10 +1,10 @@
 from typing import TYPE_CHECKING, Any, Union, Iterable, Iterator
 
+from symmetria_core import cycle as core_cycle, table, validators
+
 import symmetria.elements.permutation
 import symmetria.elements.cycle_decomposition
 from symmetria.elements._base import _Element
-from symmetria.elements._utils import Table
-from symmetria.elements._validators import _validate_cycle
 
 if TYPE_CHECKING:
     from symmetria.elements._types import Permutable, PermutationLike
@@ -40,31 +40,20 @@ class Cycle(_Element):
     :example:
         >>> from symmetria import Cycle
         ...
-        >>> cycle = Cycle(1, 3, 2)
-        >>> cycle = Cycle(*[1, 3, 2])
-        >>> cycle = Cycle(*(1, 3, 2))
+        >>> cycle_a = Cycle(1, 3, 2)
+        >>> cycle_b = Cycle(*[1, 3, 2])
+        >>> cycle_c = Cycle(*(1, 3, 2))
     """
 
     __slots__ = ["_cycle", "_domain"]
 
     def __new__(cls, *cycle: int) -> "Cycle":
-        _validate_cycle(cycle=cycle)
+        validators.validate_cycle(cycle)
         return super().__new__(cls)
 
     def __init__(self, *cycle: int) -> None:
-        self._cycle: tuple[int, ...] = self._standardization(cycle=cycle)
+        self._cycle: tuple[int, ...] = tuple(core_cycle.standardization(cycle=cycle))
         self._domain: Iterable[int] = range(1, max(self._cycle) + 1)
-
-    @staticmethod
-    def _standardization(cycle: tuple[int, ...]) -> tuple[int, ...]:
-        """Private method to standardize a set of integers to form a cycle.
-
-        The standard form for a cycle is the (unique) one where the first element is the smallest.
-        """
-        smallest_element_index = cycle.index(min(cycle))
-        if smallest_element_index == 0:
-            return tuple(cycle)
-        return cycle[smallest_element_index:] + cycle[:smallest_element_index]
 
     def __bool__(self) -> bool:
         r"""Check if the cycle is different from the identity cycle.
@@ -118,11 +107,13 @@ class Cycle(_Element):
             Permutation(1, 2, 3)
         """
         if isinstance(item, int):
-            return self._call_on_integer(original=item)
-        elif isinstance(item, (str, list, tuple)):
+            return core_cycle.call_on_int(cycle=self._cycle, idx=item)
+        elif isinstance(item, str):
+            return core_cycle.call_on_str(cycle=self._cycle, string=item)
+        elif isinstance(item, (list, tuple)):
             if max(self.elements) > len(item):
                 raise ValueError(f"Not enough object to permute {item} using the cycle {self}.")
-            return self._call_on_str_list_tuple(original=item)
+            return self._call_on_list_tuple(original=item)
         elif isinstance(item, symmetria.elements.permutation.Permutation):
             if max(self.elements) > len(item):
                 raise ValueError(
@@ -146,23 +137,12 @@ class Cycle(_Element):
             return self._call_on_cycle_decomposition(original=item)
         raise TypeError(f"Calling a cycle on {type(item)} is not supported.")
 
-    def _call_on_integer(self, original: int) -> int:
-        """Private method for calls on integer."""
-        if original in self.elements:
-            return self[(self.elements.index(original) + 1) % len(self)]
-        return original
-
-    def _call_on_str_list_tuple(self, original: Union[str, tuple, list]) -> Union[str, tuple, list]:
-        """Private method for calls on string, list and tuple."""
+    def _call_on_list_tuple(self, original: Union[tuple, list]) -> Union[tuple, list]:
+        """Private method for calls on list and tuple."""
         permuted = list(_ for _ in original)
         for idx, w in enumerate(original, 1):
-            permuted[self._call_on_integer(original=idx) - 1] = w
-        if isinstance(original, str):
-            return "".join(permuted)
-        elif isinstance(original, tuple):
-            return tuple(p for p in permuted)
-        else:
-            return permuted
+            permuted[core_cycle.call_on_int(cycle=self._cycle, idx=idx) - 1] = w
+        return tuple(p for p in permuted) if isinstance(original, tuple) else permuted
 
     def _call_on_permutation(self, original: "Permutation") -> "Permutation":
         """Private method for calls on permutation."""
@@ -224,11 +204,8 @@ class Cycle(_Element):
         lhs_length, rhs_length = len(self), len(other)
         if lhs_length != rhs_length:
             return False
-        else:
-            # in this case we have the identity on both side
-            if lhs_length == 1:
-                return True
-            return self.map == other.map
+
+        return self.map == other.map if lhs_length != 1 else True
 
     def __getitem__(self, item: int) -> int:
         """Return the value of the cycle at the given index `item`.
@@ -275,7 +252,7 @@ class Cycle(_Element):
             >>> int(Cycle(1, 3, 4, 5, 2, 6))
             134526
         """
-        return sum([element * 10 ** (len(self) - idx) for idx, element in enumerate(self.elements, 1)])
+        return core_cycle.int_repr(cycle=self._cycle)
 
     def __iter__(self) -> Iterator[int]:
         """Return an iterator over the cycles in the cycle decomposition.
@@ -336,7 +313,7 @@ class Cycle(_Element):
             >>> Cycle(1, 3, 4, 5, 2, 6).__repr__()
             'Cycle(1, 3, 4, 5, 2, 6)'
         """
-        return f"Cycle({', '.join(str(element) for element in self.elements)})"
+        return core_cycle.repr(cycle=self._cycle)
 
     def __str__(self) -> str:
         r"""Return a string representation of the cycle in the form of cycle notation.
@@ -358,7 +335,7 @@ class Cycle(_Element):
             >>> print(Cycle(1, 3, 4, 5, 2, 6))
             (1 3 4 5 2 6)
         """
-        return "(" + " ".join([str(element) for element in self.elements]) + ")"
+        return core_cycle.str(cycle=self._cycle)
 
     def cycle_decomposition(self) -> "CycleDecomposition":
         """Convert the cycle into its cycle decomposition, representing it as a product of disjoint cycles.
@@ -455,17 +432,15 @@ class Cycle(_Element):
             | inversions                   |             []              |
             +------------------------------+-----------------------------+
         """
-        return (
-            Table(title=self.rep())
-            .add("order", str(self.order()))
-            .add("degree", str(len(self)))
-            .add("is_derangement", str(self.is_derangement()))
-            .add("inverse", str(self.inverse()))
-            .add("parity", "+1 (even)" if self.sgn() > 0 else "-1 (odd)")
-            .add("cycle_notation", self.cycle_notation())
-            .add("inversions", str(self.inversions()))
-            .build()
-        )
+        cycle_table = table.Table(title=self.rep())
+        cycle_table.add("order", str(self.order()))
+        cycle_table.add("degree", str(len(self)))
+        cycle_table.add("is_derangement", str(self.is_derangement()))
+        cycle_table.add("inverse", str(self.inverse()))
+        cycle_table.add("parity", "+1 (even)" if self.sgn() > 0 else "-1 (odd)")
+        cycle_table.add("cycle_notation", self.cycle_notation())
+        cycle_table.add("inversions", str(self.inversions()))
+        return cycle_table.build()
 
     @property
     def domain(self) -> Iterable[int]:
@@ -542,10 +517,9 @@ class Cycle(_Element):
             elif (bool(self) is False and bool(other) is True) or (bool(self) is True and bool(other) is False):
                 return False
             # both not the identity
-            else:
-                for cycle in iter(other):
-                    if len(cycle) > 1:
-                        return self == cycle
+            for cycle in iter(other):
+                if len(cycle) > 1:
+                    return self == cycle
         elif isinstance(other, symmetria.elements.permutation.Permutation):
             return symmetria.elements.permutation.Permutation.from_cycle(cycle=self) == other
         return False
@@ -597,16 +571,7 @@ class Cycle(_Element):
             >>> Cycle(1, 2, 5, 4, 3).inversions()
             [(3, 4), (3, 5), (4, 5)]
         """
-        inversions, elements = [], list(self.elements)
-        min_element = 1
-        for i, p in enumerate(elements, 1):
-            if p == min_element:
-                min_element += 1
-            else:
-                for j, q in enumerate(elements[i:], 1):
-                    if p > q:
-                        inversions.append((i, i + j))
-        return inversions
+        return core_cycle.inversions(cycle=self._cycle)
 
     def is_derangement(self) -> bool:
         r"""Check if the cycle is a derangement.
@@ -690,12 +655,12 @@ class Cycle(_Element):
             ...
             >>> Cycle(1).map
             {1: 1}
-            >>> Cycle(3).map
-            {3: 3}
-            >>> Cycle(3, 1, 2).map
-            {1: 2, 2: 3, 3: 1}
+            >>> map_ = Cycle(3, 1, 2).map
+            >>> map_[1], map_[2], map_[3]
+            (2, 3, 1)
+
         """
-        return {element: self[(idx + 1) % len(self)] for idx, element in enumerate(self.elements)}
+        return core_cycle.map(cycle=self._cycle)
 
     def orbit(self, item: "Permutable") -> list["Permutable"]:
         r"""Compute the orbit of `item` object under the action of the cycle.

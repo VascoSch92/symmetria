@@ -7,6 +7,7 @@ from symmetria.elements.cycle_decomposition import CycleDecomposition
 __version__ = "0.3.4"
 __all__ = [
     "__version__",
+    "generate",
     "permutation_generator",
     "random",
     "random_generator",
