@@ -9,6 +9,7 @@ with the symmetric group and its elements.
 - 🐍 - compatible with Python **3.9**, **3.10**, **3.11** and **3.12**
 - 👍 - intuitive **API**
 - 🧮 - a lot of functionalities already implemented
+- 🦀 - with a rust core
 - ✅ - 100% of test coverage
 
 You can give a look at how to work with symmetria in the section [quickstart](#quickstart),

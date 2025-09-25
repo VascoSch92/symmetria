@@ -22,6 +22,8 @@ The version is represented by three digits: a.b.c.
 
 ## Unreleased
 
+## \[1.0.0\] - 2025-09-25
+
 ENHANCEMENT:
 - removed use of type hint `Any`.
 - magic method `__eq__` slight change of behaviour, i.e., if not a permutation like object is given, then
